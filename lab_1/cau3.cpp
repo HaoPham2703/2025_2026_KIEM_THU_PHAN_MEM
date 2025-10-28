@@ -37,6 +37,7 @@ cin >> a >> b >> c;
 double x[4];
 int n = solveQuartic(a, b, c, x);
 if (n == -1) {
+    cout << " result" << endl;
 cout << " Infinite solutions." << endl;
 } else if (n == 0) {
 cout << "No solution." << endl;
