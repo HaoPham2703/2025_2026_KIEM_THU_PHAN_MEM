@@ -1,0 +1,373 @@
+Module Code	Module1 - Authentication & Registration						
+
+Test requirement	Kiểm thử các chức năng đăng ký, đăng nhập, xác thực tài khoản, quên mật khẩu và các middleware bảo vệ route						
+
+Tester							
+
+Pass	Fail	Untested	N/A	Number of Test cases			
+6	31	0	0	37			
+
+							
+
+ID	Test Case Description	Test Case Procedure	Expected Output	Inter-test case Dependence	Result	Test date	Note
+
+	Function A: Đăng ký người dùng (signup)						
+
+[Module1 - 1]	"Test tạo người dùng mới thành công
+
+Kiểm tra chức năng đăng ký tài khoản người dùng mới với thông tin hợp lệ"	"1. Gửi POST request đến /api/v1/users/signup với body:
+   - name: 'Test User'
+   - email: 'test@example.com'
+   - password: 'password123'
+   - passwordConfirm: 'password123'
+
+2. Kiểm tra response từ server"	"Response trả về status 201 với:
+- status: 'success'
+- token: JWT token hợp lệ
+- data.user chứa thông tin user (name, email, active: 'active')
+- Cookie 'jwt' được set
+- User được tạo trong database với password đã được hash
+- Password không xuất hiện trong response"	Không có	Fail		"Lỗi: res.status không được gọi. Có thể do catchAsync wrapper hoặc lỗi trong controller"
+
+[Module1 - 2]	"Test trả về lỗi khi email đã tồn tại
+
+Kiểm tra hệ thống từ chối đăng ký với email đã được sử dụng"	"1. Tạo user với email 'existing@example.com' trước
+2. Gửi POST request đến /api/v1/users/signup với email trùng
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 500
+- message: 'Email này đã được đăng ký.'
+- next() được gọi với AppError"	[Module1 - 1]	Fail		"Lỗi: next() không được gọi. Có thể do logic kiểm tra email không hoạt động đúng"
+
+[Module1 - 3]	"Test hash password trước khi lưu
+
+Kiểm tra password được mã hóa bằng bcrypt trước khi lưu vào database"	"1. Gửi POST request đăng ký với password: 'password123'
+2. Query user từ database với select('+password')
+3. Kiểm tra password đã được hash"	"Password trong database:
+- Không giống password gốc
+- Có độ dài 60 ký tự (bcrypt hash)
+- Có thể verify bằng bcrypt.compare()"	Không có	Fail		"Lỗi: User không được tạo thành công, không thể kiểm tra password"
+
+	Function B: Đăng ký Admin (signupAdmin)						
+
+[Module1 - 4]	"Test tạo admin mới thành công
+
+Kiểm tra chức năng đăng ký tài khoản admin với role 'admin'"	"1. Gửi POST request đến /api/v1/users/signup-admin với body:
+   - name: 'Admin User'
+   - email: 'admin@example.com'
+   - password: 'admin123'
+   - passwordConfirm: 'admin123'
+
+2. Kiểm tra response"	"Response trả về status 201 với:
+- status: 'success'
+- message: 'Đăng ký admin thành công!'
+- data.user chứa thông tin admin (name, email, role: 'admin', active: 'active')
+- User trong database có role = 'admin'"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 5]	"Test trả về lỗi khi email admin đã tồn tại
+
+Kiểm tra hệ thống từ chối đăng ký admin với email đã được sử dụng"	"1. Tạo admin với email 'admin2@example.com' trước
+2. Gửi POST request đến /api/v1/users/signup-admin với email trùng
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 500
+- message: 'Email này đã được đăng ký.'
+- next() được gọi với AppError"	[Module1 - 4]	Fail		"Lỗi: next() không được gọi"
+
+	Function C: Đăng nhập (login)						
+
+[Module1 - 6]	"Test đăng nhập thành công với email và password đúng
+
+Kiểm tra chức năng đăng nhập với thông tin hợp lệ"	"1. Tạo user với email 'login@example.com' và password 'password123'
+2. Gửi POST request đến /api/v1/users/login với:
+   - email: 'login@example.com'
+   - password: 'password123'
+3. Kiểm tra response"	"Response trả về status 200 với:
+- status: 'success'
+- token: JWT token hợp lệ
+- data.user chứa thông tin user
+- Cookie 'jwt' được set
+- next() không được gọi"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 7]	"Test trả về lỗi khi thiếu email hoặc password
+
+Kiểm tra validation khi thiếu thông tin đăng nhập"	"1. Gửi POST request đến /api/v1/users/login chỉ với email (thiếu password)
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 400
+- message: 'Vui lòng cung cấp email và mật khẩu!'
+- next() được gọi với AppError"	Không có	Pass		
+
+[Module1 - 8]	"Test trả về lỗi khi email không tồn tại
+
+Kiểm tra hệ thống từ chối đăng nhập với email không có trong database"	"1. Gửi POST request đến /api/v1/users/login với email không tồn tại
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Email hoặc mật khẩu không chính xác'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+[Module1 - 9]	"Test trả về lỗi khi password sai
+
+Kiểm tra hệ thống từ chối đăng nhập với password không đúng"	"1. Tạo user với password 'password123'
+2. Gửi POST request đăng nhập với password sai
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Email hoặc mật khẩu không chính xác'
+- next() được gọi với AppError"	[Module1 - 6]	Fail		"Lỗi: next() không được gọi"
+
+[Module1 - 10]	"Test tự động active user nếu status là verify
+
+Kiểm tra hệ thống tự động kích hoạt tài khoản khi đăng nhập với status 'verify'"	"1. Tạo user với active: 'verify'
+2. Gửi POST request đăng nhập
+3. Kiểm tra user được active"	"Response trả về status 201 với:
+- User trong database có active = 'active'
+- Token được tạo và gửi về"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+	Function D: Xác thực người dùng (verifyUser)						
+
+[Module1 - 11]	"Test xác thực user thành công với token hợp lệ
+
+Kiểm tra chức năng xác thực tài khoản bằng mã token"	"1. Tạo user với active: 'verify' và userVerifyToken
+2. Gửi POST request đến /api/v1/users/verify với encode token
+3. Kiểm tra response"	"Response trả về status 200 với:
+- User được active (active = 'active')
+- userVerifyToken bị xóa
+- Token JWT được tạo và gửi về"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 12]	"Test trả về lỗi khi token không hợp lệ
+
+Kiểm tra hệ thống từ chối xác thực với token không hợp lệ hoặc hết hạn"	"1. Gửi POST request đến /api/v1/users/verify với token không hợp lệ
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 400
+- message: 'Mã xác nhận không hợp lệ hoặc đã hết hạn'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function E: Quên mật khẩu (forgotPassword)						
+
+[Module1 - 13]	"Test tạo reset token và gửi email
+
+Kiểm tra chức năng tạo mã reset password và gửi email"	"1. Tạo user với email 'forgot@example.com'
+2. Gửi POST request đến /api/v1/users/forgotPassword với email
+3. Kiểm tra response và database"	"Response trả về status 200 với:
+- status: 'success'
+- message: 'Token sent to email!'
+- sendEmail() được gọi
+- User trong database có passwordResetToken và passwordResetExpires"	Không có	Fail		"Lỗi: sendEmail() không được gọi, có thể do lỗi trong controller"
+
+[Module1 - 14]	"Test trả về lỗi khi email không tồn tại
+
+Kiểm tra hệ thống từ chối yêu cầu reset password với email không tồn tại"	"1. Gửi POST request đến /api/v1/users/forgotPassword với email không tồn tại
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 404
+- message: 'Tài khoản này không tồn tại. Vui lòng đăng ký để sử dụng'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function F: Xác thực reset password token (verifyResetPass)						
+
+[Module1 - 15]	"Test xác thực token reset password hợp lệ
+
+Kiểm tra chức năng xác thực mã reset password"	"1. Tạo user với passwordResetToken và passwordResetExpires hợp lệ
+2. Gửi POST request đến /api/v1/users/verifyResetPass với token
+3. Kiểm tra response"	"Response trả về status 200 với:
+- status: 'success'
+- hashedToken: token đã hash"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 16]	"Test trả về lỗi khi token không hợp lệ hoặc hết hạn
+
+Kiểm tra hệ thống từ chối token reset password không hợp lệ"	"1. Gửi POST request đến /api/v1/users/verifyResetPass với token không hợp lệ
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 400
+- message: 'Token không hợp lệ hoặc đã hết hạn'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function G: Đặt lại mật khẩu (resetPassword)						
+
+[Module1 - 17]	"Test đặt lại mật khẩu thành công với token hợp lệ
+
+Kiểm tra chức năng đặt lại mật khẩu mới bằng token reset"	"1. Tạo user với passwordResetToken hợp lệ
+2. Gửi PATCH request đến /api/v1/users/resetPassword/:token với password mới
+3. Kiểm tra response và database"	"Response trả về status 200 với:
+- Token JWT được tạo
+- User trong database:
+  - passwordResetToken = undefined
+  - passwordResetExpires = undefined
+  - Password mới có thể verify được"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 18]	"Test trả về lỗi khi token không hợp lệ
+
+Kiểm tra hệ thống từ chối đặt lại mật khẩu với token không hợp lệ"	"1. Gửi PATCH request đến /api/v1/users/resetPassword/:token với token không hợp lệ
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 400
+- message chứa 'không hợp lệ hoặc đã hết hạn'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function H: Cập nhật mật khẩu (updatePassword)						
+
+[Module1 - 19]	"Test cập nhật mật khẩu thành công với password hiện tại đúng
+
+Kiểm tra chức năng đổi mật khẩu khi biết mật khẩu hiện tại"	"1. Tạo user và đăng nhập (có req.user)
+2. Gửi PATCH request đến /api/v1/users/updateMyPassword với:
+   - passwordCurrent: 'oldpassword'
+   - password: 'newpassword123'
+   - passwordConfirm: 'newpassword123'
+3. Kiểm tra response và database"	"Response trả về status 200 với:
+- Token JWT mới được tạo
+- Password mới trong database có thể verify được"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 20]	"Test trả về lỗi khi password hiện tại sai
+
+Kiểm tra hệ thống từ chối đổi mật khẩu với password hiện tại không đúng"	"1. Tạo user và đăng nhập
+2. Gửi PATCH request với passwordCurrent sai
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Mật khẩu hiện tại chưa chính xác.'
+- next() được gọi với AppError"	[Module1 - 19]	Fail		"Lỗi: next() không được gọi"
+
+	Function I: Đăng xuất (logout)						
+
+[Module1 - 21]	"Test đăng xuất thành công
+
+Kiểm tra chức năng đăng xuất xóa cookie JWT"	"1. Gửi GET request đến /api/v1/users/logout
+2. Kiểm tra response"	"Response trả về status 200 với:
+- status: 'success'
+- Cookie 'jwt' được set thành 'loggedout' với expires ngắn"	Không có	Pass		
+
+	Function J: Middleware bảo vệ route (protect)						
+
+[Module1 - 22]	"Test cho phép truy cập với token hợp lệ trong header
+
+Kiểm tra middleware protect cho phép truy cập với Bearer token hợp lệ"	"1. Tạo user và tạo JWT token
+2. Gửi request với header: Authorization: 'Bearer <token>'
+3. Kiểm tra req.user được set"	"req.user được set với thông tin user
+- next() được gọi
+- res.status không được gọi"	Không có	Fail		"Lỗi: req.user = null, có thể do lỗi verify token hoặc query user"
+
+[Module1 - 23]	"Test cho phép truy cập với token hợp lệ trong cookie
+
+Kiểm tra middleware protect cho phép truy cập với JWT token trong cookie"	"1. Tạo user và tạo JWT token
+2. Gửi request với cookie: jwt = <token>
+3. Kiểm tra req.user được set"	"req.user được set với thông tin user
+- next() được gọi
+- res.status không được gọi"	Không có	Fail		"Lỗi: req.user = null"
+
+[Module1 - 24]	"Test trả về lỗi khi không có token
+
+Kiểm tra middleware protect từ chối truy cập khi không có token"	"1. Gửi request không có token trong header hoặc cookie
+2. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Bạn chưa đăng nhập hoặc đăng ký. Vui lòng thực hiện!!!'
+- next() được gọi với AppError"	Không có	Pass		
+
+[Module1 - 25]	"Test trả về lỗi khi user không còn tồn tại
+
+Kiểm tra middleware protect từ chối token của user đã bị xóa"	"1. Tạo JWT token với user ID không tồn tại
+2. Gửi request với token này
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Token người dùng không còn tồn tại.'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+[Module1 - 26]	"Test trả về lỗi khi password đã thay đổi sau khi token được tạo
+
+Kiểm tra middleware protect từ chối token cũ sau khi đổi mật khẩu"	"1. Tạo user và tạo JWT token
+2. Đổi mật khẩu của user
+3. Gửi request với token cũ
+4. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Tài khoản gần đây đã thay đổi mật khẩu! Xin vui lòng đăng nhập lại.'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function K: Middleware phân quyền (restrictTo)						
+
+[Module1 - 27]	"Test cho phép truy cập khi user có role phù hợp
+
+Kiểm tra middleware restrictTo cho phép truy cập với role đúng"	"1. Tạo admin user (role: 'admin')
+2. Set req.user = admin
+3. Gọi middleware restrictTo('admin', 'employee')
+4. Kiểm tra next() được gọi"	"next() được gọi
+- res.status không được gọi
+- Không có lỗi"	Không có	Pass		
+
+[Module1 - 28]	"Test từ chối truy cập khi user không có role phù hợp
+
+Kiểm tra middleware restrictTo từ chối truy cập với role không đúng"	"1. Tạo user (role: 'user')
+2. Set req.user = user
+3. Gọi middleware restrictTo('admin', 'employee')
+4. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 403
+- message: 'Bạn không có quyền thực hiện'
+- next() được gọi với AppError"	Không có	Pass		
+
+[Module1 - 29]	"Test từ chối truy cập khi không có user
+
+Kiểm tra middleware restrictTo từ chối truy cập khi req.user = undefined"	"1. Set req.user = undefined
+2. Gọi middleware restrictTo('admin')
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 403
+- message: 'Bạn không có quyền thực hiện'
+- next() được gọi với AppError"	Không có	Pass		
+
+	Function L: Đăng nhập bằng Google (Admin) - googleLogin						
+
+[Module1 - 30]	"Test đăng nhập thành công với admin account
+
+Kiểm tra chức năng đăng nhập bằng Google cho admin"	"1. Tạo admin user với email 'admin@google.com'
+2. Gửi POST request đến /api/v1/users/googleLogin với email
+3. Kiểm tra response"	"Response trả về status 200 với:
+- Token JWT được tạo
+- Cookie được set"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 31]	"Test từ chối đăng nhập với non-admin account
+
+Kiểm tra hệ thống từ chối đăng nhập Google cho user không phải admin"	"1. Tạo user (role: 'user') với email 'user@google.com'
+2. Gửi POST request đến /api/v1/users/googleLogin với email
+3. Kiểm tra response"	"Response trả về status 400 với:
+- message: 'Tài khoản này không được phép truy cập'"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+	Function M: Đăng nhập bằng Google/Firebase (User) - userLoginWith						
+
+[Module1 - 32]	"Test tạo user mới nếu chưa tồn tại
+
+Kiểm tra hệ thống tự động tạo user mới khi đăng nhập Google lần đầu"	"1. Gửi POST request đến /api/v1/users/userLoginWith với user object mới
+2. Kiểm tra response và database"	"Response trả về status 200 với:
+- User mới được tạo trong database
+- active = 'active'
+- Token JWT được tạo"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 33]	"Test đăng nhập thành công với user đã tồn tại
+
+Kiểm tra chức năng đăng nhập Google với user đã có trong hệ thống"	"1. Tạo user với email 'existing@google.com'
+2. Gửi POST request đến /api/v1/users/userLoginWith với email này
+3. Kiểm tra response"	"Response trả về status 200 với:
+- Token JWT được tạo
+- User không bị tạo trùng"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 34]	"Test tự động active user nếu status là verify
+
+Kiểm tra hệ thống tự động kích hoạt user verify khi đăng nhập Google"	"1. Tạo user với active: 'verify'
+2. Gửi POST request đăng nhập Google
+3. Kiểm tra user được active"	"Response trả về status 200 với:
+- User trong database có active = 'active'"	Không có	Fail		"Lỗi: User vẫn có active = 'verify', không được active tự động"
+
+[Module1 - 35]	"Test từ chối đăng nhập với tài khoản bị ban
+
+Kiểm tra hệ thống từ chối đăng nhập Google cho tài khoản bị ban"	"1. Tạo user với active: 'ban'
+2. Gửi POST request đăng nhập Google
+3. Kiểm tra response"	"Response trả về lỗi với:
+- statusCode: 401
+- message: 'Tài khoản của bạn đã bị ban.'
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
+	Function N: Thay đổi trạng thái user (changeStateUser)						
+
+[Module1 - 36]	"Test thay đổi trạng thái user thành công
+
+Kiểm tra chức năng thay đổi trạng thái user (active/ban/verify)"	"1. Tạo user và tạo JWT token
+2. Gửi PATCH request đến /api/v1/users/changeState với state: 'ban'
+3. Kiểm tra response và database"	"Response trả về status 200 với:
+- User trong database có active = 'ban'
+- Message: 'Cập nhật trạng thái user thành công!!!'"	Không có	Fail		"Lỗi: res.status không được gọi"
+
+[Module1 - 37]	"Test trả về lỗi khi token không hợp lệ
+
+Kiểm tra hệ thống từ chối thay đổi trạng thái với token không hợp lệ"	"1. Gửi PATCH request với token không hợp lệ
+2. Kiểm tra response"	"Response trả về lỗi
+- next() được gọi với AppError"	Không có	Fail		"Lỗi: next() không được gọi"
+
