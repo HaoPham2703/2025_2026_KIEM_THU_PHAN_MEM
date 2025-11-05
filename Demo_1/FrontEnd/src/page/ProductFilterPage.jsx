@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { getBrand, getProductFilter } from "../redux/product/productSlice";
 import { useState } from "react";
 import Pagination from "react-js-pagination";
+import PaginationCompact from "../components/PaginationCompact";
 import FilterSort from "../module/filter/FilterSort";
 import queryString from "query-string";
 import FilterPrice from "../module/filter/FilterPrice";
@@ -29,7 +30,7 @@ const ProductFilterPage = () => {
     return {
       ...params,
       page: Number.parseInt(params.page) || 1,
-      limit: 20,
+      limit: 12,
       sort: params.sort || "promotion",
       promotion_gte: params.promotion_gte || 0,
       promotion_lte: params.promotion_lte || 100000000,
@@ -391,15 +392,9 @@ const ProductFilterPage = () => {
                     <FilterProduct data={productFilter} />
                   </div>
                   <div className="flex justify-center items-center mt-2">
-                    <Pagination
+                    <PaginationCompact
                       activePage={page}
-                      nextPageText={">"}
-                      prevPageText={"<"}
-                      totalItemsCount={totalPageFilter}
-                      itemsCountPerPage={1}
-                      firstPageText={"<<"}
-                      lastPageText={">>"}
-                      linkClass="page-num"
+                      totalPages={totalPageFilter}
                       onChange={handlePageClick}
                     />
                   </div>

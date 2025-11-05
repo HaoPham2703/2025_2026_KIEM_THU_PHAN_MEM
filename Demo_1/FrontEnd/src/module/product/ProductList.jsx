@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import slugify from "slugify";
 import Pagination from "react-js-pagination";
+import PaginationCompact from "../../components/PaginationCompact";
 import ModalAdvanced from "../../components/Modal/ModalAdvanced";
 import { useEffect } from "react";
 import { formatPrice } from "../../utils/formatPrice";
@@ -89,15 +90,9 @@ const ProductList = ({ data, handlePageClick, page, totalPage }) => {
           </div>
         </div>
         <div className="flex justify-center items-center">
-          <Pagination
+          <PaginationCompact
             activePage={page}
-            nextPageText={">"}
-            prevPageText={"<"}
-            totalItemsCount={totalPage}
-            itemsCountPerPage={1}
-            firstPageText={"<<"}
-            lastPageText={">>"}
-            linkClass="page-num"
+            totalPages={totalPage}
             onChange={handlePageClick}
           />
         </div>

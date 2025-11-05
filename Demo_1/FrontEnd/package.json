@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
+    "start:dev": "vite",
     "build": "vite build",
+    "start:prod": "vite preview --host --port 5173",
     "preview": "vite preview"
   },
   "dependencies": {
