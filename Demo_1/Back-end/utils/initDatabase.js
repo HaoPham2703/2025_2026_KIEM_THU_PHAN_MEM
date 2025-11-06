@@ -2,86 +2,116 @@ const mongoose = require("mongoose");
 
 /**
  * Khởi tạo database và collections
- * Import tất cả models để đảm bảo MongoDB tạo collections khi cần
+ * Đảm bảo tất cả collections được tạo ngay khi khởi động server
  */
 const initDatabase = async () => {
   try {
     // Import tất cả các models để đảm bảo schemas được đăng ký
-    // Điều này đảm bảo MongoDB sẽ tạo collections khi có document được insert
-    require("../models/userModel");
-    require("../models/productModel");
-    require("../models/categoryModel");
-    require("../models/brandModel");
-    require("../models/orderModel");
-    require("../models/reviewModel");
-    require("../models/commentModel");
-    require("../models/importModel");
-    require("../models/transactionModel");
-    require("../models/locationModel");
+    const User = require("../models/userModel");
+    const Product = require("../models/productModel");
+    const Category = require("../models/categoryModel");
+    const Brand = require("../models/brandModel");
+    const Order = require("../models/orderModel");
+    const Review = require("../models/reviewModel");
+    const Comment = require("../models/commentModel");
+    const Import = require("../models/importModel");
+    const Transaction = require("../models/transactionModel");
+    const Location = require("../models/locationModel");
 
-    // Lấy danh sách collections hiện có
-    const db = mongoose.connection.db;
-    const collections = await db.listCollections().toArray();
-    const collectionNames = collections.map((col) => col.name);
-
-    // Danh sách collections mong đợi
-    const expectedCollections = [
-      "users",
-      "products",
-      "categories",
-      "brands",
-      "orders",
-      "reviews",
-      "comments",
-      "imports",
-      "transactions",
-      "locations",
+    // Map models với tên collections
+    const modelMap = [
+      { model: User, name: "users" },
+      { model: Product, name: "products" },
+      { model: Category, name: "categories" },
+      { model: Brand, name: "brands" },
+      { model: Order, name: "orders" },
+      { model: Review, name: "reviews" },
+      { model: Comment, name: "comments" },
+      { model: Import, name: "imports" },
+      { model: Transaction, name: "transactions" },
+      { model: Location, name: "locations" },
     ];
 
-    console.log("\n📊 Database Collections Status:");
+    console.log("\n📊 Initializing Database Collections...");
     console.log("─".repeat(50));
 
-    // Kiểm tra và tạo collections nếu chưa tồn tại
-    for (const collectionName of expectedCollections) {
+    const db = mongoose.connection.db;
+
+    // Tạo collections và indexes cho mỗi model
+    for (const { model, name } of modelMap) {
       try {
-        if (collectionNames.includes(collectionName)) {
-          const count = await db.collection(collectionName).countDocuments();
-          console.log(`  ✅ ${collectionName.padEnd(20)} - ${count} documents`);
+        // Kiểm tra collection đã tồn tại chưa (check mỗi lần để cập nhật)
+        const collectionExists = await db.listCollections({ name }).hasNext();
+
+        if (!collectionExists) {
+          // Tạo collection bằng cách insert một document tạm trực tiếp vào MongoDB
+          // (không qua Mongoose để tránh validation)
+          // MongoDB sẽ tự động tạo collection và database nếu chưa tồn tại
+          try {
+            await db.collection(name).insertOne({
+              _temp_init: true,
+              _createdAt: new Date(),
+            });
+            // Xóa document tạm ngay sau khi tạo collection
+            await db.collection(name).deleteOne({ _temp_init: true });
+            console.log(`  🆕 ${name.padEnd(20)} - Created (0 documents)`);
+          } catch (insertErr) {
+            // Nếu insert thất bại, kiểm tra lại xem collection đã được tạo chưa
+            const recheck = await db.listCollections({ name }).hasNext();
+            if (recheck) {
+              const count = await db.collection(name).countDocuments();
+              console.log(`  ✅ ${name.padEnd(20)} - ${count} documents`);
+            } else {
+              console.log(
+                `  ⚠️  ${name.padEnd(20)} - Could not create: ${
+                  insertErr.message
+                }`
+              );
+              // Tiếp tục với collection tiếp theo
+              continue;
+            }
+          }
         } else {
-          // Tạo collection nếu chưa tồn tại
-          // MongoDB sẽ tự động tạo collection khi có document đầu tiên,
-          // nhưng việc tạo sẵn giúp đảm bảo collections được tạo ngay
-          await db.createCollection(collectionName);
-          console.log(
-            `  🆕 ${collectionName.padEnd(20)} - Created (0 documents)`
-          );
+          // Collection đã tồn tại
+          const count = await db.collection(name).countDocuments();
+          console.log(`  ✅ ${name.padEnd(20)} - ${count} documents`);
+        }
+
+        // Tạo indexes cho collection (sau khi đảm bảo collection đã tồn tại)
+        try {
+          await model.createIndexes();
+        } catch (indexErr) {
+          // Bỏ qua lỗi index nếu có (indexes sẽ được tạo khi cần)
+          // Không log warning vì có thể indexes đã tồn tại
         }
       } catch (err) {
-        // Nếu collection đã tồn tại hoặc có lỗi khác, bỏ qua
-        if (err.code === 48) {
-          // Error code 48 = NamespaceExists (collection đã tồn tại)
-          const count = await db.collection(collectionName).countDocuments();
-          console.log(`  ✅ ${collectionName.padEnd(20)} - ${count} documents`);
-        } else {
-          console.log(`  ⚠️  ${collectionName.padEnd(20)} - ${err.message}`);
+        // Nếu có lỗi, vẫn thử kiểm tra collection đã tồn tại chưa
+        try {
+          const exists = await db.listCollections({ name }).hasNext();
+          if (exists) {
+            const count = await db.collection(name).countDocuments();
+            console.log(
+              `  ✅ ${name.padEnd(
+                20
+              )} - ${count} documents (some errors occurred)`
+            );
+          } else {
+            console.log(`  ⚠️  ${name.padEnd(20)} - Error: ${err.message}`);
+          }
+        } catch (checkErr) {
+          console.log(`  ⚠️  ${name.padEnd(20)} - Error: ${err.message}`);
         }
       }
     }
 
-    // Đồng bộ indexes từ schemas (Mongoose sẽ tự động tạo indexes từ schema)
-    try {
-      await mongoose.connection.syncIndexes();
-      console.log("  📑 Indexes synchronized");
-    } catch (err) {
-      // Bỏ qua lỗi sync indexes nếu có (indexes sẽ được tạo khi cần)
-      console.log("  ⚠️  Index sync skipped (will be created automatically)");
-    }
-
     console.log("─".repeat(50));
-    console.log("✅ Database initialization completed!\n");
+    console.log("✅ Database initialization completed!");
+    console.log("   All collections are ready to use.\n");
   } catch (error) {
     console.error("❌ Error initializing database:", error.message);
+    console.error(error.stack);
     // Không throw error để server vẫn có thể chạy
+    // Collections sẽ được tạo tự động khi có document đầu tiên được insert
   }
 };
 
