@@ -154,6 +154,22 @@ npm run dev
 
 Backend chạy tại: `http://localhost:5100`
 
+**📌 Lưu ý quan trọng**:
+
+- Khi chạy `npm run dev` lần đầu tiên, hệ thống sẽ **tự động tạo database và các collections** trong MongoDB
+- Bạn chỉ cần đảm bảo MongoDB đang chạy và cấu hình `DB_LINK` trong `config.env` đúng
+- Không cần phải tạo database hay collections thủ công, hệ thống sẽ tự động khởi tạo:
+  - `users` - Người dùng
+  - `products` - Sản phẩm
+  - `categories` - Danh mục
+  - `brands` - Thương hiệu
+  - `orders` - Đơn hàng
+  - `reviews` - Đánh giá
+  - `comments` - Bình luận
+  - `imports` - Nhập kho
+  - `transactions` - Giao dịch
+  - `locations` - Địa điểm
+
 #### Frontend (Development)
 
 ```bash
@@ -180,6 +196,39 @@ Sử dụng script có sẵn:
 ```
 
 Script này sẽ chạy cả backend và frontend trong cùng một terminal.
+
+### 🗄️ Khởi tạo Database tự động
+
+Hệ thống được cấu hình để **tự động tạo database và collections** khi khởi động lần đầu:
+
+1. **Khi chạy `npm run dev`**:
+
+   - Kết nối tới MongoDB (theo cấu hình trong `config.env`)
+   - Tự động tạo database nếu chưa tồn tại
+   - Tự động tạo tất cả các collections cần thiết
+   - Đồng bộ indexes từ Mongoose schemas
+   - Hiển thị trạng thái của từng collection
+
+2. **Console output mẫu**:
+
+   ```
+   ✅ MongoDB connected successfully!
+
+   📊 Database Collections Status:
+   ──────────────────────────────────────────────────
+     ✅ users                  - 0 documents
+     🆕 products              - Created (0 documents)
+     🆕 categories            - Created (0 documents)
+     ...
+     📑 Indexes synchronized
+   ──────────────────────────────────────────────────
+   ✅ Database initialization completed!
+   ```
+
+3. **Không cần thao tác thủ công**:
+   - Không cần tạo database trước
+   - Không cần tạo collections trước
+   - Chỉ cần đảm bảo MongoDB service đang chạy
 
 ## 🌱 Seed dữ liệu
 
@@ -233,6 +282,8 @@ Demo_1/
 │   │   ├── seedProducts2.js # Generate products with images
 │   │   └── seedProducts3.js # Real laptop data
 │   ├── utils/              # Utilities
+│   │   ├── initDatabase.js # Auto database initialization
+│   │   └── ...
 │   ├── views/              # EJS templates (Admin panel)
 │   ├── public/             # Static files
 │   ├── app.js              # Express app
@@ -342,4 +393,9 @@ nvh2312
 
 ---
 
-**Lưu ý**: Đảm bảo MongoDB đang chạy trước khi khởi động backend. Kiểm tra file `config.env` và điền đầy đủ thông tin cấu hình trước khi chạy ứng dụng.
+**Lưu ý**:
+
+- Đảm bảo MongoDB đang chạy trước khi khởi động backend
+- Kiểm tra file `config.env` và điền đầy đủ thông tin cấu hình trước khi chạy ứng dụng
+- Database và collections sẽ được tự động tạo khi chạy `npm run dev` lần đầu tiên
+- Không cần tạo database hay collections thủ công
