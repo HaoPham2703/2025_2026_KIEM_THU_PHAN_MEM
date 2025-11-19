@@ -35,6 +35,11 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    if (!error.response) {
+      // Network error or server not running
+      console.error("Network error:", error.message);
+      return Promise.reject(error);
+    }
     const { config, status, data } = error.response;
     const URLs = [
       "/api/v1/users/signup",

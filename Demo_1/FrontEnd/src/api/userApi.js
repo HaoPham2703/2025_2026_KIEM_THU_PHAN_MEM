@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import axiosClient from "./axiosClient";
 
 const userApi = {

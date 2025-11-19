@@ -29,11 +29,15 @@ const CartStyles = styled.div`
 const Cart = () => {
   const product = JSON.parse(localStorage.getItem("cart"));
 
-  let length = product?.length;
+  let length = product?.length || 0;
   let total = 0;
-  if (length > 0) {
+  if (length > 0 && product) {
     total = product.reduce(
-      (count, item) => count + item.quantity * item.product.promotion,
+      (count, item) => {
+        const quantity = item?.quantity || 0;
+        const promotion = item?.product?.promotion || 0;
+        return count + quantity * promotion;
+      },
       0
     );
   }
@@ -43,7 +47,7 @@ const Cart = () => {
     <CartStyles className="cart-child">
       <div className="flex flex-col  p-5 h-[350px] overflow-hidden overflow-y-auto rounded-lg">
         {product?.length > 0 &&
-          product.map((item) => <CartItem product={item} key={item.id} />)}
+          product.map((item) => item && <CartItem product={item} key={item.id} />)}
         <div className="flex flex-col h-full justify-between">
           <span className="border-2 border-dotted border-x-gray-500 w-full"></span>
           <div className="w-full">
