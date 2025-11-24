@@ -94,12 +94,12 @@ const Navbar = () => {
   const search = useDebounce(keyword, 500);
 
   useEffect(() => {
-    if (show === true) {
-      disableBodyScroll(bodyStyle);
-    } else {
+    // Không disable scroll khi search box hiển thị
+    return () => {
+      // Cleanup: đảm bảo scroll được enable khi component unmount
       enableBodyScroll(bodyStyle);
-    }
-  }, [show]);
+    };
+  }, []);
 
   return (
     <nav className=" bg-primary h-[80px] sticky z-50 shadow-md transition-all top-0 text-white -translate-y-0.5 ">

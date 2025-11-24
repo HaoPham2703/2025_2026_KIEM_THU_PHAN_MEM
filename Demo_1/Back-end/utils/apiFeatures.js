@@ -14,7 +14,8 @@ class APIFeatures {
           queryObj[key] = { $in: queryObj[key].split(",") };
         }
         if ((key == "keyword")) {
-          queryObj["$text"] = { $search: queryObj[key] };
+          // Thay đổi từ $text search sang $regex để tìm kiếm linh hoạt hơn
+          queryObj["title"] = { $regex: queryObj[key], $options: "i" };
           delete queryObj[key];
         }
       }
