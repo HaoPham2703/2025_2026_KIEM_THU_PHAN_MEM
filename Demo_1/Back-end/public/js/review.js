@@ -11,7 +11,8 @@ const loadData = async () => {
         {
           data: "user",
           render: function (data) {
-            return '<div class= "my-3">' + data.name + "</div>";
+            const name = data && data.name ? data.name : 'N/A';
+            return '<div class= "my-3">' + name + "</div>";
           },
         },
         {
@@ -23,6 +24,7 @@ const loadData = async () => {
         {
           data: "review",
           render: function (data) {
+            if (!data) return '<div class= "my-3">N/A</div>';
             const value = data.length > 29 ? data.slice(0, 30) + "..." : data;
             return `<div class= "my-3">${value}</div>`;
           },

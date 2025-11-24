@@ -336,33 +336,20 @@ exports.getTable = (Model) =>
     }
     if (Model == User) filter["role"] = { $ne: "admin" };
 
-    Model.count({}, function (err, c) {
-      const recordsTotal = c;
-      Model.count(filter, function (err, c) {
-        const recordsFiltered = c;
-        Model.find(
-          filter,
-          {},
-          {
-            sort: { _id: -1 },
-            skip: Number(req.query.start),
-            limit: Number(req.query.length),
-          },
-          function (err, results) {
-            if (err) {
-              return;
-            }
-            const data = {
-              draw: req.query.draw,
-              recordsFiltered: recordsFiltered,
-              recordsTotal: recordsTotal,
-              data: results,
-            };
-            res.status(200).json(data);
-          }
-        );
-      });
-    });
+    const recordsTotal = await Model.countDocuments({});
+    const recordsFiltered = await Model.countDocuments(filter);
+    const results = await Model.find(filter)
+      .sort({ _id: -1 })
+      .skip(Number(req.query.start))
+      .limit(Number(req.query.length));
+
+    const data = {
+      draw: req.query.draw,
+      recordsFiltered: recordsFiltered,
+      recordsTotal: recordsTotal,
+      data: results,
+    };
+    res.status(200).json(data);
   });
 exports.checkPermission = (Model) =>
   catchAsync(async (req, res, next) => {
