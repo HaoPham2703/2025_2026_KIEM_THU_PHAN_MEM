@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests
         working-directory: ./Back-end
-        run: npm test
+        run: npm test -- --json --outputFile=test-results.json || true
         continue-on-error: true
         timeout-minutes: 10
         env:
@@ -46,6 +46,62 @@ jobs:
       - name: Generate test coverage
         working-directory: ./Back-end
         run: npm run test:coverage
+        continue-on-error: true
+
+      - name: Test Summary
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "## 📊 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse test results if available
+          if [ -f test-results.json ]; then
+            echo "### ✅ Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            NUM_TESTS=$(node -p "require('./test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./test-results.json').numFailedTests || 'N/A'")
+            echo "| Total Tests | $NUM_TESTS |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Passed | $NUM_PASSED |" >> $GITHUB_STEP_SUMMARY
+            echo "| ❌ Failed | $NUM_FAILED |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check test output above." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Parse coverage if available
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "### 📈 Coverage Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Type | Coverage |" >> $GITHUB_STEP_SUMMARY
+            echo "|------|----------|" >> $GITHUB_STEP_SUMMARY
+            STATEMENTS=$(node -p "require('./coverage/coverage-summary.json').total.statements.pct || 'N/A'")
+            BRANCHES=$(node -p "require('./coverage/coverage-summary.json').total.branches.pct || 'N/A'")
+            FUNCTIONS=$(node -p "require('./coverage/coverage-summary.json').total.functions.pct || 'N/A'")
+            LINES=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct || 'N/A'")
+            echo "| Statements | $STATEMENTS% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | $BRANCHES% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | $FUNCTIONS% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | $LINES% |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Test results: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Coverage report: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: Back-end/test-results.json
+          retention-days: 7
         continue-on-error: true
 
       - name: Upload coverage to artifacts
