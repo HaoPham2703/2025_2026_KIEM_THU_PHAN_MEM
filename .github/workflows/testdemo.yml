@@ -25,10 +25,12 @@ jobs:
       - name: Install dependencies
         working-directory: ./Back-end
         run: npm ci
+        continue-on-error: false
 
       - name: Run tests
         working-directory: ./Back-end
         run: npm test
+        continue-on-error: false
         env:
           NODE_ENV: test
           JWT_SECRET: test-jwt-secret-key-for-testing-only
@@ -46,7 +48,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload coverage to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: backend-coverage
@@ -72,13 +74,15 @@ jobs:
       - name: Install dependencies
         working-directory: ./FrontEnd
         run: npm ci
+        continue-on-error: false
 
       - name: Build frontend
         working-directory: ./FrontEnd
         run: npm run build
+        continue-on-error: false
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: frontend-build
