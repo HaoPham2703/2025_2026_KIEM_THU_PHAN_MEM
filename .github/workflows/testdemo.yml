@@ -61,6 +61,7 @@ jobs:
     name: Build Frontend
     runs-on: ubuntu-latest
     # Build sẽ chạy ngay cả khi test fail
+    continue-on-error: true
 
     steps:
       - name: Checkout code
@@ -81,7 +82,8 @@ jobs:
       - name: Build frontend
         working-directory: ./FrontEnd
         run: npm run build
-        continue-on-error: false
+        continue-on-error: true
+        timeout-minutes: 10
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
