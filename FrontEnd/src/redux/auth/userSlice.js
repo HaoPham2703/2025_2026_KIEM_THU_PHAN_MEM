@@ -63,17 +63,6 @@ export const login = createAsyncThunk("user/login", async (payload) => {
   return response.data.user;
 });
 
-export const loginWithGoogle = createAsyncThunk(
-  "user/loginWithGoogle",
-  async (payload) => {
-    const response = await userApi.loginWithGoogle(payload);
-    localStorage.setItem("tokenStream", response.tokenStream);
-    localStorage.setItem(StorageKeys.TOKEN, response.token);
-    localStorage.setItem(StorageKeys.USER, JSON.stringify(response.data.user));
-    return response.data.user;
-  }
-);
-
 export const updateInfoUser = createAsyncThunk(
   "user/updateInfoUser",
   async (payload) => {
@@ -116,10 +105,6 @@ const userSlice = createSlice({
     },
     [login.fulfilled]: (state, action) => {
       state.current = action.payload;
-    },
-    [loginWithGoogle.fulfilled]: (state, action) => {
-      state.current = action.payload;
-      state.user = action.payload;
     },
     [verify.fulfilled]: (state, action) => {
       state.current = action.payload;

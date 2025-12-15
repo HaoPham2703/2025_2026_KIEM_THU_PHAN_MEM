@@ -63,7 +63,6 @@ axiosClient.interceptors.response.use(
       "/api/v1/products/:id/reviews",
       "/api/v1/reviews/:id",
       "/api/v1/orders",
-      "/api/v1/users/userLoginWith",
       "/api/v1/comments",
       "/api/v1/products/:id/comments?query",
       "/api/v1/comments/:id",

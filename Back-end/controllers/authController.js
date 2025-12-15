@@ -87,7 +87,7 @@ const sendVerifyToken = async (user, statusCode, res) => {
   await user.save({ validateBeforeSave: false });
 
   // Gửi token JWT luôn
-  createSendToken(user, statusCode, res);
+  await createSendToken(user, statusCode, res);
 };
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
@@ -111,7 +111,7 @@ exports.verifyUser = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  await createSendToken(user, 200, res);
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
@@ -128,7 +128,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     active: "active", // trực tiếp active
   });
 
-  createSendToken(newUser, 201, res);
+  await createSendToken(newUser, 201, res);
 });
 
 exports.signupAdmin = catchAsync(async (req, res, next) => {
@@ -178,13 +178,12 @@ exports.login = catchAsync(async (req, res, next) => {
   }
   // 3) Check if user not verify, send code to gmail
   if (user.active == "verify") {
-    sendVerifyToken(user, 201, res);
+    await sendVerifyToken(user, 201, res);
+    return;
   }
 
   // 4) If everything ok, send token to client
-  else {
-    createSendToken(user, 200, res);
-  }
+  await createSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -355,7 +354,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  await createSendToken(user, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -374,7 +373,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  await createSendToken(user, 200, res);
 });
 
 exports.logout = (req, res) => {
@@ -385,44 +384,3 @@ exports.logout = (req, res) => {
   res.status(200).json({ status: "success" });
 };
 
-exports.googleLogin = catchAsync(async (req, res) => {
-  const email = req.body.email;
-  // 1) Check if user exists
-  const data = await User.findOne({ email });
-  // 2) Check if user exist
-  if (data.role == "admin") {
-    createSendToken(data, 200, res);
-  }
-  // 3) If user does not exist, create one
-  else {
-    res.status(400).json({ message: "Tài khoản này không được phép truy cập" });
-  }
-});
-exports.userLoginWith = catchAsync(async (req, res, next) => {
-  const { email, displayName, emailVerified } = req.body.user;
-  // 1) Check if user exists
-  const data = await User.findOne({ email });
-  // 2) Check if user does not exist, create one and send token
-  if (!data) {
-    const password = email + process.env.JWT_SECRET;
-    const inform = {
-      email,
-      password,
-      passwordConfirm: password,
-      name: displayName,
-      active: "active",
-    };
-    const newUser = await User.create(inform);
-    createSendToken(newUser, 200, res);
-  }
-  // 3) If user exist
-  else {
-    if (data.active == "ban")
-      return next(new AppError("Tài khoản của bạn đã bị ban.", 401));
-    if (data.active == "verify") {
-      data.active = "active";
-      await data.save({ validateBeforeSave: false });
-    }
-    createSendToken(data, 200, res);
-  }
-});

@@ -11,12 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { login, loginWithGoogle } from "../redux/auth/userSlice";
+import { login } from "../redux/auth/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import GoogleButton from "react-google-button";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../config/firebase";
-import { async } from "@firebase/util";
 
 const schema = yup.object({
   email: yup
@@ -90,31 +86,6 @@ const SignInPage = () => {
     }
   };
 
-  const provider = new GoogleAuthProvider();
-
-  const handleLogInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        const data = {
-          user: result._tokenResponse,
-        };
-        try {
-          const resultAction = await dispatch(loginWithGoogle(data));
-          unwrapResult(resultAction);
-          toast.dismiss();
-          toast.success("Chào mừng bạn đến với HC.VN", { pauseOnHover: false });
-          navigate("/");
-        } catch (error) {
-          toast.dismiss();
-          console.log(error.message);
-          toast.error(error.message, { pauseOnHover: false });
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error.message);
-      });
-  };
-
   return (
     <AuthenticationPage>
       <form
@@ -182,19 +153,6 @@ const SignInPage = () => {
         >
           Đăng nhập
         </Button>
-        <div className="w-[250px] mx-auto">
-          <GoogleButton
-            type="light"
-            style={{
-              width: "100%",
-              borderRadius: "8px",
-              height: "50px",
-              fontSize: "18px",
-              fontWeight: "bold",
-            }}
-            onClick={handleLogInWithGoogle}
-          />
-        </div>
       </form>
     </AuthenticationPage>
   );
