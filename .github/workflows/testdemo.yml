@@ -2,9 +2,9 @@ name: Test & Build
 
 on:
   push:
-    branches: [main, master, develop, webdemo]
+    branches: [main, master, develop, webdemo, weblau]
   pull_request:
-    branches: [main, master, develop, webdemo]
+    branches: [main, master, develop, webdemo, weblau]
 
 jobs:
   test-backend:
