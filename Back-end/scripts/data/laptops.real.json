@@ -1,0 +1,222 @@
+[
+  {
+    "title": "Dell XPS 13 9310",
+    "brand": "Dell",
+    "category": "Laptop",
+    "price": 35990000,
+    "promotion": 32990000,
+    "description": "13.4-inch premium ultrabook with Intel Core i7, excellent build and display.",
+    "cpu": "Intel Core i7-1165G7",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "13.4\" FHD+",
+    "weight": 1.2,
+    "demand": "Office",
+    "inventory": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Apple MacBook Air 13 M2",
+    "brand": "Apple",
+    "category": "Laptop",
+    "price": 28990000,
+    "promotion": 27990000,
+    "description": "Thin-and-light with Apple M2 chip, long battery life, silent design.",
+    "cpu": "Apple M2",
+    "ram": "8GB",
+    "os": "macOS",
+    "screen": "13.6\" Liquid Retina",
+    "weight": 1.24,
+    "demand": "Office",
+    "inventory": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Apple MacBook Pro 14 M1 Pro",
+    "brand": "Apple",
+    "category": "Laptop",
+    "price": 51990000,
+    "promotion": 48990000,
+    "description": "Pro-grade performance with M1 Pro, mini-LED display, great speakers.",
+    "cpu": "Apple M1 Pro",
+    "ram": "16GB",
+    "os": "macOS",
+    "screen": "14.2\" Liquid Retina XDR",
+    "weight": 1.6,
+    "demand": "Creator",
+    "inventory": 18,
+    "images": [
+      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "HP Spectre x360 14",
+    "brand": "HP",
+    "category": "Laptop",
+    "price": 38990000,
+    "promotion": 34990000,
+    "description": "Premium 2-in-1 with OLED option, excellent keyboard and battery life.",
+    "cpu": "Intel Core i7-1255U",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "13.5\" 3:2 OLED",
+    "weight": 1.36,
+    "demand": "Office",
+    "inventory": 22,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Lenovo ThinkPad X1 Carbon Gen 9",
+    "brand": "Lenovo",
+    "category": "Laptop",
+    "price": 42990000,
+    "promotion": 39990000,
+    "description": "Business ultrabook with MIL-STD durability, great keyboard, long battery.",
+    "cpu": "Intel Core i7-1165G7",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "14\" FHD",
+    "weight": 1.13,
+    "demand": "Office",
+    "inventory": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "ASUS ROG Zephyrus G14",
+    "brand": "ASUS",
+    "category": "Laptop",
+    "price": 39990000,
+    "promotion": 36990000,
+    "description": "Compact gaming laptop with Ryzen and RTX graphics.",
+    "cpu": "AMD Ryzen 9 5900HS",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "14\" QHD 120Hz",
+    "weight": 1.6,
+    "demand": "Gaming",
+    "inventory": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Acer Swift 3",
+    "brand": "Acer",
+    "category": "Laptop",
+    "price": 18990000,
+    "promotion": 16990000,
+    "description": "Affordable ultrabook with solid performance and portability.",
+    "cpu": "Intel Core i5-1135G7",
+    "ram": "8GB",
+    "os": "Windows 11",
+    "screen": "14\" FHD",
+    "weight": 1.2,
+    "demand": "Office",
+    "inventory": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "MSI Modern 14",
+    "brand": "MSI",
+    "category": "Laptop",
+    "price": 20990000,
+    "promotion": 19990000,
+    "description": "Stylish 14-inch laptop for everyday productivity.",
+    "cpu": "Intel Core i5-1155G7",
+    "ram": "8GB",
+    "os": "Windows 11",
+    "screen": "14\" FHD",
+    "weight": 1.3,
+    "demand": "Office",
+    "inventory": 28,
+    "images": [
+      "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Microsoft Surface Laptop 4",
+    "brand": "Microsoft",
+    "category": "Laptop",
+    "price": 32990000,
+    "promotion": 30990000,
+    "description": "Premium 3:2 display, slim design, and comfortable keyboard.",
+    "cpu": "AMD Ryzen 7 4980U",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "13.5\" 3:2",
+    "weight": 1.3,
+    "demand": "Office",
+    "inventory": 17,
+    "images": [
+      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Huawei MateBook X Pro",
+    "brand": "Huawei",
+    "category": "Laptop",
+    "price": 32990000,
+    "promotion": 29990000,
+    "description": "Premium ultrabook with 3:2 touchscreen and metal build.",
+    "cpu": "Intel Core i7-1165G7",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "13.9\" 3:2",
+    "weight": 1.33,
+    "demand": "Office",
+    "inventory": 14,
+    "images": [
+      "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "Razer Blade 15",
+    "brand": "Razer",
+    "category": "Laptop",
+    "price": 52990000,
+    "promotion": 48990000,
+    "description": "High-performance gaming laptop with aluminum chassis.",
+    "cpu": "Intel Core i7-12700H",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "15.6\" QHD 240Hz",
+    "weight": 2.01,
+    "demand": "Gaming",
+    "inventory": 12,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+    ]
+  },
+  {
+    "title": "LG Gram 17",
+    "brand": "LG",
+    "category": "Laptop",
+    "price": 40990000,
+    "promotion": 37990000,
+    "description": "Ultra-light 17-inch laptop with long battery life.",
+    "cpu": "Intel Core i7-1165G7",
+    "ram": "16GB",
+    "os": "Windows 11",
+    "screen": "17\" WQXGA",
+    "weight": 1.35,
+    "demand": "Office",
+    "inventory": 10,
+    "images": [
+      "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+    ]
+  }
+]
