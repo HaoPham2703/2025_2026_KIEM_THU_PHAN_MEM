@@ -2,30 +2,30 @@ name: Test & Build
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop, webdemo]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop, webdemo]
 
 jobs:
   test-backend:
     name: Test Backend
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
           cache-dependency-path: Back-end/package-lock.json
-      
+
       - name: Install dependencies
         working-directory: ./Back-end
         run: npm ci
-      
+
       - name: Run tests
         working-directory: ./Back-end
         run: npm test
@@ -39,12 +39,12 @@ jobs:
           EMAIL_USERNAME: test@example.com
           EMAIL_PASSWORD: testpassword
           EMAIL_FROM: test@example.com
-      
+
       - name: Generate test coverage
         working-directory: ./Back-end
         run: npm run test:coverage
         continue-on-error: true
-      
+
       - name: Upload coverage to artifacts
         uses: actions/upload-artifact@v3
         if: always()
@@ -57,26 +57,26 @@ jobs:
   build-frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
           cache-dependency-path: FrontEnd/package-lock.json
-      
+
       - name: Install dependencies
         working-directory: ./FrontEnd
         run: npm ci
-      
+
       - name: Build frontend
         working-directory: ./FrontEnd
         run: npm run build
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         if: success()
@@ -84,4 +84,3 @@ jobs:
           name: frontend-build
           path: FrontEnd/dist
           retention-days: 1
-
