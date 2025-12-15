@@ -16,18 +16,21 @@ const loadData = async () => {
         {
           data: "user",
           render: function (data) {
-            return '<div class= "my-3">' + data.name + "</div>";
+            const name = data && data.name ? data.name : 'N/A';
+            return '<div class= "my-3">' + name + "</div>";
           },
         },
         {
           data: "invoice",
           render: function (data) {
+            if (!data || !Array.isArray(data)) return '<div class= "my-3">N/A</div>';
             let html = "";
             data.forEach((value, index) => {
+              const title = value && value.title ? value.title : 'N/A';
               const name =
-                value.title.length > 39
-                  ? value.title.slice(0, 40) + "..."
-                  : value.title;
+                title.length > 39
+                  ? title.slice(0, 40) + "..."
+                  : title;
               html += `<div class= "my-3"> ${name} </div>`;
             });
             return html;

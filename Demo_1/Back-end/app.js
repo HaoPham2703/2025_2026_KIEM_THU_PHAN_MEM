@@ -37,6 +37,8 @@ app.use(
       "http://localhost:3000", // Thêm port 3000
       "http://127.0.0.1:4173", // Thêm port 4173 (Vite preview)
       "http://localhost:4173", // Thêm port 4173
+      "http://127.0.0.1:5100", // Thêm port 5100 (Admin panel)
+      "http://localhost:5100", // Thêm port 5100
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
