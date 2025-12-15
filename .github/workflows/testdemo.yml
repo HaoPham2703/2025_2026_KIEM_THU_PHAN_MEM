@@ -68,9 +68,45 @@ jobs:
             echo "| ✅ Passed | $NUM_PASSED |" >> $GITHUB_STEP_SUMMARY
             echo "| ❌ Failed | $NUM_FAILED |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed tests if any
+            if [ "$NUM_FAILED" != "0" ] && [ "$NUM_FAILED" != "N/A" ]; then
+              echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Xem chi tiết log:** Click vào step 'Run tests' ở trên để xem log đầy đủ" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Các test failed:**" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              # Extract failed test names
+              node -e "
+                const results = require('./test-results.json');
+                if (results.testResults && results.testResults.length > 0) {
+                  results.testResults.forEach(suite => {
+                    if (suite.assertionResults) {
+                      suite.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          console.log('- ' + test.fullName);
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            const firstError = test.failureMessages[0].split('\\n')[0];
+                            console.log('  - Error: ' + firstError.substring(0, 100));
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "Không thể parse failed tests. Xem log ở trên." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
           else
             echo "### ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Test results file not found. Check test output above." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Cách xem log chi tiết:**" >> $GITHUB_STEP_SUMMARY
+            echo "1. Click vào step 'Run tests' ở trên" >> $GITHUB_STEP_SUMMARY
+            echo "2. Scroll xuống để xem toàn bộ test output" >> $GITHUB_STEP_SUMMARY
+            echo "3. Tìm các dòng có 'FAIL' hoặc '●' để xem test nào fail" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
           fi
 
@@ -92,8 +128,23 @@ jobs:
           fi
 
           echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
-          echo "- Test results: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Test results JSON: Available in artifacts (download để xem chi tiết)" >> $GITHUB_STEP_SUMMARY
           echo "- Coverage report: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📖 Hướng dẫn xem log chi tiết" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Xem log trên GitHub:**" >> $GITHUB_STEP_SUMMARY
+          echo "   - Click vào step 'Run tests' ở trên" >> $GITHUB_STEP_SUMMARY
+          echo "   - Scroll xuống để xem toàn bộ output" >> $GITHUB_STEP_SUMMARY
+          echo "   - Tìm các dòng có 'FAIL' hoặc '●' để xem test nào fail" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Tải test results:**" >> $GITHUB_STEP_SUMMARY
+          echo "   - Vào phần 'Artifacts' ở cuối trang" >> $GITHUB_STEP_SUMMARY
+          echo "   - Download 'test-results' để xem file JSON chi tiết" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Xem coverage:**" >> $GITHUB_STEP_SUMMARY
+          echo "   - Download 'backend-coverage' artifact" >> $GITHUB_STEP_SUMMARY
+          echo "   - Mở file `index.html` trong thư mục coverage để xem báo cáo" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
