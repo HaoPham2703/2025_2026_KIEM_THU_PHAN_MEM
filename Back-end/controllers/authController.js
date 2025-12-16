@@ -50,7 +50,7 @@ exports.changeStateUser = catchAsync(async (req, res, next) => {
       )
     );
   }
-  await changeState(currentUser, state, 200, res);
+  changeState(currentUser, state, 200, res);
 });
 const createSendToken = async (user, statusCode, res) => {
   const token = signToken(user._id);
@@ -94,13 +94,11 @@ exports.verifyUser = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
     .createHash("sha256")
-    .update(req.body.encode)
+    .update(req.body.token)
     .digest("hex");
-  console.log(hashedToken);
   const user = await User.findOne({
     userVerifyToken: hashedToken,
   });
-  console.log(user);
   // 2) If token true, verify this user
   if (!user) {
     return next(new AppError("Mã xác nhận không hợp lệ hoặc đã hết hạn", 400));
@@ -115,8 +113,8 @@ exports.verifyUser = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const userExist = await User.find({ email: req.body.email });
-  if (userExist.length !== 0) {
+  const userExist = await User.findOne({ email: req.body.email });
+  if (userExist) {
     return next(new AppError("Email này đã được đăng ký.", 500));
   }
 
@@ -132,8 +130,8 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.signupAdmin = catchAsync(async (req, res, next) => {
-  const userExist = await User.find({ email: req.body.email });
-  if (userExist.length !== 0) {
+  const userExist = await User.findOne({ email: req.body.email });
+  if (userExist) {
     return next(new AppError("Email này đã được đăng ký.", 500));
   }
 
@@ -154,9 +152,9 @@ exports.signupAdmin = catchAsync(async (req, res, next) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-        active: newUser.active
-      }
-    }
+        active: newUser.active,
+      },
+    },
   });
 });
 
@@ -229,10 +227,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 5) Grant access
   req.user = currentUser;
 
-  // Debug
-  console.log("REQ USER TYPE:", req.user.constructor.name); // phải là Mongoose document
-  console.log("User Address:", req.user.address);
-
   next();
 });
 
@@ -303,16 +297,15 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       message: "Token sent to email!",
     });
   } catch (err) {
-    console.log(err);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
     return next(
       new AppError(
-        "Đã có lỗi xảy ra trong quá trình gửi mail. Vui lòng thực hiện lại sau!"
-      ),
-      500
+        "Đã có lỗi xảy ra trong quá trình gửi mail. Vui lòng thực hiện lại sau!",
+        500
+      )
     );
   }
 });
@@ -342,7 +335,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-  
+
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
@@ -388,4 +381,3 @@ exports.logout = (req, res) => {
   });
   res.status(200).json({ status: "success" });
 };
-
