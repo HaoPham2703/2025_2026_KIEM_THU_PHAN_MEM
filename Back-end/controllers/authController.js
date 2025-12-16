@@ -7,7 +7,7 @@ const Review = require("./../models/reviewModel");
 const Order = require("./../models/orderModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
-// const sendEmail = require("./../utils/email");
+const sendEmail = require("./../utils/email");
 
 const api_key = process.env.STREAM_API_KEY;
 const api_secret = process.env.STREAM_API_SECRET;
@@ -50,7 +50,7 @@ exports.changeStateUser = catchAsync(async (req, res, next) => {
       )
     );
   }
-  changeState(currentUser, state, 200, res);
+  await changeState(currentUser, state, 200, res);
 });
 const createSendToken = async (user, statusCode, res) => {
   const token = signToken(user._id);
@@ -338,13 +338,18 @@ exports.verifyResetPass = catchAsync(async (req, res, next) => {
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+  
   const user = await User.findOne({
-    passwordResetToken: req.params.token,
+    passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
   // 2) If token has not expired, and there is user, set the new password
   if (!user) {
-    return next(new AppError("oken không hợp lệ hoặc đã hết hạn", 400));
+    return next(new AppError("Token không hợp lệ hoặc đã hết hạn", 400));
   }
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
