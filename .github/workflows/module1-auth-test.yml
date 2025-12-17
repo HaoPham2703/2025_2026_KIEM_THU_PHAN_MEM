@@ -3,19 +3,8 @@ name: Module1 - Authentication Tests
 on:
   push:
     branches: [weblau]
-    paths:
-      - "Back-end/controllers/authController.js"
-      - "Back-end/models/userModel.js"
-      - "Back-end/routes/userRoutes.js"
-      - "Back-end/tests/unit/controllers/authController.test.js"
-      - "Module1_Auth.md"
   pull_request:
     branches: [weblau]
-    paths:
-      - "Back-end/controllers/authController.js"
-      - "Back-end/models/userModel.js"
-      - "Back-end/routes/userRoutes.js"
-      - "Back-end/tests/unit/controllers/authController.test.js"
 
 jobs:
   test-module1-auth:
