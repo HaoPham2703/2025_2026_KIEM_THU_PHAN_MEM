@@ -23,9 +23,9 @@
         <table class="table table-bordered table-hover" id="sample_data">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Action</th>
+              <th>Tên</th>
+              <th>Địa Chỉ</th>
+              <th>Thao Tác</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -49,12 +49,12 @@
         </div>
         <div class="modal-body">
           <div class="mb-2 edit-show">
-            <label class="form-label">Name</label>
+            <label class="form-label">Tên</label>
             <input type="text" name="name" id="name" class="form-control" />
           </div>
           <div class="mb-2 edit-show row">
             <div class="col-md-8">
-              <label class="form-label">Address</label>
+              <label class="form-label">Địa Chỉ</label>
               <input
                 type="text"
                 name="address"
@@ -64,12 +64,12 @@
             </div>
             <div class="col-md-4 d-flex align-items-end">
               <div class="btn btn-light" onclick="geocodeAddress()">
-                Get location
+                Lấy vị trí
               </div>
             </div>
           </div>
           <div class="mb-2 edit-show">
-            <label class="form-label">Longitude</label>
+            <label class="form-label">Kinh Độ</label>
             <input
               type="text"
               name="longitude"
@@ -79,7 +79,7 @@
             />
           </div>
           <div class="mb-2 edit-show">
-            <label class="form-label">Latitude</label>
+            <label class="form-label">Vĩ Độ</label>
             <input
               type="text"
               name="latitude"
@@ -100,10 +100,10 @@
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            Close
+            Đóng
           </button>
           <button type="submit" class="btn btn-primary" id="action_button">
-            Add
+            Thêm
           </button>
         </div>
       </form>

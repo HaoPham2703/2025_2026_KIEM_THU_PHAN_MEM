@@ -56,6 +56,33 @@
   <script src="/text/tinymce.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <script>
+    // Cấu hình ngôn ngữ tiếng Việt cho DataTables
+    $.extend(true, $.fn.dataTable.defaults, {
+      language: {
+        processing: "Đang xử lý...",
+        search: "Tìm kiếm:",
+        lengthMenu: "Hiển thị _MENU_ mục",
+        info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+        infoEmpty: "Hiển thị 0 đến 0 của 0 mục",
+        infoFiltered: "(được lọc từ _MAX_ mục)",
+        infoPostFix: "",
+        loadingRecords: "Đang tải...",
+        zeroRecords: "Không tìm thấy dữ liệu",
+        emptyTable: "Không có dữ liệu trong bảng",
+        paginate: {
+          first: "Đầu",
+          previous: "Trước",
+          next: "Sau",
+          last: "Cuối",
+        },
+        aria: {
+          sortAscending: ": sắp xếp tăng dần",
+          sortDescending: ": sắp xếp giảm dần",
+        },
+      },
+    });
+  </script>
   <link href="/css/admin.css" rel="stylesheet" />
   <link href="/css/upload.css" rel="stylesheet" />
   <link

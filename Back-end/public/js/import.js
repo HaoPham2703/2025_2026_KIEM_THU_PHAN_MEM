@@ -172,7 +172,7 @@ $(document).on("click", ".delete", function () {
         url: `/api/v1/imports/${id}`,
         method: "delete",
         success: function (data) {
-          showAlert("success", `Delete invoice Successfully`);
+          showAlert("success", `Xóa phiếu nhập thành công!`);
           reloadData();
         },
       });
@@ -188,7 +188,7 @@ $(document).on("click", ".edit", function () {
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
 
   $("#action_modal").modal("show");
   $.ajax({

@@ -1,0 +1,265 @@
+[{
+  "_id": {
+    "$oid": "68e40effbab17373969a8ab5"
+  },
+  "name": "AdminHao",
+  "email": "haodeptrai123@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "admin",
+  "password": "$2a$12$fZGhtDp.4PEajvD74zLLJOBpiippdw3ag6kWgStnruKMFdYc8wWjy",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-06T18:48:31.156Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e41168ceeb790b23e537ae"
+  },
+  "name": "Admin2",
+  "email": "admin2@example.com",
+  "password": "Admin5678",
+  "passwordConfirm": "Admin5678",
+  "role": "admin",
+  "active": "active"
+},
+{
+  "_id": {
+    "$oid": "68e47c67482a8e938d609aac"
+  },
+  "name": "HaoPham",
+  "email": "haokute@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "admin",
+  "password": "$2a$12$o08uTDvUcoM/g1PdwAA1z.nUz1ani0gnpyFHpfHNIimtohOrldkxy",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T02:35:19.888Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e48ce2406e6f27db3d3dfd"
+  },
+  "name": "HaoPham",
+  "email": "haodepzai@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "user",
+  "password": "$2a$12$eCfxBwRS8xBL731f36usqOwD6M0XO5BGkdiQRUToeP2/XzUbHPk5q",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T03:45:38.104Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e48ded5be1e49a957b85a0"
+  },
+  "name": "HaoPham",
+  "email": "haodepzai1@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "user",
+  "password": "$2a$12$WGnV7ob.bgzeP34EZV7kgOgFOJBaZaeawSiOQDDlhR2HUv./Nj8Fa",
+  "active": "verify",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T03:50:05.387Z"
+  },
+  "address": [],
+  "__v": 0,
+  "userVerifyToken": "28e172d47c075221cf12c3b73f3dc9078f2b4ff90e18d624638feaf565c4676d"
+},
+{
+  "_id": {
+    "$oid": "68e48f84a972c0185644dca9"
+  },
+  "name": "HaoPham",
+  "email": "haodepzainhat@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "user",
+  "password": "$2a$12$wsjrMsuxA60Tf4d9otYjhuN43Brhan3PDvPqCPQnxnJ18v2Bsbke6",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T03:56:52.637Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e4902cd8fa16a3706eed56"
+  },
+  "name": "HaoPham",
+  "email": "tester1@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "user",
+  "password": "$2a$12$/gQiidNwNTxvTxW/nNq4nOQUwpMrIH2mumo5YoYcUKyvyD4M2Frs.",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T03:59:40.095Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e494b9d8fa16a3706eed65"
+  },
+  "name": "adminHaoPham",
+  "email": "adminhao@admin.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "admin",
+  "password": "$2a$12$GOICnN0aOKdAdeLw7L8Q3u1y5IuPjuKVRIoW9UMGFgBxqn2Dk2wDO",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T04:19:05.751Z"
+  },
+  "address": [
+    {
+      "name": "HaoPham",
+      "phone": "0123456789",
+      "province": "Hanoi",
+      "district": "Hoan Kiem",
+      "ward": "Phuc Xa",
+      "detail": "123 Street",
+      "setDefault": true
+    },
+    {
+      "name": "Ha Noi Office",
+      "phone": "0987654321",
+      "province": "Hanoi",
+      "district": "Ba Dinh",
+      "ward": "Ngoc Ha",
+      "detail": "456 Avenue",
+      "setDefault": false
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68e53bdd732309e1de28536a"
+  },
+  "name": "HaoKuTe",
+  "email": "khachhang1@user.com",
+  "avatar": "https://i.ibb.co/twrYFmCX/photo-6309565029980159961-y.jpg",
+  "role": "user",
+  "password": "$2a$12$c8JzB1s56RsxG/pETEimfO3N3mMLQHoxxYu413/vdDh8dmM.5TXcG",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-07T16:12:13.861Z"
+  },
+  "address": [
+    {
+      "name": "HaoKuTe",
+      "phone": "0912345678",
+      "province": "Hà Nội",
+      "district": "Quận Hoàn Kiếm",
+      "ward": "Phường Hàng Bạc",
+      "detail": "Số 123, Ngõ 45",
+      "setDefault": true
+    },
+    {
+      "name": "HaoKuTe",
+      "phone": "0912345678",
+      "province": "Hà Nội",
+      "district": "Quận Hoàn Kiếm",
+      "ward": "Phường Hàng Bạc",
+      "detail": "Số 123, Ngõ 45",
+      "setDefault": false
+    },
+    {
+      "name": "Công ty",
+      "phone": "0321998592",
+      "province": "Thành phố Hải Phòng",
+      "district": "Quận Ngô Quyền",
+      "ward": "Phường Vạn Mỹ",
+      "detail": "987",
+      "setDefault": true,
+      "_id": {
+        "$oid": "68e72a782ceb0b7a85ea2ed1"
+      }
+    }
+  ],
+  "__v": 1,
+  "dateOfBirth": "2004-03-27",
+  "gender": "nam",
+  "phone": "0322569929"
+},
+{
+  "_id": {
+    "$oid": "68e72cd766c64253696b9ba1"
+  },
+  "name": "haodepzaiphomai",
+  "email": "deptrainhat@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "user",
+  "password": "$2a$12$ljk.1ih91K5jkFDCOsEJbu.tcVngzfWXscy7JC3qy95Zaan1D.Rs6",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-09T03:32:39.328Z"
+  },
+  "address": [
+    {
+      "name": "Công ty",
+      "phone": "0511644819",
+      "province": "Thành phố Hồ Chí Minh",
+      "district": "Quận Gò Vấp",
+      "ward": "Phường 16",
+      "detail": "120",
+      "setDefault": true,
+      "_id": {
+        "$oid": "68e72cf466c64253696b9bad"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "68e72f30c368f5d8cdc46912"
+  },
+  "name": "Thám tử Kiên",
+  "email": "adminkien@admin.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "admin",
+  "password": "$2a$12$G/sbrHy0gLmMpfxoSrD4l.uXAKkAJCjoFV.gfSIvYUAH3CwmBuKbG",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-10-09T03:42:40.204Z"
+  },
+  "address": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6942d502f36a1c8d87c6c8fb"
+  },
+  "name": "Admin tên Hào",
+  "email": "adminhao@gmail.com",
+  "avatar": "https://png.pngtree.com/png-clipart/20200701/original/pngtree-default-avatar-png-image_5407175.jpg",
+  "role": "admin",
+  "password": "$2a$12$JSsIsKyPM5bwzl/EzbJ.zue6yTaAtlH8DKWW3rmCog75qLGmbK036",
+  "active": "active",
+  "balance": 0,
+  "createdAt": {
+    "$date": "2025-12-17T16:06:26.861Z"
+  },
+  "address": [],
+  "__v": 0
+}]

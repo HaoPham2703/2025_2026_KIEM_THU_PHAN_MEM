@@ -1,0 +1,3883 @@
+[{
+  "_id": {
+    "$oid": "68e331e714164e734156f77f"
+  },
+  "title": "Laptop Dell Inspiron 15 5510",
+  "price": 20000000,
+  "promotion": 18000000,
+  "description": "Laptop Dell cấu hình mạnh, màn hình 15.6 inch Full HD",
+  "ratingsAverage": 4.7,
+  "inventory": 10,
+  "color": "Silver",
+  "cpu": "Intel Core i7-11800H",
+  "ram": "16GB DDR4",
+  "os": "Windows 11",
+  "weight": 1.8,
+  "screen": "15.6 inch Full HD",
+  "graphicCard": "NVIDIA RTX 3050",
+  "battery": "6-cell 56Wh",
+  "demand": "High"
+},
+{
+  "_id": {
+    "$oid": "68e331e714164e734156f780"
+  },
+  "title": "MacBook Air M2 2023",
+  "price": 25000000,
+  "promotion": 23000000,
+  "description": "MacBook Air chip M2, siêu mỏng nhẹ, pin lâu",
+  "ratingsAverage": 4.8,
+  "inventory": 15,
+  "color": "Space Gray",
+  "cpu": "Apple M2",
+  "ram": "16GB",
+  "os": "macOS Ventura",
+  "weight": 1.2,
+  "screen": "13.6 inch Retina",
+  "graphicCard": "Apple Integrated",
+  "battery": "52.6Wh",
+  "demand": "High"
+},
+{
+  "_id": {
+    "$oid": "68e331e714164e734156f781"
+  },
+  "title": "Samsung Galaxy Book 2 Pro 360",
+  "price": 22000000,
+  "promotion": 21000000,
+  "description": "Laptop 2-in-1, màn hình cảm ứng AMOLED, nhẹ nhàng",
+  "ratingsAverage": 4.6,
+  "inventory": 8,
+  "color": "Graphite",
+  "cpu": "Intel Core i7-1260P",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.17,
+  "screen": "15.6 inch AMOLED",
+  "graphicCard": "Intel Iris Xe",
+  "battery": "63Wh",
+  "demand": "Medium"
+},
+{
+  "_id": {
+    "$oid": "68e37a25ceeb790b23e53799"
+  },
+  "title": "ASUS ROG Flow Z13 (2025) GZ302 - Hero",
+  "price": 54990000,
+  "promotion": 49990000,
+  "description": "ROG Flow Z13 2025 dạng tablet-laptop, màn 13.4\" 2.5K 180Hz, Ryzen AI MAX+ 395, Radeon 8060S.",
+  "ratingsAverage": 4.7,
+  "ratingsQuantity": 320,
+  "eachRating": [
+    5,
+    5,
+    4,
+    5,
+    5
+  ],
+  "images": [
+    "https://rog.asus.com/laptops/rog-flow/rog-flow-z13-2025/gallery/",
+    "https://rog.asus.com/vn/laptops/rog-flow/rog-flow-z13-2025/gallery/"
+  ],
+  "createdAt": "2025-10-01T09:00:00.000Z",
+  "createdBy": "64b7f2b8c9d1a3e5f0a1b2c3",
+  "inventory": 25,
+  "color": "Black",
+  "cpu": "AMD Ryzen AI MAX+ 395",
+  "ram": "32GB LPDDR5X",
+  "os": "Windows 11",
+  "weight": 1.2,
+  "screen": "13.4\" 2560x1600 180Hz",
+  "graphicCard": "Radeon 8060S",
+  "battery": "70Wh",
+  "demand": "Gaming - Sáng tạo",
+  "updatedAt": "2025-10-06T08:00:00.000Z",
+  "updatedBy": "64b7f2b8c9d1a3e5f0a1b2c4",
+  "brand": "64b7f2b8c9d1a3e5f0a1b2dA",
+  "category": "64b7f2b8c9d1a3e5f0a1b2eLaptop",
+  "review": []
+},
+{
+  "_id": {
+    "$oid": "68e37a25ceeb790b23e5379a"
+  },
+  "title": "ASUS ROG Flow Z13 (2025) GZ302 - Closeups",
+  "price": 54990000,
+  "promotion": 0,
+  "description": "Bộ ảnh chi tiết nhiều góc chụp của ROG Flow Z13 2025.",
+  "ratingsAverage": 4.6,
+  "ratingsQuantity": 140,
+  "eachRating": [
+    5,
+    4,
+    5,
+    4,
+    5
+  ],
+  "images": [
+    "https://rog.asus.com/laptops/rog-flow/rog-flow-z13-2025/",
+    "https://rog.asus.com/laptops/rog-flow/rog-flow-z13-2025/spec/"
+  ],
+  "createdAt": "2025-10-01T09:10:00.000Z",
+  "createdBy": "64b7f2b8c9d1a3e5f0a1b2c3",
+  "inventory": 12,
+  "color": "Black",
+  "cpu": "AMD Ryzen AI MAX+ 395",
+  "ram": "64GB LPDDR5X",
+  "os": "Windows 11",
+  "weight": 1.2,
+  "screen": "13.4\" 2560x1600 180Hz",
+  "graphicCard": "Radeon 8060S",
+  "battery": "70Wh",
+  "demand": "Gaming - Di động",
+  "updatedAt": "2025-10-06T08:00:00.000Z",
+  "updatedBy": "64b7f2b8c9d1a3e5f0a1b2c4",
+  "brand": "64b7f2b8c9d1a3e5f0a1b2dA",
+  "category": "64b7f2b8c9d1a3e5f0a1b2eLaptop",
+  "review": []
+},
+{
+  "_id": {
+    "$oid": "68e37a25ceeb790b23e5379b"
+  },
+  "title": "Dell XPS 13 (9345) - Gallery",
+  "price": 38990000,
+  "promotion": 35990000,
+  "description": "Dell XPS 13 9345 với Snapdragon X Elite/Copilot+, mỏng nhẹ, pin dài, ảnh gallery chính hãng.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 220,
+  "eachRating": [
+    4,
+    5,
+    4,
+    5,
+    4
+  ],
+  "images": [
+    "https://www.dell.com/en-us/shop/dell-laptops/xps-13-laptop/spd/xps-13-9345-laptop",
+    "https://www.dell.com/en-uk/shop/laptops-2-in-1-pcs/xps-13-laptop/spd/xps-13-9345-laptop"
+  ],
+  "createdAt": "2025-09-30T03:20:00.000Z",
+  "createdBy": "64b7f2b8c9d1a3e5f0a1b2c3",
+  "inventory": 30,
+  "color": "Platinum",
+  "cpu": "Snapdragon X Elite",
+  "ram": "16GB LPDDR5X",
+  "os": "Windows 11",
+  "weight": 1.19,
+  "screen": "13.4\" FHD+ 1920x1200",
+  "graphicCard": "Qualcomm Adreno",
+  "battery": "Long battery life",
+  "demand": "Di động - Văn phòng",
+  "updatedAt": "2025-10-06T08:00:00.000Z",
+  "updatedBy": "64b7f2b8c9d1a3e5f0a1b2c5",
+  "brand": "64b7f2b8c9d1a3e5f0a1b2dB",
+  "category": "64b7f2b8c9d1a3e5f0a1b2eLaptop",
+  "review": []
+},
+{
+  "_id": {
+    "$oid": "68e37adbceeb790b23e5379f"
+  },
+  "title": "ASUS ROG Flow Z13 (2026) GZ302 - Hero",
+  "price": 54990000,
+  "promotion": 49990000,
+  "description": "ROG Flow Z13 2025 dạng tablet-laptop, màn 13.4\" 2.5K 180Hz, Ryzen AI MAX+ 395, Radeon 8060S.",
+  "ratingsAverage": 2,
+  "ratingsQuantity": 1,
+  "eachRating": [
+    0,
+    1,
+    0,
+    0,
+    0
+  ],
+  "images": [
+    "https://dlcdnwebimgs.asus.com/gain/28B9A554-E0DD-4C29-A4BF-A548A11E3DF2"
+  ],
+  "createdAt": "2025-10-01T09:00:00.000Z",
+  "createdBy": "64b7f2b8c9d1a3e5f0a1b2c3",
+  "inventory": 23,
+  "color": "Black",
+  "cpu": "AMD Ryzen AI MAX+ 395",
+  "ram": "32GB LPDDR5X",
+  "os": "Windows 11",
+  "weight": 1.2,
+  "screen": "13.4\" 2560x1600 180Hz",
+  "graphicCard": "Radeon 8060S",
+  "battery": "70Wh",
+  "demand": "Gaming - Sáng tạo",
+  "updatedAt": "2025-10-06T08:00:00.000Z",
+  "updatedBy": "64b7f2b8c9d1a3e5f0a1b2c4",
+  "brand": "64b7f2b8c9d1a3e5f0a1b2dA",
+  "category": "64b7f2b8c9d1a3e5f0a1b2eLaptop",
+  "review": [
+    [
+      {
+        "_id": {
+          "$oid": "68e7207b258d17468216cda2"
+        },
+        "review": "Hàng xịn",
+        "rating": 2,
+        "product": {
+          "$oid": "68e37adbceeb790b23e5379f"
+        },
+        "user": {
+          "$oid": "68e53bdd732309e1de28536a"
+        },
+        "createdAt": {
+          "$date": "2025-10-09T02:39:55.272Z"
+        },
+        "__v": 0,
+        "updateAt": {
+          "$date": "2025-10-09T02:40:21.684Z"
+        }
+      }
+    ]
+  ]
+},
+{
+  "_id": {
+    "$oid": "68e374d5e38613b12df376f6"
+  },
+  "title": "ASUS TUF Gaming F15 FX507ZC4 i7 12700H RTX3050",
+  "price": 23500000,
+  "promotion": 21500000,
+  "description": "Laptop gaming 15.6 inch, Intel Core i7-12700H, GPU RTX 3050, RAM 16GB, SSD 512GB, màn 144Hz, vỏ kim loại.",
+  "images": [
+    "https://cdn.tgdd.vn/Products/Images/44/327974/asus-fx507zc4-i7-hn181w-1-750x500.jpg"
+  ],
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 12,
+  "inventory": 19,
+  "color": "Đen",
+  "cpu": "Intel Core i7-12700H",
+  "ram": "16GB DDR5",
+  "os": "Windows 11 Home",
+  "weight": 2.3,
+  "screen": "15.6 inch FHD 144Hz",
+  "graphicCard": "NVIDIA RTX 3050 4GB",
+  "battery": "90Wh",
+  "demand": "Gaming",
+  "brand": null,
+  "category": null
+},
+{
+  "_id": {
+    "$oid": "68e374d5e38613b12df376f7"
+  },
+  "title": "MSI Modern 14 C12M i5 1240P 16GB 512GB",
+  "price": 18500000,
+  "promotion": 16500000,
+  "description": "Laptop mỏng nhẹ, Intel Core i5-1240P, RAM 16GB, SSD 512GB, trọng lượng 1.3kg, pin 10 tiếng, phù hợp văn phòng.",
+  "images": [
+    "https://bizweb.dktcdn.net/thumb/grande/100/386/607/products/80021857b25b807aab57155f41a7240b-380e8c5f-e32c-4d0d-b949-a9aac9bad5e7.png?v=1731638267053",
+    "https://bizweb.dktcdn.net/thumb/grande/100/410/941/products/msi-modern-14-c12mo-i5-660vn-3.jpg?v=1754039260543",
+    "https://bizweb.dktcdn.net/thumb/1024x1024/100/410/941/products/msi-modern-14-c12mo-i5-660vn-4.jpg?v=1754039260543"
+  ],
+  "ratingsAverage": 4.3,
+  "ratingsQuantity": 10,
+  "inventory": 15,
+  "color": "Bạc",
+  "cpu": "Intel Core i5-1240P",
+  "ram": "16GB LPDDR4X",
+  "os": "Windows 11 Home",
+  "weight": 1.3,
+  "screen": "14 inch FHD IPS",
+  "graphicCard": "Intel Iris Xe",
+  "battery": "52Wh",
+  "demand": "Văn phòng",
+  "brand": null,
+  "category": null
+},
+{
+  "_id": {
+    "$oid": "68e374d5e38613b12df376f8"
+  },
+  "title": "Dell Ultrasharp U2722D 27 inch QHD IPS 75Hz",
+  "price": 9500000,
+  "promotion": 8900000,
+  "description": "Màn hình Dell Ultrasharp 27 inch 2K, tấm nền IPS, tần số quét 75Hz, viền siêu mỏng, hỗ trợ DisplayPort và HDMI.",
+  "images": [
+    "https://tanthanhdanh.vn/wp-content/uploads/2023/12/u2722d-product-6.png",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6mgLT14kNhaJY_eFeXIFBdfJRQg8WWNmZwA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhZGs78sBV-kG191Fj09infY462d2MG5NWd5o0bydJKYeHWjUBdocfoQwr4uumheUT04Q&usqp=CAU"
+  ],
+  "ratingsAverage": 4.7,
+  "ratingsQuantity": 20,
+  "inventory": 30,
+  "color": "Xám bạc",
+  "cpu": null,
+  "ram": null,
+  "os": null,
+  "weight": 4.5,
+  "screen": "27 inch QHD IPS 75Hz",
+  "graphicCard": null,
+  "battery": null,
+  "demand": "Màn hình đồ họa",
+  "brand": null,
+  "category": null
+},
+{
+  "_id": {
+    "$oid": "68e717eca9d7c61ab8798aa3"
+  },
+  "title": "Laptop gaming xịn",
+  "price": 25000000,
+  "promotion": 24000000,
+  "description": "",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-10-09T02:01:54.175Z"
+  },
+  "createdBy": {
+    "$oid": "68e494b9d8fa16a3706eed65"
+  },
+  "inventory": 200,
+  "color": "Đen",
+  "cpu": "",
+  "ram": "",
+  "os": "",
+  "weight": 2,
+  "screen": "",
+  "graphicCard": "",
+  "battery": "",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-10-09T12:09:12.605Z"
+  },
+  "updatedBy": {
+    "$oid": "68e72f30c368f5d8cdc46912"
+  }
+},
+{
+  "_id": {
+    "$oid": "68e71c44258d17468216cbf3"
+  },
+  "title": "Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008VVN",
+  "price": 27000000,
+  "promotion": 27000000,
+  "description": "<h2><strong>Đ&aacute;nh gi&aacute; chi tiết laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008VVN</strong></h2>\r\n<p>&nbsp;</p>\r\n<p>Lenovo, c&aacute;i t&ecirc;n đang dần thể hiện vị tr&iacute; của m&igrave;nh trong d&ograve;ng laptop gaming với thế hệ Legion, LOQ hay Victus. Để tiếp tục n&acirc;ng cao vị thế trong l&ograve;ng c&aacute;c game thủ, ch&uacute;ng ta c&ugrave;ng ch&agrave;o đ&oacute;n si&ecirc;u phẩm mới mang t&ecirc;n&nbsp;<strong>Lenovo Legion Pro 7 16IAX10H 83F5008VVN</strong>. C&ugrave;ng GEARVN đ&aacute;nh gi&aacute; chi tiết về chiếc laptop gaming cao cấp n&agrave;y ngay sau đ&acirc;y nh&eacute; !</p>\r\n<h3><strong>Ngoại h&igrave;nh vượt trội với những đường n&eacute;t mạnh mẽ lắm</strong></h3>\r\n<p>N&eacute;t cao cấp v&agrave; vượt trội tr&ecirc;n Lenovo Legion Pro 7 16IAX10H 83F5008VVN được thể hiện một c&aacute;ch r&otilde; n&eacute;t th&ocirc;ng qua ngoại h&igrave;nh mạnh mẽ của m&igrave;nh. Kho&aacute;c l&ecirc;n m&igrave;nh m&agrave;u đen eclipse huyền b&iacute; v&agrave; c&aacute;c phần bề mặt được l&agrave;m mịn cho ch&uacute;ng ta sự trưởng th&agrave;nh nhất định. Nhưng khoan, l&agrave; một sản phẩm nằm trong d&ograve;ng&nbsp;<a href=\"https://gearvn.com/pages/laptop-gaming\">laptop gaming</a>&nbsp;của Lenovo th&igrave; Lenovo Legion Pro 7 16IAX10H 83F5008VVN c&ograve;n sở hữu th&ecirc;m phần khe tản nhiệt nằm ngay dưới mặt A v&ocirc; c&ugrave;ng ngầu l&ograve;i. Chỉ lướt qua ch&uacute;ng ta đ&atilde; c&oacute; thể li&ecirc;n tưởng đến những chiếc si&ecirc;u xe vi vu tr&ecirc;n những cung đường.</p>\r\n<p><img src=\"https://file.hstatic.net/200000722513/file/gearvn-laptop-gaming-lenovo-legion-pro-7-16iax10h-83f5008wvn-1_1024x1024.jpg\" alt=\"GEARVN - Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008WVN\"></p>\r\n<p>Qua đ&oacute;, mặt A cũng trang tr&iacute; th&ecirc;m logo Legion quen thuộc đ&atilde; c&oacute; tr&ecirc;n những chiếc laptop&nbsp;<a href=\"https://gearvn.com/collections/laptop-gaming-lenovo\">Lenovo Legion</a>&nbsp;kh&aacute;c nhưng Lenovo Legion Pro 7 16IAX10H 83F5008VVN sẽ l&agrave; đặt ở trung t&acirc;m k&egrave;m chữ Lenovo ngay tr&ecirc;n khe tản nhiệt si&ecirc;u thượng hạng ấy. Tất cả h&ograve;a quyện với nhau để mang đến 1 tổng thể ho&agrave;n mỹ cho chiến binh nh&agrave; Lenovo.</p>\r\n<h3><strong>Hiệu năng cao cấp c&ugrave;ng RTX 5070Ti</strong></h3>\r\n<p>Xứng tầm với Lenovo Legion Pro 7 16IAX10H 83F5008WVN l&agrave; &ldquo;đầu n&atilde;o&rdquo; cao cấp từ Intel, Core Ultra 9 275HX. Trang bị 24 nh&acirc;n 24 luồng cho khả năng xử l&yacute; chớp nho&aacute;ng giữa mọi nhu cầu sử dụng từ giải tr&iacute; đến l&agrave;m việc. Đi cặp c&ugrave;ng con chip mạnh mẽ ấy sẽ l&agrave; RTX 5070Ti, chiếc card từ thế hệ RTX 50 Series đảm cho ch&uacute;ng ta hiệu năng xử l&yacute; đồ họa hiệu quả giữa c&aacute;c c&ocirc;ng việc như chỉnh sửa h&igrave;nh ảnh, edit video hay t&aacute;c vụ giải tr&iacute; như chơi game.</p>\r\n<p><img src=\"https://file.hstatic.net/200000722513/file/gearvn-laptop-gaming-lenovo-legion-pro-7-16iax10h-83f5008wvn-2_grande.jpg\" alt=\"GEARVN - Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008WVN\"></p>\r\n<p>V&agrave; để hỗ trợ cho nhu cầu sử dụng, Lenovo Legion Pro 7 16IAX10H 83F5008VVN kh&ocirc;ng thể thiếu phần dung lượng lưu trữ với 32GB&nbsp;<a href=\"https://gearvn.com/collections/ram-pc-ddr5\">RAM DDR5</a>&nbsp;v&agrave; 1TB SSD. Dung lượng RAM lớn đảm bảo cho tr&igrave;nh đa t&aacute;c vụ được mượt m&agrave;, hỗ trợ thoải m&aacute;i thao t&aacute;c giữa nhiều c&ocirc;ng việc kh&aacute;c nhau. Kh&ocirc;ng gian lưu trữ lớn từ ổ cứng SSD cho bạn thoải m&aacute;i lưu trữ dữ liệu, từ c&aacute;c file c&ocirc;ng việc đến nhu cầu giải tr&iacute; gồm h&igrave;nh ảnh, nhạc, phim v&agrave; game.</p>\r\n<h3><strong>M&agrave;n h&igrave;nh 16 inch sắc n&eacute;t cho mọi game thủ</strong></h3>\r\n<p>Lenovo Legion Pro 7 16IAX10H 83F5008VVN sẽ mang đến cho ch&uacute;ng ta những h&igrave;nh ảnh sắc n&eacute;t th&ocirc;ng qua m&agrave;n h&igrave;nh 16 inch tạo n&ecirc;n từ tấm nền&nbsp;<a href=\"https://gearvn.com/collections/man-hinh-oled\">OLED</a>&nbsp;với độ ph&acirc;n giải WQXGA. Ngo&agrave;i ra c&ograve;n th&ecirc;m đ&oacute; l&agrave; t&ugrave;y chỉnh v&agrave; c&ocirc;ng nghệ h&igrave;nh ảnh hiện đại để mang đến cho người d&ugrave;ng h&igrave;nh ảnh sắc n&eacute;t v&agrave; ch&acirc;n thực nhất c&oacute; thể như độ s&aacute;ng 500nits, 100% DCI-P3, DisplayHDR v&agrave; v&ocirc; v&agrave;n những c&ocirc;ng nghệ kh&aacute;c.</p>\r\n<p><img src=\"https://file.hstatic.net/200000722513/file/gearvn-laptop-gaming-lenovo-legion-pro-7-16iax10h-83f5008wvn-3_grande.jpg\" alt=\"GEARVN - Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008WVN\"></p>\r\n<p>L&agrave; một &ldquo;trợ thủ&rdquo; cho những game thủ, Lenovo Legion Pro 7 16IAX10H 83F5008VVN kh&ocirc;ng thể thiếu cho m&igrave;nh một tần số qu&eacute;t l&yacute; tưởng l&agrave;&nbsp;<a href=\"https://gearvn.com/collections/man-hinh-240hz\">240Hz</a>&nbsp;để đảm bảo trải nghiệm mượt tr&ecirc;n từng h&igrave;nh ảnh. Từng chuyển động, từng thao t&aacute;c mang đến cho ch&uacute;ng ta trải nghiệm thị gi&aacute;c tuyệt vời nhất.</p>\r\n<h3><strong>C&aacute;c cổng kết nối đa năng nhất</strong></h3>\r\n<p>Lenovo Legion Pro 7 16IAX10H 83F5008VVN mang đến cho ch&uacute;ng ta những cổng kết nối th&ocirc;ng dụng nhất cho từng nhu cầu sử dụng, bao gồm:</p>\r\n<ul>\r\n<li>\r\n<p>USB Type-A hỗ trợ kết nối cho c&aacute;c thiết bị ngoại vị như&nbsp;<a href=\"https://gearvn.com/collections/chuot-may-tinh\">chuột m&aacute;y t&iacute;nh</a>&nbsp;hay b&agrave;n ph&iacute;m.</p>\r\n</li>\r\n<li>\r\n<p>USB Type-C trang bị khả năng xuất h&igrave;nh v&agrave; sạc pin với c&ocirc;ng suất l&ecirc;n đến 140W.</p>\r\n</li>\r\n<li>\r\n<p>Cổng Thunderbolt 4 hỗ trợ xuất h&igrave;nh lẫn truyền tải dữ liệu c&ugrave;ng tốc độ cao.</p>\r\n</li>\r\n<li>\r\n<p>Cổng HDMI 2.1 cho kết nối c&ugrave;ng m&aacute;y chiếu với độ ph&acirc;n giải c&oacute; thể l&ecirc;n đến 8K/60Hz.</p>\r\n</li>\r\n</ul>\r\n<p>&nbsp;</p>\r\n<p><img src=\"https://file.hstatic.net/200000722513/file/gearvn-laptop-gaming-lenovo-legion-pro-7-16iax10h-83f5008wvn-4_grande.jpg\" alt=\"GEARVN - Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008WVN\"></p>\r\n<p>&nbsp;</p>\r\n<p>Đi k&egrave;m th&ecirc;m những kết nối kh&ocirc;ng d&acirc;y bắt buộc phải c&oacute; l&agrave; Wi-Fi 7 v&agrave; Bluetooth 5.4 tr&ecirc;n Lenovo Legion Pro 7 16IAX10H 83F5008VVN. Khả năng kết nối Internet được đảm bảo cho tốc độ cao v&agrave; ổn định c&ugrave;ng chuẩn Wi-Fi mới nhất, hạn chế tối đa t&iacute;n hiệu chập chờn khi lướt web, nghe nhạc v&agrave; xem phim. Ngo&agrave;i ra, đ&oacute; l&agrave; khả năng kết nối với c&aacute;c thiết bị kh&ocirc;ng d&acirc;y gi&uacute;p tối ưu g&oacute;c l&agrave;m việc hay chơi game của bạn với c&aacute;c gaming gear như&nbsp;<a href=\"https://gearvn.com/collections/chuot-bluetooth\">chuột bluetooth</a>,&nbsp;<a href=\"https://gearvn.com/collections/ban-phim-duoi-1-trieu\">b&agrave;n ph&iacute;m kh&ocirc;ng d&acirc;y</a>,&nbsp;<a href=\"https://gearvn.com/collections/tai-nghe-bluetooth-chinh-hang\">tai nghe bluetooth</a>,...</p>\r\n<p><img src=\"https://file.hstatic.net/200000722513/file/gearvn-laptop-gaming-lenovo-legion-pro-7-16iax10h-83f5008wvn-5_grande.jpg\" alt=\"GEARVN - Laptop gaming Lenovo Legion Pro 7 16IAX10H 83F5008WVN\"></p>\r\n<p>Bạn c&oacute; thể tham khảo th&ecirc;m c&aacute;c mẫu laptop gaming kh&aacute;c như&nbsp;<a href=\"https://gearvn.com/products/laptop-gaming-lenovo-legion-5-15irx10-83ly004gvn\">Lenovo Legion 5 15IRX10 83LY004GVN</a>,&nbsp;<a href=\"https://gearvn.com/products/laptop-gaming-lenovo-legion-5-15irx10-83ly004jvn\">Legion 5 15IRX10 83LY004JVN</a>&nbsp;v&agrave;&nbsp;<a href=\"https://gearvn.com/products/laptop-gaming-lenovo-loq-15irx9-83dv00d5vn\">Lenovo LOQ 15IRX9</a>, đ&aacute;p ứng tốt nhu cầu từ giải tr&iacute; đến l&agrave;m việc.</p>",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [],
+  "images": [
+    "https://product.hstatic.net/200000722513/product/legion_pro_7_16iax10h_ct2_01_1b7625c4caa8443f93f352ee5e67412a_master.png"
+  ],
+  "createdAt": {
+    "$date": "2025-10-09T02:19:37.587Z"
+  },
+  "createdBy": {
+    "$oid": "68e494b9d8fa16a3706eed65"
+  },
+  "inventory": 999,
+  "color": "Đen",
+  "cpu": "",
+  "ram": "",
+  "os": "",
+  "weight": 2.5,
+  "screen": "",
+  "graphicCard": "",
+  "battery": "",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-10-09T15:55:52.566Z"
+  },
+  "updatedBy": {
+    "$oid": "68e72f30c368f5d8cdc46912"
+  }
+},
+{
+  "_id": {
+    "$oid": "68e7607c3daba8f95437f982"
+  },
+  "title": "Màn hình Asus TUF GAMING VG259Q3A 25\" Fast IPS 180Hz Gsync chuyên game",
+  "price": 3090000,
+  "promotion": 3090000,
+  "description": "",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [],
+  "images": [
+    "https://product.hstatic.net/200000722513/product/asus_vg259q3a_gearvn_e76558abb18946d7b7d51dd16d915d89_master.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-10-09T07:05:16.361Z"
+  },
+  "createdBy": {
+    "$oid": "68e72f30c368f5d8cdc46912"
+  },
+  "inventory": 250,
+  "color": "Đen",
+  "cpu": "",
+  "ram": "",
+  "os": "",
+  "weight": null,
+  "screen": "",
+  "graphicCard": "",
+  "battery": "",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-10-09T07:37:33.165Z"
+  },
+  "updatedBy": {
+    "$oid": "68e72f30c368f5d8cdc46912"
+  }
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff67f"
+  },
+  "title": "Prime Mouse Model 1762328581637-0",
+  "price": 93000000,
+  "description": "Auto-generated product description for demo 0. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.7,
+  "ratingsQuantity": 113,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 48,
+  "color": "Black",
+  "cpu": "Intel i9",
+  "ram": "8GB",
+  "os": "macOS",
+  "weight": 1.49,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff680"
+  },
+  "title": "NextGen Desktop Model 1762328581637-1",
+  "price": 40000000,
+  "description": "Auto-generated product description for demo 1. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.4,
+  "ratingsQuantity": 70,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 83,
+  "color": "Red",
+  "cpu": "Ryzen 7",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 1.55,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff681"
+  },
+  "title": "Dynamic Router Model 1762328581637-2",
+  "price": 53800000,
+  "description": "Auto-generated product description for demo 2. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.6,
+  "ratingsQuantity": 116,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 48,
+  "color": "White",
+  "cpu": "Intel i7",
+  "ram": "64GB",
+  "os": "Windows 10",
+  "weight": 2.39,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff682"
+  },
+  "title": "Advanced Desktop Model 1762328581637-3",
+  "price": 34000000,
+  "description": "Auto-generated product description for demo 3. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 183,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 85,
+  "color": "Blue",
+  "cpu": "Intel i5",
+  "ram": "16GB",
+  "os": "Windows 10",
+  "weight": 2.14,
+  "screen": "32\" 4K",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff683"
+  },
+  "title": "Turbo Desktop Model 1762328581637-4",
+  "price": 30300000,
+  "promotion": 27566681,
+  "description": "Auto-generated product description for demo 4. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 154,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 24,
+  "color": "Black",
+  "cpu": "Ryzen 7",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 1.13,
+  "screen": "32\" 4K",
+  "graphicCard": "Integrated",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff684"
+  },
+  "title": "Powerful Keyboard Model 1762328581637-5",
+  "price": 35900000,
+  "description": "Auto-generated product description for demo 5. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 5,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 52,
+  "color": "White",
+  "cpu": "Intel i7",
+  "ram": "64GB",
+  "os": "macOS",
+  "weight": 4.18,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff685"
+  },
+  "title": "Powerful Monitor Model 1762328581637-6",
+  "price": 43300000,
+  "promotion": 37933148,
+  "description": "Auto-generated product description for demo 6. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 82,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 52,
+  "color": "Silver",
+  "cpu": "Ryzen 7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 2.8,
+  "screen": "15.6\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff686"
+  },
+  "title": "Dynamic SSD Model 1762328581637-7",
+  "price": 44800000,
+  "promotion": 35737910,
+  "description": "Auto-generated product description for demo 7. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 34,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 34,
+  "color": "Silver",
+  "cpu": "Ryzen 7",
+  "ram": "32GB",
+  "os": "Windows 11",
+  "weight": 1.3,
+  "screen": "32\" 4K",
+  "graphicCard": "Integrated",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff687"
+  },
+  "title": "Powerful Desktop Model 1762328581637-8",
+  "price": 83300000,
+  "promotion": 57261774,
+  "description": "Auto-generated product description for demo 8. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 8,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 74,
+  "color": "Black",
+  "cpu": "Intel i7",
+  "ram": "32GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.3,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "56Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff688"
+  },
+  "title": "Smart Laptop Model 1762328581637-9",
+  "price": 48400000,
+  "promotion": 29834800,
+  "description": "Auto-generated product description for demo 9. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.1,
+  "ratingsQuantity": 6,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 97,
+  "color": "Silver",
+  "cpu": "Ryzen 5",
+  "ram": "8GB",
+  "os": "Ubuntu 22.04",
+  "weight": 1.19,
+  "screen": "32\" 4K",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff689"
+  },
+  "title": "Advanced Laptop Model 1762328581638-10",
+  "price": 29100000,
+  "description": "Auto-generated product description for demo 10. Suitable for work, study and entertainment.",
+  "ratingsAverage": 5,
+  "ratingsQuantity": 10,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 73,
+  "color": "Blue",
+  "cpu": "Ryzen 5",
+  "ram": "64GB",
+  "os": "macOS",
+  "weight": 4.01,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68a"
+  },
+  "title": "Powerful GPU Model 1762328581638-11",
+  "price": 80200000,
+  "description": "Auto-generated product description for demo 11. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 177,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 44,
+  "color": "Gray",
+  "cpu": "Intel i9",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 2.09,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68b"
+  },
+  "title": "Elite GPU Model 1762328581638-12",
+  "price": 86000000,
+  "description": "Auto-generated product description for demo 12. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.9,
+  "ratingsQuantity": 105,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 11,
+  "color": "Black",
+  "cpu": "Intel i9",
+  "ram": "64GB",
+  "os": "macOS",
+  "weight": 2.33,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68c"
+  },
+  "title": "Advanced Headset Model 1762328581638-13",
+  "price": 16900000,
+  "description": "Auto-generated product description for demo 13. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 49,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 35,
+  "color": "Gray",
+  "cpu": "Intel i7",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 1.32,
+  "screen": "32\" 4K",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68d"
+  },
+  "title": "Turbo Desktop Model 1762328581638-14",
+  "price": 96800000,
+  "description": "Auto-generated product description for demo 14. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 85,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 64,
+  "color": "Black",
+  "cpu": "Ryzen 7",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.05,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68e"
+  },
+  "title": "Elite Router Model 1762328581638-15",
+  "price": 10800000,
+  "description": "Auto-generated product description for demo 15. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.1,
+  "ratingsQuantity": 19,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 54,
+  "color": "White",
+  "cpu": "Intel i9",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.26,
+  "screen": "15.6\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff68f"
+  },
+  "title": "Advanced Tablet Model 1762328581638-16",
+  "price": 11500000,
+  "description": "Auto-generated product description for demo 16. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4,
+  "ratingsQuantity": 131,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 83,
+  "color": "Black",
+  "cpu": "Intel i9",
+  "ram": "32GB",
+  "os": "Ubuntu 22.04",
+  "weight": 3.62,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff690"
+  },
+  "title": "Ultra Router Model 1762328581638-17",
+  "price": 18000000,
+  "promotion": 12834987,
+  "description": "Auto-generated product description for demo 17. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.8,
+  "ratingsQuantity": 13,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 99,
+  "color": "Gray",
+  "cpu": "Ryzen 5",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.9,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff691"
+  },
+  "title": "Pro Keyboard Model 1762328581638-18",
+  "price": 95500000,
+  "promotion": 84690819,
+  "description": "Auto-generated product description for demo 18. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3,
+  "ratingsQuantity": 10,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 89,
+  "color": "Blue",
+  "cpu": "Ryzen 5",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 3.47,
+  "screen": "32\" 4K",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff692"
+  },
+  "title": "Prime Laptop Model 1762328581638-19",
+  "price": 74800000,
+  "promotion": 62587673,
+  "description": "Auto-generated product description for demo 19. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 144,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 53,
+  "color": "Silver",
+  "cpu": "Intel i5",
+  "ram": "64GB",
+  "os": "Windows 11",
+  "weight": 4.28,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff693"
+  },
+  "title": "Prime Monitor Model 1762328581638-20",
+  "price": 50400000,
+  "description": "Auto-generated product description for demo 20. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.6,
+  "ratingsQuantity": 98,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 65,
+  "color": "Red",
+  "cpu": "Intel i7",
+  "ram": "64GB",
+  "os": "Windows 11",
+  "weight": 1.63,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff694"
+  },
+  "title": "Ultra Laptop Model 1762328581638-21",
+  "price": 72500000,
+  "description": "Auto-generated product description for demo 21. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 52,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 102,
+  "color": "Silver",
+  "cpu": "Intel i9",
+  "ram": "64GB",
+  "os": "Windows 11",
+  "weight": 1.85,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff695"
+  },
+  "title": "Prime SSD Model 1762328581638-22",
+  "price": 50800000,
+  "promotion": 38590735,
+  "description": "Auto-generated product description for demo 22. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.1,
+  "ratingsQuantity": 75,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 43,
+  "color": "White",
+  "cpu": "Ryzen 7",
+  "ram": "64GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.03,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "56Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff696"
+  },
+  "title": "Smart Laptop Model 1762328581638-23",
+  "price": 7200000,
+  "description": "Auto-generated product description for demo 23. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.3,
+  "ratingsQuantity": 191,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 79,
+  "color": "Red",
+  "cpu": "Ryzen 5",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 3.04,
+  "screen": "15.6\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff697"
+  },
+  "title": "Elite SSD Model 1762328581638-24",
+  "price": 26500000,
+  "promotion": 20428708,
+  "description": "Auto-generated product description for demo 24. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 63,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 25,
+  "color": "Silver",
+  "cpu": "Intel i9",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1,
+  "screen": "27\" QHD",
+  "graphicCard": "RTX 3060",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff698"
+  },
+  "title": "Prime SSD Model 1762328581638-25",
+  "price": 12300000,
+  "description": "Auto-generated product description for demo 25. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.6,
+  "ratingsQuantity": 182,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 41,
+  "color": "Gray",
+  "cpu": "Ryzen 7",
+  "ram": "8GB",
+  "os": "Windows 10",
+  "weight": 4.12,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff699"
+  },
+  "title": "Pro Laptop Model 1762328581638-26",
+  "price": 57300000,
+  "description": "Auto-generated product description for demo 26. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 65,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 30,
+  "color": "Red",
+  "cpu": "Intel i9",
+  "ram": "8GB",
+  "os": "macOS",
+  "weight": 4.02,
+  "screen": "27\" QHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff69a"
+  },
+  "title": "Advanced Desktop Model 1762328581638-27",
+  "price": 14700000,
+  "promotion": 10562592,
+  "description": "Auto-generated product description for demo 27. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.4,
+  "ratingsQuantity": 145,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 26,
+  "color": "Black",
+  "cpu": "Ryzen 5",
+  "ram": "8GB",
+  "os": "macOS",
+  "weight": 3.17,
+  "screen": "32\" 4K",
+  "graphicCard": "RTX 3060",
+  "battery": "56Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff69b"
+  },
+  "title": "Dynamic Desktop Model 1762328581638-28",
+  "price": 15600000,
+  "promotion": 14872820,
+  "description": "Auto-generated product description for demo 28. Suitable for work, study and entertainment.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 23,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 61,
+  "color": "Silver",
+  "cpu": "Intel i9",
+  "ram": "32GB",
+  "os": "Windows 11",
+  "weight": 4.15,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b00051869b47f64eff69c"
+  },
+  "title": "Powerful GPU Model 1762328581638-29",
+  "price": 56600000,
+  "promotion": 53875277,
+  "description": "Auto-generated product description for demo 29. Suitable for work, study and entertainment.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 152,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [],
+  "createdAt": {
+    "$date": "2025-11-05T07:43:01.530Z"
+  },
+  "inventory": 38,
+  "color": "Blue",
+  "cpu": "Ryzen 7",
+  "ram": "8GB",
+  "os": "Windows 10",
+  "weight": 3.79,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "70Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea4"
+  },
+  "title": "Eco Mouse Series 1762329283697-0",
+  "price": 46100000,
+  "description": "Auto-generated product 2 with rich description 0. Great value and performance.",
+  "ratingsAverage": 3.7,
+  "ratingsQuantity": 236,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 66,
+  "color": "Silver",
+  "cpu": "Intel i5",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.08,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea5"
+  },
+  "title": "Compact HDD Series 1762329283698-1",
+  "price": 93900000,
+  "description": "Auto-generated product 2 with rich description 1. Great value and performance.",
+  "ratingsAverage": 3.9,
+  "ratingsQuantity": 57,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 72,
+  "color": "Red",
+  "cpu": "Intel i7",
+  "ram": "4GB",
+  "os": "macOS",
+  "weight": 3.19,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea6"
+  },
+  "title": "Max Laptop Series 1762329283698-2",
+  "price": 74000000,
+  "promotion": 47145165,
+  "description": "Auto-generated product 2 with rich description 2. Great value and performance.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 226,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 137,
+  "color": "Green",
+  "cpu": "Intel i3",
+  "ram": "32GB",
+  "os": "macOS",
+  "weight": 2.07,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea7"
+  },
+  "title": "Compact Monitor Series 1762329283698-3",
+  "price": 26100000,
+  "description": "Auto-generated product 2 with rich description 3. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 24,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 125,
+  "color": "Gray",
+  "cpu": "Ryzen 7",
+  "ram": "32GB",
+  "os": "Windows 10",
+  "weight": 3.11,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea8"
+  },
+  "title": "Max Router Series 1762329283698-4",
+  "price": 58700000,
+  "description": "Auto-generated product 2 with rich description 4. Great value and performance.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 104,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 115,
+  "color": "Black",
+  "cpu": "Ryzen 5",
+  "ram": "32GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.17,
+  "screen": "27\" QHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bea9"
+  },
+  "title": "Max Headphone Series 1762329283698-5",
+  "price": 43900000,
+  "description": "Auto-generated product 2 with rich description 5. Great value and performance.",
+  "ratingsAverage": 3.6,
+  "ratingsQuantity": 8,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 69,
+  "color": "Black",
+  "cpu": "Intel i7",
+  "ram": "4GB",
+  "os": "Windows 10",
+  "weight": 3.51,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beaa"
+  },
+  "title": "Premium Monitor Series 1762329283698-6",
+  "price": 60100000,
+  "description": "Auto-generated product 2 with rich description 6. Great value and performance.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 164,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 99,
+  "color": "Green",
+  "cpu": "Intel i5",
+  "ram": "4GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.23,
+  "screen": "27\" QHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beab"
+  },
+  "title": "Steel Tablet Series 1762329283698-7",
+  "price": 73700000,
+  "promotion": 44240991,
+  "description": "Auto-generated product 2 with rich description 7. Great value and performance.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 267,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 37,
+  "color": "Gray",
+  "cpu": "Ryzen 5",
+  "ram": "32GB",
+  "os": "Windows 11",
+  "weight": 4.54,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beac"
+  },
+  "title": "Max Laptop Series 1762329283698-8",
+  "price": 70600000,
+  "promotion": 44552200,
+  "description": "Auto-generated product 2 with rich description 8. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 77,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 60,
+  "color": "White",
+  "cpu": "Intel i7",
+  "ram": "4GB",
+  "os": "Windows 10",
+  "weight": 4.55,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bead"
+  },
+  "title": "Steel SSD Series 1762329283698-9",
+  "price": 64700000,
+  "promotion": 33869215,
+  "description": "Auto-generated product 2 with rich description 9. Great value and performance.",
+  "ratingsAverage": 4,
+  "ratingsQuantity": 207,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 43,
+  "color": "Black",
+  "cpu": "Intel i5",
+  "ram": "16GB",
+  "os": "Windows 10",
+  "weight": 4.45,
+  "screen": "27\" QHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beae"
+  },
+  "title": "Compact Headphone Series 1762329283698-10",
+  "price": 61400000,
+  "promotion": 36935102,
+  "description": "Auto-generated product 2 with rich description 10. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 132,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 47,
+  "color": "White",
+  "cpu": "Intel i3",
+  "ram": "4GB",
+  "os": "macOS",
+  "weight": 1.73,
+  "screen": "27\" QHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beaf"
+  },
+  "title": "Neon HDD Series 1762329283698-11",
+  "price": 27300000,
+  "description": "Auto-generated product 2 with rich description 11. Great value and performance.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 163,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 66,
+  "color": "Black",
+  "cpu": "Intel i5",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 2.68,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb0"
+  },
+  "title": "Steel HDD Series 1762329283698-12",
+  "price": 69800000,
+  "promotion": 39372413,
+  "description": "Auto-generated product 2 with rich description 12. Great value and performance.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 60,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 83,
+  "color": "Blue",
+  "cpu": "Ryzen 5",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 4.42,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb1"
+  },
+  "title": "Premium SSD Series 1762329283698-13",
+  "price": 89400000,
+  "description": "Auto-generated product 2 with rich description 13. Great value and performance.",
+  "ratingsAverage": 3.8,
+  "ratingsQuantity": 111,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 102,
+  "color": "White",
+  "cpu": "Intel i7",
+  "ram": "4GB",
+  "os": "Windows 11",
+  "weight": 2,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb2"
+  },
+  "title": "Compact Keyboard Series 1762329283698-14",
+  "price": 57200000,
+  "promotion": 50831807,
+  "description": "Auto-generated product 2 with rich description 14. Great value and performance.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 34,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 130,
+  "color": "Gray",
+  "cpu": "Ryzen 7",
+  "ram": "32GB",
+  "os": "macOS",
+  "weight": 4.19,
+  "screen": "24\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb3"
+  },
+  "title": "Aero Monitor Series 1762329283698-15",
+  "price": 69200000,
+  "promotion": 34848514,
+  "description": "Auto-generated product 2 with rich description 15. Great value and performance.",
+  "ratingsAverage": 3.8,
+  "ratingsQuantity": 150,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 153,
+  "color": "Black",
+  "cpu": "Ryzen 3",
+  "ram": "8GB",
+  "os": "Ubuntu 22.04",
+  "weight": 4.31,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb4"
+  },
+  "title": "Aero SSD Series 1762329283698-16",
+  "price": 36900000,
+  "description": "Auto-generated product 2 with rich description 16. Great value and performance.",
+  "ratingsAverage": 3,
+  "ratingsQuantity": 285,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 44,
+  "color": "Red",
+  "cpu": "Ryzen 5",
+  "ram": "4GB",
+  "os": "macOS",
+  "weight": 2.75,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb5"
+  },
+  "title": "Zen Webcam Series 1762329283698-17",
+  "price": 83400000,
+  "description": "Auto-generated product 2 with rich description 17. Great value and performance.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 80,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 62,
+  "color": "Blue",
+  "cpu": "Ryzen 3",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 2.83,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb6"
+  },
+  "title": "Compact Headphone Series 1762329283698-18",
+  "price": 31900000,
+  "promotion": 30841716,
+  "description": "Auto-generated product 2 with rich description 18. Great value and performance.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 281,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 130,
+  "color": "Blue",
+  "cpu": "Intel i7",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 3.47,
+  "screen": "27\" QHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb7"
+  },
+  "title": "Nimbus Tablet Series 1762329283698-19",
+  "price": 7300000,
+  "promotion": 5190855,
+  "description": "Auto-generated product 2 with rich description 19. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 46,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 16,
+  "color": "Green",
+  "cpu": "Ryzen 3",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.7,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb8"
+  },
+  "title": "Compact Keyboard Series 1762329283698-20",
+  "price": 48400000,
+  "promotion": 41399378,
+  "description": "Auto-generated product 2 with rich description 20. Great value and performance.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 88,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 122,
+  "color": "White",
+  "cpu": "Intel i7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 0.63,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beb9"
+  },
+  "title": "Steel Keyboard Series 1762329283698-21",
+  "price": 20200000,
+  "description": "Auto-generated product 2 with rich description 21. Great value and performance.",
+  "ratingsAverage": 5,
+  "ratingsQuantity": 257,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 40,
+  "color": "Gray",
+  "cpu": "Ryzen 7",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 1.89,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beba"
+  },
+  "title": "Aero Monitor Series 1762329283698-22",
+  "price": 92600000,
+  "promotion": 57361540,
+  "description": "Auto-generated product 2 with rich description 22. Great value and performance.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 196,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 111,
+  "color": "Black",
+  "cpu": "Intel i3",
+  "ram": "16GB",
+  "os": "Windows 10",
+  "weight": 1.58,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bebb"
+  },
+  "title": "Compact Webcam Series 1762329283698-23",
+  "price": 37000000,
+  "promotion": 36296040,
+  "description": "Auto-generated product 2 with rich description 23. Great value and performance.",
+  "ratingsAverage": 3.9,
+  "ratingsQuantity": 163,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 77,
+  "color": "Black",
+  "cpu": "Ryzen 3",
+  "ram": "32GB",
+  "os": "macOS",
+  "weight": 1.48,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bebc"
+  },
+  "title": "Nimbus Mouse Series 1762329283698-24",
+  "price": 84400000,
+  "promotion": 50661420,
+  "description": "Auto-generated product 2 with rich description 24. Great value and performance.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 144,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 51,
+  "color": "Green",
+  "cpu": "Intel i3",
+  "ram": "32GB",
+  "os": "Ubuntu 22.04",
+  "weight": 1.02,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765a"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bebd"
+  },
+  "title": "Zen Router Series 1762329283698-25",
+  "price": 75000000,
+  "description": "Auto-generated product 2 with rich description 25. Great value and performance.",
+  "ratingsAverage": 4,
+  "ratingsQuantity": 266,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 40,
+  "color": "Blue",
+  "cpu": "Intel i3",
+  "ram": "8GB",
+  "os": "Ubuntu 22.04",
+  "weight": 0.62,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bebe"
+  },
+  "title": "Neon Headphone Series 1762329283698-26",
+  "price": 72500000,
+  "promotion": 52266441,
+  "description": "Auto-generated product 2 with rich description 26. Great value and performance.",
+  "ratingsAverage": 3.4,
+  "ratingsQuantity": 66,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 141,
+  "color": "Red",
+  "cpu": "Intel i7",
+  "ram": "4GB",
+  "os": "macOS",
+  "weight": 2.56,
+  "screen": "27\" QHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bebf"
+  },
+  "title": "Compact Tablet Series 1762329283698-27",
+  "price": 48000000,
+  "description": "Auto-generated product 2 with rich description 27. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 72,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 74,
+  "color": "Blue",
+  "cpu": "Intel i3",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 2.32,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec0"
+  },
+  "title": "Aero Keyboard Series 1762329283698-28",
+  "price": 50300000,
+  "promotion": 43429879,
+  "description": "Auto-generated product 2 with rich description 28. Great value and performance.",
+  "ratingsAverage": 4,
+  "ratingsQuantity": 141,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 83,
+  "color": "Blue",
+  "cpu": "Intel i3",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 1.88,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec1"
+  },
+  "title": "Max Tablet Series 1762329283698-29",
+  "price": 64300000,
+  "promotion": 39230915,
+  "description": "Auto-generated product 2 with rich description 29. Great value and performance.",
+  "ratingsAverage": 3.1,
+  "ratingsQuantity": 145,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 87,
+  "color": "Black",
+  "cpu": "Ryzen 7",
+  "ram": "8GB",
+  "os": "Windows 10",
+  "weight": 1.34,
+  "screen": "13\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec2"
+  },
+  "title": "Aero Headphone Series 1762329283698-30",
+  "price": 92400000,
+  "description": "Auto-generated product 2 with rich description 30. Great value and performance.",
+  "ratingsAverage": 4.7,
+  "ratingsQuantity": 209,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 45,
+  "color": "Red",
+  "cpu": "Ryzen 3",
+  "ram": "8GB",
+  "os": "Ubuntu 22.04",
+  "weight": 3.02,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec3"
+  },
+  "title": "Premium Headphone Series 1762329283698-31",
+  "price": 90000000,
+  "promotion": 83932308,
+  "description": "Auto-generated product 2 with rich description 31. Great value and performance.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 129,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 96,
+  "color": "Black",
+  "cpu": "Ryzen 7",
+  "ram": "8GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.93,
+  "screen": "15.6\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec4"
+  },
+  "title": "Zen Monitor Series 1762329283698-32",
+  "price": 21500000,
+  "description": "Auto-generated product 2 with rich description 32. Great value and performance.",
+  "ratingsAverage": 3,
+  "ratingsQuantity": 154,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 96,
+  "color": "Green",
+  "cpu": "Intel i5",
+  "ram": "32GB",
+  "os": "macOS",
+  "weight": 3.05,
+  "screen": "13\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765d"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec5"
+  },
+  "title": "Nimbus SSD Series 1762329283698-33",
+  "price": 66700000,
+  "description": "Auto-generated product 2 with rich description 33. Great value and performance.",
+  "ratingsAverage": 3.2,
+  "ratingsQuantity": 285,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 144,
+  "color": "Green",
+  "cpu": "Intel i3",
+  "ram": "8GB",
+  "os": "Windows 10",
+  "weight": 1,
+  "screen": "27\" QHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec6"
+  },
+  "title": "Compact Laptop Series 1762329283698-34",
+  "price": 82700000,
+  "promotion": 43647102,
+  "description": "Auto-generated product 2 with rich description 34. Great value and performance.",
+  "ratingsAverage": 4.8,
+  "ratingsQuantity": 63,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 102,
+  "color": "Green",
+  "cpu": "Ryzen 7",
+  "ram": "4GB",
+  "os": "Ubuntu 22.04",
+  "weight": 1.77,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec7"
+  },
+  "title": "Premium Webcam Series 1762329283698-35",
+  "price": 47500000,
+  "promotion": 27608259,
+  "description": "Auto-generated product 2 with rich description 35. Great value and performance.",
+  "ratingsAverage": 5,
+  "ratingsQuantity": 107,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 128,
+  "color": "Blue",
+  "cpu": "Intel i7",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 3.46,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec8"
+  },
+  "title": "Nimbus Keyboard Series 1762329283698-36",
+  "price": 50800000,
+  "promotion": 46713472,
+  "description": "Auto-generated product 2 with rich description 36. Great value and performance.",
+  "ratingsAverage": 4.2,
+  "ratingsQuantity": 117,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 25,
+  "color": "Black",
+  "cpu": "Ryzen 7",
+  "ram": "4GB",
+  "os": "Ubuntu 22.04",
+  "weight": 2.48,
+  "screen": "24\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765e"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4bec9"
+  },
+  "title": "Compact Mouse Series 1762329283698-37",
+  "price": 4500000,
+  "description": "Auto-generated product 2 with rich description 37. Great value and performance.",
+  "ratingsAverage": 4.4,
+  "ratingsQuantity": 210,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 78,
+  "color": "White",
+  "cpu": "Ryzen 5",
+  "ram": "4GB",
+  "os": "Windows 11",
+  "weight": 4.23,
+  "screen": "14\" FHD",
+  "graphicCard": "RTX 4060",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765b"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4beca"
+  },
+  "title": "Max Keyboard Series 1762329283698-38",
+  "price": 61600000,
+  "promotion": 46765392,
+  "description": "Auto-generated product 2 with rich description 38. Great value and performance.",
+  "ratingsAverage": 3.3,
+  "ratingsQuantity": 73,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 53,
+  "color": "Black",
+  "cpu": "Intel i3",
+  "ram": "16GB",
+  "os": "Ubuntu 22.04",
+  "weight": 3.92,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "50Wh",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b02c3cdec5a6e28f4becb"
+  },
+  "title": "Aero Keyboard Series 1762329283698-39",
+  "price": 69200000,
+  "promotion": 48195053,
+  "description": "Auto-generated product 2 with rich description 39. Great value and performance.",
+  "ratingsAverage": 4.6,
+  "ratingsQuantity": 279,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T07:54:43.602Z"
+  },
+  "inventory": 60,
+  "color": "Blue",
+  "cpu": "Ryzen 5",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 4.4,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "80Wh",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df3765c"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388ca"
+  },
+  "title": "Dell XPS 13 9310",
+  "price": 35990000,
+  "promotion": 32990000,
+  "description": "13.4-inch premium ultrabook with Intel Core i7, excellent build and display.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 25,
+  "color": "Black",
+  "cpu": "Intel Core i7-1165G7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.2,
+  "screen": "13.4\" FHD+",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388ce"
+  },
+  "title": "Apple MacBook Air 13 M2",
+  "price": 28990000,
+  "promotion": 27990000,
+  "description": "Thin-and-light with Apple M2 chip, long battery life, silent design.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 40,
+  "color": "Black",
+  "cpu": "Apple M2",
+  "ram": "8GB",
+  "os": "macOS",
+  "weight": 1.24,
+  "screen": "13.6\" Liquid Retina",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388d2"
+  },
+  "title": "Apple MacBook Pro 14 M1 Pro",
+  "price": 51990000,
+  "promotion": 48990000,
+  "description": "Pro-grade performance with M1 Pro, mini-LED display, great speakers.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 18,
+  "color": "Black",
+  "cpu": "Apple M1 Pro",
+  "ram": "16GB",
+  "os": "macOS",
+  "weight": 1.6,
+  "screen": "14.2\" Liquid Retina XDR",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Creator",
+  "brand": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388d6"
+  },
+  "title": "HP Spectre x360 14",
+  "price": 38990000,
+  "promotion": 34990000,
+  "description": "Premium 2-in-1 with OLED option, excellent keyboard and battery life.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 22,
+  "color": "Black",
+  "cpu": "Intel Core i7-1255U",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.36,
+  "screen": "13.5\" 3:2 OLED",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388da"
+  },
+  "title": "Lenovo ThinkPad X1 Carbon Gen 9",
+  "price": 42990000,
+  "promotion": 39990000,
+  "description": "Business ultrabook with MIL-STD durability, great keyboard, long battery.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 15,
+  "color": "Black",
+  "cpu": "Intel Core i7-1165G7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.13,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388de"
+  },
+  "title": "ASUS ROG Zephyrus G14",
+  "price": 39990000,
+  "promotion": 36990000,
+  "description": "Compact gaming laptop with Ryzen and RTX graphics.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 20,
+  "color": "Black",
+  "cpu": "AMD Ryzen 9 5900HS",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.6,
+  "screen": "14\" QHD 120Hz",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388e2"
+  },
+  "title": "Acer Swift 3",
+  "price": 18990000,
+  "promotion": 16990000,
+  "description": "Affordable ultrabook with solid performance and portability.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 30,
+  "color": "Black",
+  "cpu": "Intel Core i5-1135G7",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 1.2,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388e6"
+  },
+  "title": "MSI Modern 14",
+  "price": 20990000,
+  "promotion": 19990000,
+  "description": "Stylish 14-inch laptop for everyday productivity.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 28,
+  "color": "Black",
+  "cpu": "Intel Core i5-1155G7",
+  "ram": "8GB",
+  "os": "Windows 11",
+  "weight": 1.3,
+  "screen": "14\" FHD",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388ec"
+  },
+  "title": "Microsoft Surface Laptop 4",
+  "price": 32990000,
+  "promotion": 30990000,
+  "description": "Premium 3:2 display, slim design, and comfortable keyboard.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 17,
+  "color": "Black",
+  "cpu": "AMD Ryzen 7 4980U",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.3,
+  "screen": "13.5\" 3:2",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "690b07a97fdbb6573c0388e9"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388f2"
+  },
+  "title": "Huawei MateBook X Pro",
+  "price": 32990000,
+  "promotion": 29990000,
+  "description": "Premium ultrabook with 3:2 touchscreen and metal build.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 14,
+  "color": "Black",
+  "cpu": "Intel Core i7-1165G7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.33,
+  "screen": "13.9\" 3:2",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "690b07a97fdbb6573c0388ef"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388f8"
+  },
+  "title": "Razer Blade 15",
+  "price": 52990000,
+  "promotion": 48990000,
+  "description": "High-performance gaming laptop with aluminum chassis.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 12,
+  "color": "Black",
+  "cpu": "Intel Core i7-12700H",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 2.01,
+  "screen": "15.6\" QHD 240Hz",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Gaming",
+  "brand": {
+    "$oid": "690b07a97fdbb6573c0388f5"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388fe"
+  },
+  "title": "LG Gram 17",
+  "price": 40990000,
+  "promotion": 37990000,
+  "description": "Ultra-light 17-inch laptop with long battery life.",
+  "ratingsAverage": 4.5,
+  "ratingsQuantity": 0,
+  "eachRating": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format&fit=crop"
+  ],
+  "createdAt": {
+    "$date": "2025-11-05T08:15:37.385Z"
+  },
+  "inventory": 10,
+  "color": "Black",
+  "cpu": "Intel Core i7-1165G7",
+  "ram": "16GB",
+  "os": "Windows 11",
+  "weight": 1.35,
+  "screen": "17\" WQXGA",
+  "graphicCard": "Integrated",
+  "battery": "",
+  "demand": "Office",
+  "brand": {
+    "$oid": "690b07a97fdbb6573c0388fb"
+  },
+  "category": {
+    "$oid": "68e37238e38613b12df37659"
+  },
+  "review": [],
+  "__v": 0
+}]

@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "68e37227e38613b12df37650"
+  },
+  "name": "ASUS",
+  "country": "Taiwan",
+  "founded": 1989
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37651"
+  },
+  "name": "MSI",
+  "country": "Taiwan",
+  "founded": 1986
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37652"
+  },
+  "name": "Acer",
+  "country": "Taiwan",
+  "founded": 1976
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37653"
+  },
+  "name": "Dell",
+  "country": "USA",
+  "founded": 1984
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37654"
+  },
+  "name": "HP",
+  "country": "USA",
+  "founded": 1939
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37655"
+  },
+  "name": "Lenovo",
+  "country": "China",
+  "founded": 1984
+},
+{
+  "_id": {
+    "$oid": "68e37227e38613b12df37656"
+  },
+  "name": "Apple",
+  "country": "USA",
+  "founded": 1976
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388e9"
+  },
+  "name": "Microsoft",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388ef"
+  },
+  "name": "Huawei",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388f5"
+  },
+  "name": "Razer",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b07a97fdbb6573c0388fb"
+  },
+  "name": "LG",
+  "__v": 0
+}]

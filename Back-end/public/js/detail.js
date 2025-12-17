@@ -23,7 +23,7 @@ function cancelOrder(value) {
   }
 }
 function acceptOrder(value) {
-  if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
+  if (confirm("Bạn có chắc chắn muốn xác nhận đơn hàng này?")) {
     const id = $(value).data("id");
     data = { status: $(value).val() };
     changeStatus(id, data);

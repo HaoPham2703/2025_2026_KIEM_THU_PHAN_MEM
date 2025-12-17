@@ -70,7 +70,7 @@ function reloadData() {
 $(document).on("click", ".edit", function () {
   const id = $(this).data("id");
 
-  $("#dynamic_modal_title").text("Edit Review");
+  $("#dynamic_modal_title").text("Chỉnh Sửa Đánh Giá");
 
   $("#action").val("Edit");
 
@@ -98,7 +98,7 @@ $(document).on("click", ".delete", function () {
         url: `/api/v1/reviews/${id}`,
         method: "delete",
         success: function (data) {
-          showAlert("success", `Delete review Successfully`);
+          showAlert("success", `Xóa đánh giá thành công!`);
           reloadData();
         },
       });

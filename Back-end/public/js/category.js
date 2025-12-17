@@ -43,7 +43,7 @@ function reloadData() {
 }
 
 $("#add_data").click(function () {
-  $("#dynamic_modal_title").text("Add Category");
+  $("#dynamic_modal_title").text("Thêm Danh Mục");
   $("#sample_form")[0].reset();
   $("#action").val("Add");
   $("#id").val("");

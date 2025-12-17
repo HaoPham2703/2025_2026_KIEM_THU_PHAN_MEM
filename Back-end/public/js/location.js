@@ -191,7 +191,10 @@ $("#sample_form").on("submit", async (e) => {
       success: (data) => {
         $("#action_button").attr("disabled", false);
         $("#action_modal").modal("hide");
-        showAlert("success", `${action} kho thành công!`);
+        showAlert(
+          "success",
+          `${action === "Add" ? "Thêm" : "Sửa"} kho thành công!`
+        );
         reloadData();
       },
     });
