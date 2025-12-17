@@ -1,0 +1,245 @@
+name: Module2 - User Management Tests
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+
+jobs:
+  test-module2-user:
+    name: 👤 Module2 - User Management Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module2 User Management Tests
+        working-directory: ./Back-end
+        run: |
+          echo "👤 Testing Module2 - User Management..."
+          npm test -- userController.test.js --json --outputFile=module2-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module2-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+          EMAIL_HOST: smtp.gmail.com
+          EMAIL_PORT: 587
+          EMAIL_USERNAME: test@example.com
+          EMAIL_PASSWORD: testpassword
+          EMAIL_FROM: test@example.com
+
+      - name: 📊 Generate Module2 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 👤 Module2 - User Management Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`weblau\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module2 - User Management" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** \`userController.test.js\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse test results
+          if [ -f module2-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            NUM_TOTAL=$(node -p "require('./module2-test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./module2-test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./module2-test-results.json').numFailedTests || 'N/A'")
+            
+            echo "| 📝 Total Tests | $NUM_TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" = "0" ]; then
+              echo "| ✅ Passed | $NUM_PASSED | 🎉 All tests passed! |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ✨ Perfect! |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ✅ Passed | $NUM_PASSED | - |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Show test coverage by function
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Function | Test Cases | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-----------|-------------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Get Me | 3 tests | Xem thông tin cá nhân |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Me | 4 tests | Cập nhật thông tin cá nhân |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete Me | 2 tests | Xóa tài khoản |" >> $GITHUB_STEP_SUMMARY
+            echo "| Create Address | 3 tests | Thêm địa chỉ giao hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get User Address | 2 tests | Xem danh sách địa chỉ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Address | 2 tests | Cập nhật địa chỉ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete Address | 3 tests | Xóa địa chỉ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Set Default Address | 2 tests | Đặt địa chỉ mặc định |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get All Users (Admin) | 2 tests | Xem danh sách người dùng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get User (Admin) | 2 tests | Xem chi tiết người dùng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update User (Admin) | 2 tests | Cập nhật người dùng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete User (Admin) | 3 tests | Xóa người dùng |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed tests if any
+            if [ "$NUM_FAILED" != "0" ] && [ "$NUM_FAILED" != "N/A" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./module2-test-results.json');
+                if (results.testResults && results.testResults.length > 0) {
+                  results.testResults.forEach(suite => {
+                    if (suite.assertionResults) {
+                      suite.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          console.log('### 🔴 ' + test.ancestorTitles.join(' > '));
+                          console.log('**Test:** ' + test.title);
+                          console.log('');
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('**Error:**');
+                            console.log('```');
+                            console.log(test.failureMessages[0].substring(0, 500));
+                            console.log('```');
+                            console.log('');
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Cannot parse failed tests details" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Chi tiết test cases được định nghĩa trong: **\`Module2_User.md\`**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Case IDs:" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-001 to USER-003**: Get Me tests (Xem thông tin cá nhân)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-004 to USER-007**: Update Me tests (Cập nhật thông tin)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-008 to USER-009**: Delete Me tests (Xóa tài khoản)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-010 to USER-012**: Create Address tests (Thêm địa chỉ)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-013 to USER-014**: Get User Address tests (Xem địa chỉ)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-015 to USER-016**: Update Address tests (Cập nhật địa chỉ)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-017 to USER-019**: Delete Address tests (Xóa địa chỉ)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-020 to USER-021**: Set Default Address tests (Đặt địa chỉ mặc định)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-022 to USER-023**: Get All Users tests (Admin)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-024 to USER-025**: Get User tests (Admin)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-026 to USER-027**: Update User tests (Admin)" >> $GITHUB_STEP_SUMMARY
+          echo "- **USER-028 to USER-030**: Delete User tests (Admin)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Function Groups:" >> $GITHUB_STEP_SUMMARY
+          echo "- **👤 Personal Info**: Get Me, Update Me, Delete Me (9 tests)" >> $GITHUB_STEP_SUMMARY
+          echo "- **📍 Address Management**: Create, Read, Update, Delete, Set Default (12 tests)" >> $GITHUB_STEP_SUMMARY
+          echo "- **🔐 Admin Functions**: User CRUD operations (9 tests)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📖 **Documentation:** [View Module2_User.md](../blob/${{ github.sha }}/Module2_User.md)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📤 Upload Module2 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module2-user-test-results
+          path: Back-end/module2-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module2
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module2..."
+          npm test -- userController.test.js --coverage --coverageDirectory=./coverage-module2
+        continue-on-error: true
+
+      - name: 📤 Upload Module2 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module2-user-coverage
+          path: Back-end/coverage-module2
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 👤 Module2 - User Management Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module2-test-results.json', 'utf8'));
+              const numTotal = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
+              
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| 📝 Total Tests | ${numTotal} |\n`;
+              comment += `| ✅ Passed | ${numPassed} |\n`;
+              comment += `| ❌ Failed | ${numFailed} |\n\n`;
+              
+              if (numFailed === 0) {
+                comment += '### 🎉 All tests passed!\n';
+                comment += 'Module2 User Management is working perfectly! ✨\n';
+              } else {
+                comment += '### ⚠️ Some tests failed\n';
+                comment += 'Please check the workflow logs for details.\n';
+              }
+              
+              comment += '\n### 📋 Test Coverage:\n';
+              comment += '- Personal Info Management: 9 tests\n';
+              comment += '- Address Management: 12 tests\n';
+              comment += '- Admin Functions: 9 tests\n';
+              comment += '\n📖 **Details:** Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for full report.';
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module2-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module2-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
