@@ -5,7 +5,7 @@ const changeStatus = async (id, data) => {
       method: "PATCH",
       data,
       success: function (data) {
-        showAlert("success", "Update Order Status successfully!");
+        showAlert("success", "Cập nhật trạng thái đơn hàng thành công!");
         window.setTimeout(() => {
           window.location.reload();
         }, 500);
@@ -16,14 +16,14 @@ const changeStatus = async (id, data) => {
   }
 };
 function cancelOrder(value) {
-  if (confirm("Are you sure you want to delete this brand?")) {
+  if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
     const id = $(value).data("id");
     data = { status: "Cancelled" };
     changeStatus(id, data);
   }
 }
 function acceptOrder(value) {
-  if (confirm("Are you sure you want to delete this brand?")) {
+  if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
     const id = $(value).data("id");
     data = { status: $(value).val() };
     changeStatus(id, data);

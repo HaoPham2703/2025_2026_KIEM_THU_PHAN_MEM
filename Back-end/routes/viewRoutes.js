@@ -40,7 +40,7 @@ router.get("/signup", viewController.alreadyLoggedIn, (req, res, next) => {
 // });
 router.use(viewController.errorPage);
 router.get("/", (req, res, next) => {
-  res.status(200).render("dashboard", { title: "Dashboard" });
+  res.status(200).render("dashboard", { title: "Bảng Điều Khiển" });
 });
 router.get("/analytics", (req, res, next) => {
   res.status(200).render("analytic", { title: "Analytics" });
@@ -49,11 +49,16 @@ router.get("/users", (req, res, next) => {
   res.status(200).render("user", { title: "Manage User" });
 });
 router.get("/products", (req, res, next) => {
-  res.status(200).render("product", { title: "Manage Product" });
+  res.status(200).render("product", { title: "Quản Lý Sản Phẩm" });
 });
 router.get("/orders", (req, res, next) => {
   res.status(200).render("order", { title: "Manage Order" });
 });
+// Helper function để format số tiền
+function formatCurrency(amount) {
+  return Number(amount).toLocaleString("vi-VN");
+}
+
 router.get("/orders/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -61,13 +66,19 @@ router.get("/orders/:id", async (req, res, next) => {
     let total = 0;
     data.cart.forEach((value) => {
       total += value.product.price * value.quantity;
+      // Format giá sản phẩm
+      value.product.formattedPrice = formatCurrency(value.product.price);
     });
     data.total = total;
+    // Format các giá tiền
+    data.formattedTotal = formatCurrency(total);
+    data.formattedDiscount = formatCurrency(total - data.totalPrice);
+    data.formattedTotalPrice = formatCurrency(data.totalPrice);
     const theDate = new Date(Date.parse(data.createdAt));
     const date = theDate.toLocaleString();
     data.date = date;
     data.discount = total - data.totalPrice;
-    res.status(200).render("orderDetail", { data, title: "Order Detail" });
+    res.status(200).render("orderDetail", { data, title: "Chi Tiết Đơn Hàng" });
   } catch (error) {
     res.status(200).render("404");
   }

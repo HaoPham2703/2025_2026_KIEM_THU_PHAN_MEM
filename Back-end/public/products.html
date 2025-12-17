@@ -1,41 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Product List</title>
-  <style>
-    body { font-family: Arial; margin: 20px; }
-    .product { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
-    img { max-width: 150px; }
-  </style>
-</head>
-<body>
-  <h1>Product List</h1>
-  <div id="product-list"></div>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Danh Sách Sản Phẩm</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 20px;
+      }
+      .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      img {
+        max-width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Danh Sách Sản Phẩm</h1>
+    <div id="product-list"></div>
 
-  <script>
-    const productList = document.getElementById("product-list");
+    <script>
+      // Hàm format số tiền theo chuẩn Việt Nam
+      function formatCurrency(amount) {
+        return Number(amount).toLocaleString("vi-VN");
+      }
 
-    // Gọi API backend
-    fetch("http://localhost:5100/api/v1/products?limit=20&page=1")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data); // kiểm tra JSON trả về
-        data.data.forEach(product => {
-          const div = document.createElement("div");
-          div.className = "product";
-          div.innerHTML = `
+      const productList = document.getElementById("product-list");
+
+      // Gọi API backend
+      fetch("http://localhost:5100/api/v1/products?limit=20&page=1")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data); // kiểm tra JSON trả về
+          data.data.forEach((product) => {
+            const div = document.createElement("div");
+            div.className = "product";
+            const formattedPrice = formatCurrency(product.price);
+            div.innerHTML = `
             <h2>${product.title}</h2>
-            <p>Price: ${product.price} VND</p>
-            <p>Promotion: ${product.promotion || "0"}</p>
-            <img src="${product.images[0] || 'https://via.placeholder.com/150'}" alt="${product.title}">
+            <p>Giá: ${formattedPrice} VND</p>
+            <p>Khuyến mãi: ${product.promotion || "0"}%</p>
+            <img src="${
+              product.images[0] || "https://via.placeholder.com/150"
+            }" alt="${product.title}">
           `;
-          productList.appendChild(div);
+            productList.appendChild(div);
+          });
+        })
+        .catch((err) => {
+          console.error("Error fetching products:", err);
         });
-      })
-      .catch(err => {
-        console.error("Error fetching products:", err);
-      });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

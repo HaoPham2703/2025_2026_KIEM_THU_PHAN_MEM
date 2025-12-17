@@ -11,7 +11,7 @@ const loadData = async () => {
         {
           data: "user",
           render: function (data) {
-            const name = data && data.name ? data.name : 'N/A';
+            const name = data && data.name ? data.name : "Không có";
             return '<div class= "my-3">' + name + "</div>";
           },
         },
@@ -24,7 +24,7 @@ const loadData = async () => {
         {
           data: "review",
           render: function (data) {
-            if (!data) return '<div class= "my-3">N/A</div>';
+            if (!data) return '<div class= "my-3">Không có</div>';
             const value = data.length > 29 ? data.slice(0, 30) + "..." : data;
             return `<div class= "my-3">${value}</div>`;
           },
@@ -57,7 +57,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -74,7 +74,7 @@ $(document).on("click", ".edit", function () {
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
 
   $("#action_modal").modal("show");
   $.ajax({
@@ -92,7 +92,7 @@ $(document).on("click", ".edit", function () {
 $(document).on("click", ".delete", function () {
   const id = $(this).data("id");
 
-  if (confirm("Are you sure you want to delete this Review?")) {
+  if (confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
     try {
       $.ajax({
         url: `/api/v1/reviews/${id}`,
@@ -124,7 +124,7 @@ $("#sample_form").on("submit", async (e) => {
       success: (data) => {
         $("#action_button").attr("disabled", false);
         $("#action_modal").modal("hide");
-        showAlert("success", `Edit Review successfully!`);
+        showAlert("success", `Sửa đánh giá thành công!`);
         reloadData();
       },
     });

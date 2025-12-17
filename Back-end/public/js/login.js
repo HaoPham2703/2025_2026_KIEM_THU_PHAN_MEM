@@ -11,7 +11,7 @@ $("#login").click(async function (e) {
       data,
       success: (data) => {
         if (data.data.user.role == "admin") {
-          showAlert("success", "Login successfully!");
+          showAlert("success", "Đăng nhập thành công!");
           window.setTimeout(() => {
             location.assign("/");
           }, 1500);

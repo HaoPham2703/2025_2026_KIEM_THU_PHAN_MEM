@@ -1,4 +1,10 @@
 const err_src = "/images/unnamed.jpg";
+
+// Hàm format số tiền theo chuẩn Việt Nam
+function formatCurrency(amount) {
+  return Number(amount).toLocaleString("vi-VN");
+}
+
 const loadData = async () => {
   try {
     // const arr = ["_id", "name", "price", "slug"];
@@ -45,7 +51,7 @@ const loadData = async () => {
         {
           data: "title",
           render: function (data) {
-            if (!data) return '<div class= "my-3">N/A</div>';
+            if (!data) return '<div class= "my-3">Không có</div>';
             const value = data.length > 39 ? data.slice(0, 40) + "..." : data;
             return '<div class= "my-3">' + value + "</div>";
           },
@@ -54,7 +60,8 @@ const loadData = async () => {
         {
           data: "price",
           render: function (data) {
-            return '<div class= "my-3">' + data + " VND</div>";
+            const formattedPrice = formatCurrency(data);
+            return '<div class= "my-3">' + formattedPrice + " VND</div>";
           },
         },
         {
@@ -80,7 +87,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -165,7 +172,7 @@ $(document).ready(async function () {
   });
 });
 $("#add_data").click(function () {
-  $("#dynamic_modal_title").text("Add Product");
+  $("#dynamic_modal_title").text("Thêm Sản Phẩm");
   $("#sample_form")[0].reset();
   $("#category").val(null).trigger("change");
   $("#brand").val(null).trigger("change");
@@ -175,7 +182,7 @@ $("#add_data").click(function () {
   $("#action").val("Add");
   $("#id").val("");
 
-  $("#action_button").text("Add");
+  $("#action_button").text("Thêm");
   $(".url-img-show").empty();
   $(".mb-2").show();
 
@@ -185,11 +192,11 @@ $(document).on("click", ".edit", function () {
   $("#sample_form")[0].reset();
   const id = $(this).data("id");
 
-  $("#dynamic_modal_title").text("Edit Product");
+  $("#dynamic_modal_title").text("Chỉnh Sửa Sản Phẩm");
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
 
   $("#action_modal").modal("show");
   $(".mb-2").hide();
@@ -256,13 +263,13 @@ $(document).on("click", ".edit", function () {
 $(document).on("click", ".delete", function () {
   const id = $(this).data("id");
 
-  if (confirm("Are you sure you want to delete this data?")) {
+  if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
     try {
       $.ajax({
         url: `/api/v1/products/${id}`,
         method: "delete",
         success: function (data) {
-          showAlert("success", `Delete Product ${id} Successfully`);
+          showAlert("success", `Xóa sản phẩm thành công!`);
           reloadData();
         },
       });

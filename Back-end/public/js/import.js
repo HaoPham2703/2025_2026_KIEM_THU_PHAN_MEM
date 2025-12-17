@@ -16,21 +16,20 @@ const loadData = async () => {
         {
           data: "user",
           render: function (data) {
-            const name = data && data.name ? data.name : 'N/A';
+            const name = data && data.name ? data.name : "Không có";
             return '<div class= "my-3">' + name + "</div>";
           },
         },
         {
           data: "invoice",
           render: function (data) {
-            if (!data || !Array.isArray(data)) return '<div class= "my-3">N/A</div>';
+            if (!data || !Array.isArray(data))
+              return '<div class= "my-3">Không có</div>';
             let html = "";
             data.forEach((value, index) => {
-              const title = value && value.title ? value.title : 'N/A';
+              const title = value && value.title ? value.title : "Không có";
               const name =
-                title.length > 39
-                  ? title.slice(0, 40) + "..."
-                  : title;
+                title.length > 39 ? title.slice(0, 40) + "..." : title;
               html += `<div class= "my-3"> ${name} </div>`;
             });
             return html;
@@ -53,7 +52,7 @@ const loadData = async () => {
         {
           data: null,
           render: function (row) {
-            let btnView = `<a href="/imports/${row.id}"><button type="button" class="btn btn-primary btn-sm mr-1">View</button></a>`;
+            let btnView = `<a href="/imports/${row.id}"><button type="button" class="btn btn-primary btn-sm mr-1">Xem</button></a>`;
             let btnEdit =
               '<button type="button" class="btn btn-primary btn-sm mr-1 edit" data-id="' +
               row.id +
@@ -68,7 +67,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -98,12 +97,12 @@ async function loadProducts() {
 }
 
 $("#add_data").click(function () {
-  $("#dynamic_modal_title").text("Add Invoice");
+  $("#dynamic_modal_title").text("Thêm Phiếu Nhập");
   arr_invoice = [];
   $("#invoice_items").val(null).trigger("change");
   $("#action").val("Add");
   $("#id").val("");
-  $("#action_button").text("Add");
+  $("#action_button").text("Thêm");
   $("#action_modal").modal("show");
 });
 
@@ -167,7 +166,7 @@ function updateQuantity(value) {
 }
 $(document).on("click", ".delete", function () {
   const id = $(this).data("id");
-  if (confirm("Are you sure you want to delete this invoice?")) {
+  if (confirm("Bạn có chắc chắn muốn xóa phiếu nhập này?")) {
     try {
       $.ajax({
         url: `/api/v1/imports/${id}`,
@@ -185,7 +184,7 @@ $(document).on("click", ".delete", function () {
 $(document).on("click", ".edit", function () {
   const id = $(this).data("id");
 
-  $("#dynamic_modal_title").text("Edit Invoice");
+  $("#dynamic_modal_title").text("Chỉnh Sửa Phiếu Nhập");
 
   $("#action").val("Edit");
 
@@ -230,7 +229,12 @@ $("#action_button").click(async function (e) {
       success: (data) => {
         $("#action_button").attr("disabled", false);
         $("#action_modal").modal("hide");
-        showAlert("success", `${$("#action").val()} Invoice successfully!`);
+        showAlert(
+          "success",
+          `${
+            $("#action").val() === "Add" ? "Thêm" : "Sửa"
+          } phiếu nhập thành công!`
+        );
         reloadData();
       },
     });

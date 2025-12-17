@@ -1,3 +1,8 @@
+// Hàm format số tiền theo chuẩn Việt Nam
+function formatCurrency(amount) {
+  return Number(amount).toLocaleString("vi-VN");
+}
+
 const loadData = async () => {
   try {
     $("#sample_data").DataTable({
@@ -11,7 +16,7 @@ const loadData = async () => {
         {
           data: "user",
           render: function (data) {
-            const n = data?data.name:null;
+            const n = data ? data.name : null;
             return '<div class= "my-3">' + n + "</div>";
           },
         },
@@ -58,13 +63,14 @@ const loadData = async () => {
         {
           data: "totalPrice",
           render: function (data) {
-            return `<div class= "my-3">${data} VND</div>`;
+            const formattedPrice = formatCurrency(data);
+            return `<div class= "my-3">${formattedPrice} VND</div>`;
           },
         },
         {
           data: null,
           render: function (row) {
-            let btnView = `<a href="/orders/${row.id}"><button type="button" class="btn btn-primary btn-sm mr-1" >View</button></a>`;
+            let btnView = `<a href="/orders/${row.id}"><button type="button" class="btn btn-primary btn-sm mr-1" >Xem</button></a>`;
 
             return `<div class= "my-3">${btnView}</div>`;
           },
@@ -72,7 +78,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }

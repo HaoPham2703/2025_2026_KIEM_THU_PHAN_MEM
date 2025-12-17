@@ -32,7 +32,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -43,22 +43,22 @@ function reloadData() {
 }
 
 $("#add_data").click(function () {
-  $("#dynamic_modal_title").text("Add Brand");
+  $("#dynamic_modal_title").text("Thêm Thương Hiệu");
   $("#sample_form")[0].reset();
   $("#action").val("Add");
   $("#id").val("");
 
-  $("#action_button").text("Add");
+  $("#action_button").text("Thêm");
   $("#action_modal").modal("show");
 });
 $(document).on("click", ".edit", function () {
   const id = $(this).data("id");
 
-  $("#dynamic_modal_title").text("Edit Brand");
+  $("#dynamic_modal_title").text("Chỉnh Sửa Thương Hiệu");
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
 
   $("#action_modal").modal("show");
   $.ajax({
@@ -68,7 +68,6 @@ $(document).on("click", ".edit", function () {
       const brand = data.data.data;
       $("#name").val(brand.name);
       $("#id").val(brand._id);
-
     },
   });
 });
@@ -76,13 +75,13 @@ $(document).on("click", ".edit", function () {
 $(document).on("click", ".delete", function () {
   const id = $(this).data("id");
 
-  if (confirm("Are you sure you want to delete this brand?")) {
+  if (confirm("Bạn có chắc chắn muốn xóa thương hiệu này?")) {
     try {
       $.ajax({
         url: `/api/v1/brands/${id}`,
         method: "delete",
         success: function (data) {
-          showAlert("success", `Delete brand Successfully`);
+          showAlert("success", `Xóa thương hiệu thành công!`);
           reloadData();
         },
       });
@@ -110,7 +109,10 @@ $("#sample_form").on("submit", async (e) => {
       success: (data) => {
         $("#action_button").attr("disabled", false);
         $("#action_modal").modal("hide");
-        showAlert("success", `${action} Brand successfully!`);
+        showAlert(
+          "success",
+          `${action === "Add" ? "Thêm" : "Sửa"} thương hiệu thành công!`
+        );
         reloadData();
       },
     });

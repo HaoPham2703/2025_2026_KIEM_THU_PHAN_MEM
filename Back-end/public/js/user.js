@@ -25,7 +25,7 @@ const loadData = async () => {
         {
           data: "name",
           render: function (data) {
-            if (!data) return '<div class= "my-3">N/A</div>';
+            if (!data) return '<div class= "my-3">Không có</div>';
             const value = data.length > 39 ? data.slice(0, 40) + "..." : data;
             return '<div class= "my-3">' + value + "</div>";
           },
@@ -63,7 +63,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -74,23 +74,23 @@ function reloadData() {
 }
 
 $("#add_data").click(function () {
-  $("#dynamic_modal_title").text("Add User");
+  $("#dynamic_modal_title").text("Thêm Người Dùng");
   $("#sample_form")[0].reset();
   $("#action").val("Add");
   $("#id").val("");
 
-  $("#action_button").text("Add");
+  $("#action_button").text("Thêm");
   $("#action_modal").modal("show");
   $(".mb-2").show();
 });
 $(document).on("click", ".edit", function () {
   const id = $(this).data("id");
 
-  $("#dynamic_modal_title").text("Edit User");
+  $("#dynamic_modal_title").text("Chỉnh Sửa Người Dùng");
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
 
   $("#action_modal").modal("show");
   $(".mb-2").hide();
@@ -115,14 +115,19 @@ $(document).on("click", ".ban", function () {
       : { active: "active" };
   const action =
     this.children[0].className == "fa fa-user-lock" ? "Ban" : "UnBan";
-  if (confirm("Are you sure you want to ban this user?")) {
+  if (confirm("Bạn có chắc chắn muốn khóa/mở khóa người dùng này?")) {
     try {
       $.ajax({
         url: `/api/v1/users/${id}`,
         method: "patch",
         data,
         success: function (data) {
-          showAlert("success", `${action} ${data.data.data.name} Successfully`);
+          showAlert(
+            "success",
+            `${action === "Ban" ? "Khóa" : "Mở khóa"} người dùng ${
+              data.data.data.name
+            } thành công!`
+          );
           reloadData();
         },
       });
@@ -158,7 +163,10 @@ $("#sample_form").on("submit", async (e) => {
       success: (data) => {
         $("#action_button").attr("disabled", false);
         $("#action_modal").modal("hide");
-        showAlert("success", `${action} User successfully!`);
+        showAlert(
+          "success",
+          `${action === "Add" ? "Thêm" : "Sửa"} người dùng thành công!`
+        );
         if (action == "Add") window.location.reload();
         else reloadData();
       },

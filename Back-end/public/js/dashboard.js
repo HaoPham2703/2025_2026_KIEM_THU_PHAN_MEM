@@ -9,22 +9,27 @@ const arr_status = [
   {
     status: "Cancelled",
     quantity: 0,
+    label: "Đã Hủy",
   },
   {
     status: "Processed",
     quantity: 0,
+    label: "Đã Xử Lý",
   },
   {
     status: "Waiting Goods",
     quantity: 0,
+    label: "Đang Chờ",
   },
   {
     status: "Delivery",
     quantity: 0,
+    label: "Đang Giao",
   },
   {
     status: "Success",
     quantity: 0,
+    label: "Thành Công",
   },
 ];
 const arr_revenue = [
@@ -243,11 +248,11 @@ async function loadPieChart() {
       type: "doughnut",
       data: {
         labels: [
-          arr_status[0].status,
-          arr_status[1].status,
-          arr_status[2].status,
-          arr_status[3].status,
-          arr_status[4].status,
+          arr_status[0].label,
+          arr_status[1].label,
+          arr_status[2].label,
+          arr_status[3].label,
+          arr_status[4].label,
         ],
         datasets: [
           {
@@ -326,9 +331,13 @@ async function loadAreaChart() {
     });
 
     document.getElementById("totalRevenue").innerHTML =
-      (Number((totalRevenue / 1000000).toFixed())).toLocaleString().replace(/,/g, '.') + " Triệu VND";
+      Number((totalRevenue / 1000000).toFixed())
+        .toLocaleString()
+        .replace(/,/g, ".") + " Triệu VND";
     document.getElementById("totalInvoice").innerHTML =
-      (Number((totalInvoice / 1000000).toFixed())).toLocaleString().replace(/,/g, '.')  + " Triệu VND";
+      Number((totalInvoice / 1000000).toFixed())
+        .toLocaleString()
+        .replace(/,/g, ".") + " Triệu VND";
     const revenue = await arr_revenue.map((value) => value.total);
     const invoice = await arr_invoice.map((value) => value.total);
     const ctc = document.getElementById("myAreaChart");
@@ -336,18 +345,18 @@ async function loadAreaChart() {
       type: "line",
       data: {
         labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
+          "Th1",
+          "Th2",
+          "Th3",
+          "Th4",
+          "Th5",
+          "Th6",
+          "Th7",
+          "Th8",
+          "Th9",
+          "Th10",
+          "Th11",
+          "Th12",
         ],
         datasets: [
           {

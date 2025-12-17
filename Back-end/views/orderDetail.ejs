@@ -4,7 +4,7 @@
             <div class="card" style="border-radius: 10px;">
                 <div class="card-header px-4 py-5">
                     <h5 class="text-muted mb-0"><span style="color: #a8729a;font-size: 26px;">
-                            <%= data.user.name %> 's Order Product
+                            Đơn hàng của <%= data.user.name %>
                         </span></h5>
                 </div>
                 <div class="card-body p-4">
@@ -29,15 +29,15 @@
                                         </p>
                                     </div>
                                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                        <p class="text-muted mb-0 small">Ram: <%= value.product.ram%>GB</p>
+                                        <p class="text-muted mb-0 small">RAM: <%= value.product.ram%>GB</p>
                                     </div>
                                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                        <p class="text-muted mb-0 small">Qty: <%= value.quantity%>
+                                        <p class="text-muted mb-0 small">Số lượng: <%= value.quantity%>
                                         </p>
                                     </div>
                                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                         <p class="text-muted mb-0 small">
-                                            <%= value.product.price%> VND <br>-<%= percent%> %
+                                            <%= value.product.formattedPrice || Number(value.product.price).toLocaleString('vi-VN')%> VND <br>-<%= percent%> %
                                         </p>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
 
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <div>
-                                            <h5 class="mb-0">INVOICE <span class="text-primary font-weight-bold"></span>
+                                            <h5 class="mb-0">HÓA ĐƠN <span class="text-primary font-weight-bold"></span>
                                                 <%= data._id %>
                                                     </span>
                                             </h5>
@@ -70,29 +70,29 @@
                                             <i
                                                 class="fas fa-clipboard-list fa-3x me-lg-4 mb-3 mb-lg-0 text-secondary"></i>
                                             <div>
-                                                <p class="fw-bold mb-1">Order</p>
-                                                <p class="fw-bold mb-0">Processed</p>
+                                                <p class="fw-bold mb-1">Đơn hàng</p>
+                                                <p class="fw-bold mb-0">Đã xử lý</p>
                                             </div>
                                         </div>
                                         <div class="d-lg-flex align-items-center">
                                             <i class="fas fa-box-open fa-3x me-lg-4 mb-3 mb-lg-0 text-warning"></i>
                                             <div>
-                                                <p class="fw-bold mb-1">Order</p>
-                                                <p class="fw-bold mb-0">Shipped</p>
+                                                <p class="fw-bold mb-1">Đơn hàng</p>
+                                                <p class="fw-bold mb-0">Đã gửi hàng</p>
                                             </div>
                                         </div>
                                         <div class="d-lg-flex align-items-center">
                                             <i class="fas fa-shipping-fast fa-3x me-lg-4 mb-3 mb-lg-0 text-info"></i>
                                             <div>
-                                                <p class="fw-bold mb-1">Order</p>
-                                                <p class="fw-bold mb-0">On Route</p>
+                                                <p class="fw-bold mb-1">Đơn hàng</p>
+                                                <p class="fw-bold mb-0">Đang giao</p>
                                             </div>
                                         </div>
                                         <div class="d-lg-flex align-items-center">
                                             <i class="fas fa-home fa-3x me-lg-4 mb-3 mb-lg-0 text-success"></i>
                                             <div>
-                                                <p class="fw-bold mb-1">Order</p>
-                                                <p class="fw-bold mb-0">Arrived</p>
+                                                <p class="fw-bold mb-1">Đơn hàng</p>
+                                                <p class="fw-bold mb-0">Đã đến</p>
                                             </div>
                                         </div>
                                     </div>
@@ -102,39 +102,39 @@
                             </div>
 
                             <div class="d-flex justify-content-between pt-2">
-                                <p class="fw-bold mb-0">Order Details</p>
+                                <p class="fw-bold mb-0">Chi tiết đơn hàng</p>
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <p class="text-muted mb-0">Invoice Date : <%=data.date%>
+                                <p class="text-muted mb-0">Ngày hóa đơn: <%=data.date%>
                                 </p>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span>
-                                    <%=data.total%> VND
-                                </p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="text-muted mb-0">Receiver : <%=data.receiver%>
-                                </p>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span>
-                                    <%=data.discount%> VND
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Tổng tiền</span>
+                                    <%=data.formattedTotal || Number(data.total).toLocaleString('vi-VN')%> VND
                                 </p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p class="text-muted mb-0">Phone : <%=data.phone%>
+                                <p class="text-muted mb-0">Người nhận: <%=data.receiver%>
                                 </p>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Giảm giá</span>
+                                    <%=data.formattedDiscount || Number(data.discount).toLocaleString('vi-VN')%> VND
+                                </p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p class="text-muted mb-0">Address : 22 Dec,2019</p>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Payment</span>
+                                <p class="text-muted mb-0">Số điện thoại: <%=data.phone%>
+                                </p>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Phí vận chuyển</span> Miễn phí</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="text-muted mb-0">Địa chỉ: <%=data.address || '22 Dec,2019'%></p>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Thanh toán</span>
                                     <%=data.payments%>
                             </div>
                 </div>
                 <div class="card-footer border-0 px-4 py-5"
                     style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                    <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
-                        paid: <span class="h2 mb-0 ms-2">
-                            <%=data.totalPrice%> VND
+                    <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Tổng
+                        thanh toán: <span class="h2 mb-0 ms-2">
+                            <%=data.formattedTotalPrice || Number(data.totalPrice).toLocaleString('vi-VN')%> VND
                         </span></h5>
                 </div>
             </div>
@@ -142,46 +142,46 @@
         <div class="col-lg-10 col-xl-4">
             <div class="border-status py-5">
                 <div class="order-action text-center">
-                    <h4 class="text-primary">Order Action</h4>
+                    <h4 class="text-primary">Thao tác đơn hàng</h4>
                 </div>
                 <hr style="height: 0;">
 
                 <div class="text-center">
                     <% if (data.status=="Cancelled" ) { %>
                         <div class="text-center">
-                            <button class="btn btn-danger" disabled>Cancelled</button>
+                            <button class="btn btn-danger" disabled>Đã hủy</button>
                         </div>
                         <%}else if(data.status=="Processed" ) {%>
                             <div class="d-flex text-center">
                                 <div class="col-md-6">
                                     <button class="btn btn-danger" data-id="<%=data._id %>"
-                                        onclick="cancelOrder(this)">Cancel Order</button>
+                                        onclick="cancelOrder(this)">Hủy đơn hàng</button>
                                 </div>
                                 <div class="col-md-6">
                                     <button class="btn btn-success" value="Waiting Goods" data-id="<%=data._id %>"
-                                        onclick="acceptOrder(this)">Accept Order</button>
+                                        onclick="acceptOrder(this)">Chấp nhận đơn hàng</button>
                                 </div>
                             </div>
                             <%} else if(data.status=="Waiting Goods" ){ %>
                                 <div class="d-flex text-center">
                                     <div class="col-md-6">
                                         <button class="btn btn-danger" data-id="<%=data._id %>"
-                                            onclick="cancelOrder(this)">Cancel Order</button>
+                                            onclick="cancelOrder(this)">Hủy đơn hàng</button>
                                     </div>
                                     <div class="col-md-6">
                                         <button class="btn btn-success" value="Delivery" data-id="<%=data._id %>"
-                                            onclick="acceptOrder(this)">Order Shipped</button>
+                                            onclick="acceptOrder(this)">Đã gửi hàng</button>
                                     </div>
                                 </div>
                                 <%} else if(data.status=="Delivery" ){ %>
                                     <div class="d-flex text-center">
                                         <div class="col-md-6">
                                             <button class="btn btn-danger" data-id="<%=data._id %>"
-                                                onclick="cancelOrder(this)">Cancel Order</button>
+                                                onclick="cancelOrder(this)">Hủy đơn hàng</button>
                                         </div>
                                         <div class="col-md-6">
                                             <button class="btn btn-success" value="Success" data-id="<%=data._id %>"
-                                                onclick="acceptOrder(this)">Success</button>
+                                                onclick="acceptOrder(this)">Thành công</button>
                                         </div>
                                     </div>
                                     <%} else { %>
@@ -193,7 +193,7 @@
                 </div>
             </div>
             <div class="my-5 text-center">
-                <a href="/orders"><button href="" class="btn btn-primary">Back</button></a>
+                <a href="/orders"><button href="" class="btn btn-primary">Quay lại</button></a>
             </div>
         </div>
     </div>

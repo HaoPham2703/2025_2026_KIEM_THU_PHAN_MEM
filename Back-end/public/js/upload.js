@@ -17,7 +17,7 @@ const addProduct = async (data) => {
         $("#sample_form")[0].reset();
         $("#action_modal").modal("hide");
         reloadData();
-        showAlert("success", "Add Product successfully!");
+        showAlert("success", "Thêm sản phẩm thành công!");
       },
     });
   } catch (error) {
@@ -42,7 +42,7 @@ const editProduct = async (data) => {
         $("#action_modal").modal("hide");
         $("#sample_form")[0].reset();
         reloadData();
-        showAlert("success", "Edit Product successfully!");
+        showAlert("success", "Sửa sản phẩm thành công!");
       },
     });
   } catch (error) {

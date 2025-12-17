@@ -94,7 +94,7 @@ const loadData = async () => {
       ],
     });
 
-    showAlert("success", "Load Data successfully!");
+    showAlert("success", "Tải dữ liệu thành công!");
   } catch (err) {
     showAlert("error", err);
   }
@@ -113,7 +113,7 @@ $("#add_data").click(function () {
   map = null;
   $("#id").val("");
 
-  $("#action_button").text("Add");
+  $("#action_button").text("Thêm");
   $("#action_modal").modal("show");
 });
 $(document).on("click", ".edit", function () {
@@ -123,7 +123,7 @@ $(document).on("click", ".edit", function () {
 
   $("#action").val("Edit");
 
-  $("#action_button").text("Edit");
+  $("#action_button").text("Sửa");
   $(".map-container").empty();
   $(".map-container").append(`<div id="map"></div>`);
   map = null;
