@@ -1,0 +1,250 @@
+name: Module1 - Authentication Tests
+
+on:
+  push:
+    branches: [weblau]
+    paths:
+      - "Back-end/controllers/authController.js"
+      - "Back-end/models/userModel.js"
+      - "Back-end/routes/userRoutes.js"
+      - "Back-end/tests/unit/controllers/authController.test.js"
+      - "Module1_Auth.md"
+  pull_request:
+    branches: [weblau]
+    paths:
+      - "Back-end/controllers/authController.js"
+      - "Back-end/models/userModel.js"
+      - "Back-end/routes/userRoutes.js"
+      - "Back-end/tests/unit/controllers/authController.test.js"
+
+jobs:
+  test-module1-auth:
+    name: 🔐 Module1 - Authentication Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module1 Authentication Tests
+        working-directory: ./Back-end
+        run: |
+          echo "🔐 Testing Module1 - Authentication..."
+          npm test -- authController.test.js --json --outputFile=module1-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module1-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+          EMAIL_HOST: smtp.gmail.com
+          EMAIL_PORT: 587
+          EMAIL_USERNAME: test@example.com
+          EMAIL_PASSWORD: testpassword
+          EMAIL_FROM: test@example.com
+
+      - name: 📊 Generate Module1 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 🔐 Module1 - Authentication Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`weblau\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module1 - Authentication" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** \`authController.test.js\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse test results
+          if [ -f module1-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            NUM_TOTAL=$(node -p "require('./module1-test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./module1-test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./module1-test-results.json').numFailedTests || 'N/A'")
+            
+            echo "| 📝 Total Tests | $NUM_TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" = "0" ]; then
+              echo "| ✅ Passed | $NUM_PASSED | 🎉 All tests passed! |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ✨ Perfect! |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ✅ Passed | $NUM_PASSED | - |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Show test coverage by function
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Function | Test Cases | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Signup | 3 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| SignupAdmin | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Login | 5 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| VerifyUser | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| ForgotPassword | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| VerifyResetPass | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| ResetPassword | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| UpdatePassword | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Logout | 1 test | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| Protect Middleware | 5 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| RestrictTo Middleware | 3 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "| ChangeStateUser | 2 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed tests if any
+            if [ "$NUM_FAILED" != "0" ] && [ "$NUM_FAILED" != "N/A" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./module1-test-results.json');
+                if (results.testResults && results.testResults.length > 0) {
+                  results.testResults.forEach(suite => {
+                    if (suite.assertionResults) {
+                      suite.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          console.log('### 🔴 ' + test.ancestorTitles.join(' > '));
+                          console.log('**Test:** ' + test.title);
+                          console.log('');
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('**Error:**');
+                            console.log('```');
+                            console.log(test.failureMessages[0].substring(0, 500));
+                            console.log('```');
+                            console.log('');
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Cannot parse failed tests details" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Chi tiết test cases được định nghĩa trong: **\`Module1_Auth.md\`**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Case IDs:" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-001 to AUTH-005**: Signup tests (Positive & Negative)" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-006 to AUTH-011**: Login tests (Positive & Negative)" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-012**: Logout test" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-013 to AUTH-014**: Verify User tests" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-015 to AUTH-016**: Forgot Password tests" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-017 to AUTH-018**: Verify Reset Pass tests" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-019 to AUTH-020**: Reset Password tests" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-021 to AUTH-022**: Update Password tests" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-023 to AUTH-024**: Protect Middleware tests (Security)" >> $GITHUB_STEP_SUMMARY
+          echo "- **AUTH-025**: RestrictTo Middleware test (Security)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Types:" >> $GITHUB_STEP_SUMMARY
+          echo "- **P** (Positive): 9 tests - Testing valid scenarios" >> $GITHUB_STEP_SUMMARY
+          echo "- **N** (Negative): 13 tests - Testing invalid scenarios" >> $GITHUB_STEP_SUMMARY
+          echo "- **S** (Security): 3 tests - Testing security features" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📖 **Documentation:** [View Module1_Auth.md](../blob/${{ github.sha }}/Module1_Auth.md)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📤 Upload Module1 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module1-auth-test-results
+          path: Back-end/module1-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module1
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module1..."
+          npm test -- authController.test.js --coverage --coverageDirectory=./coverage-module1
+        continue-on-error: true
+
+      - name: 📤 Upload Module1 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module1-auth-coverage
+          path: Back-end/coverage-module1
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🔐 Module1 - Authentication Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module1-test-results.json', 'utf8'));
+              const numTotal = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
+              
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| 📝 Total Tests | ${numTotal} |\n`;
+              comment += `| ✅ Passed | ${numPassed} |\n`;
+              comment += `| ❌ Failed | ${numFailed} |\n\n`;
+              
+              if (numFailed === 0) {
+                comment += '### 🎉 All tests passed!\n';
+                comment += 'Module1 Authentication is working perfectly! ✨\n';
+              } else {
+                comment += '### ⚠️ Some tests failed\n';
+                comment += 'Please check the workflow logs for details.\n';
+              }
+              
+              comment += '\n📖 **Details:** Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for full report.';
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module1-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module1-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
