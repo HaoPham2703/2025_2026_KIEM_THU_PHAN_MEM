@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests
         working-directory: ./Back-end
-        run: npm test -- --json --outputFile=test-results.json || true
+        run: npm test -- --json --outputFile=module1-test-results.json || true
         continue-on-error: true
         timeout-minutes: 10
         env:
@@ -56,14 +56,14 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # Parse test results if available
-          if [ -f test-results.json ]; then
+          if [ -f module1-test-results.json ]; then
             echo "### ✅ Test Statistics" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
             echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-            NUM_TESTS=$(node -p "require('./test-results.json').numTotalTests || 'N/A'")
-            NUM_PASSED=$(node -p "require('./test-results.json').numPassedTests || 'N/A'")
-            NUM_FAILED=$(node -p "require('./test-results.json').numFailedTests || 'N/A'")
+            NUM_TESTS=$(node -p "require('./module1-test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./module1-test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./module1-test-results.json').numFailedTests || 'N/A'")
             echo "| Total Tests | $NUM_TESTS |" >> $GITHUB_STEP_SUMMARY
             echo "| ✅ Passed | $NUM_PASSED |" >> $GITHUB_STEP_SUMMARY
             echo "| ❌ Failed | $NUM_FAILED |" >> $GITHUB_STEP_SUMMARY
@@ -80,7 +80,7 @@ jobs:
               
               # Extract failed test names
               node -e "
-                const results = require('./test-results.json');
+                const results = require('./module1-test-results.json');
                 if (results.testResults && results.testResults.length > 0) {
                   results.testResults.forEach(suite => {
                     if (suite.assertionResults) {
@@ -150,9 +150,9 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results
-          path: Back-end/test-results.json
-          retention-days: 7
+          name: module1-test-results
+          path: Back-end/module1-test-results.json
+          retention-days: 30
         continue-on-error: true
 
       - name: Upload coverage to artifacts

@@ -6,20 +6,24 @@
 | ----------------- | ---------------------------------- | --- | --------------------- | ---------- |
 | **Project Name**  | HCShop - Hệ thống bán hàng điện tử |     | **Creator**           | HaoPham    |
 | **Project Code**  | HCSHOP_2024                        |     | **Reviewer/Approver** | -          |
-| **Document Code** | HCSHOP_TestCase_v1.0               |     | **Issue Date**        | 18/12/2024 |
-|                   |                                    |     | **Version**           | 1.0        |
+| **Document Code** | HCSHOP_TestCase_v1.8               |     | **Issue Date**        | 18/12/2025 |
+|                   |                                    |     | **Version**           | 1.8        |
 
 ---
 
 ## Record of Change
 
-| Effective Date | Version | Change Item     | \*A,D,M | Change Description                          | Reference              |
-| -------------- | ------- | --------------- | ------- | ------------------------------------------- | ---------------------- |
-| 18/12/2024     | 1.0     | Initial Release | A       | Tạo mới tài liệu Test Case cho dự án HCShop | DANH_SACH_CHUC_NANG.md |
-|                |         |                 |         |                                             |                        |
-|                |         |                 |         |                                             |                        |
-|                |         |                 |         |                                             |                        |
-|                |         |                 |         |                                             |                        |
+| Effective Date | Version | Change Item                 | \*A,D,M | Change Description                                                 | Reference                                  |
+| -------------- | ------- | --------------------------- | ------- | ------------------------------------------------------------------ | ------------------------------------------ |
+| 05/08/2025     | 1.0     | Initial Release             | A       | Tạo mới tài liệu Test Case cho dự án HCShop                        | DANH_SACH_CHUC_NANG.md                     |
+| 12/08/2025     | 1.1     | Module1 - Auth              | A       | Thêm test case cho Đăng ký, Đăng nhập, Xác thực, Quên/Đổi mật khẩu | authController.js, userRoutes.js           |
+| 25/08/2025     | 1.2     | Module2 - User              | A       | Thêm test case cho Quản lý người dùng, Địa chỉ giao hàng           | userController.js                          |
+| 10/09/2025     | 1.3     | Module3 - Product           | A       | Thêm test case cho Xem, Tìm kiếm, Lọc, CRUD sản phẩm               | productController.js                       |
+| 28/09/2025     | 1.4     | Module4 - Cart & Order      | A       | Thêm test case cho Giỏ hàng, Đơn hàng, Thống kê                    | orderController.js, cartSlice.js           |
+| 15/10/2025     | 1.5     | Module5 - Payment           | A       | Thêm test case cho Thanh toán VNPay, PayPal, COD                   | transactionController.js                   |
+| 02/11/2025     | 1.6     | Module6 - Review & Comment  | A       | Thêm test case cho Đánh giá, Bình luận, Like                       | reviewController.js, commentController.js  |
+| 20/11/2025     | 1.7     | Module7 - Brand & Category  | A       | Thêm test case cho Thương hiệu, Danh mục                           | brandController.js, categoryController.js  |
+| 18/12/2025     | 1.8     | Module8 - Import & Location | A       | Thêm test case cho Nhập hàng, Kho, Thống kê                        | importController.js, locationController.js |
 
 > **Ghi chú \*A,D,M:**
 >
