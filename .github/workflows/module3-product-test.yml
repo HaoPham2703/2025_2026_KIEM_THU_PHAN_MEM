@@ -1,4 +1,4 @@
-name: Module3 - Product Test
+name: Module3 - Product Management Tests
 
 on:
   push:
@@ -7,76 +7,79 @@ on:
     branches: [weblau]
 
 jobs:
-  test:
+  test-module3-product:
+    name: 🛍️ Module3 - Product Management Test Suite
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-        mongodb-version: ["6.0"]
-
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
 
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.10.0
-        with:
-          mongodb-version: ${{ matrix.mongodb-version }}
-
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         working-directory: ./Back-end
         run: npm install
 
-      - name: Run Module3 Tests
+      - name: 🧪 Run Module3 Product Management Tests
         working-directory: ./Back-end
+        run: |
+          echo "🛍️ Testing Module3 - Product Management..."
+          npm test -- productController.test.js --json --outputFile=module3-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
         env:
-          DATABASE: mongodb://localhost:27017/hcshop-test
-          JWT_SECRET: test-secret-key-for-module3-product
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module3-testing
           JWT_EXPIRES_IN: 90d
           JWT_COOKIE_EXPIRES_IN: 90
-        run: |
-          echo "🧪 Running Module3 - Product Management Tests..."
-          npx jest tests/unit/controllers/productController.test.js --coverage --json --outputFile=test-results.json || true
+          EMAIL_HOST: smtp.gmail.com
+          EMAIL_PORT: 587
+          EMAIL_USERNAME: test@example.com
+          EMAIL_PASSWORD: testpassword
+          EMAIL_FROM: test@example.com
 
-      - name: Generate Test Report
+      - name: 📊 Generate Module3 Test Report
         if: always()
         working-directory: ./Back-end
         run: |
-          if [ -f test-results.json ]; then
-            echo "📊 Generating test report..."
-            
-            TOTAL_TESTS=$(jq '.numTotalTests' test-results.json)
-            PASSED_TESTS=$(jq '.numPassedTests' test-results.json)
-            FAILED_TESTS=$(jq '.numFailedTests' test-results.json)
-            
-            echo "## 🛍️ Module3 - Product Management Test Results" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Branch:** \`${GITHUB_REF#refs/heads/}\`" >> $GITHUB_STEP_SUMMARY
-            echo "**Module:** Module3 - Product Management" >> $GITHUB_STEP_SUMMARY
-            echo "**Test File:** productController.test.js" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            echo "### 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "# 🛍️ Module3 - Product Management Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`weblau\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module3 - Product Management" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** \`productController.test.js\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse test results
+          if [ -f module3-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
             echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
-            echo "| 📝 Total Tests | $TOTAL_TESTS | - |" >> $GITHUB_STEP_SUMMARY
-            echo "| ✅ Passed | $PASSED_TESTS | - |" >> $GITHUB_STEP_SUMMARY
             
-            if [ "$FAILED_TESTS" -gt 0 ]; then
-              echo "| ❌ Failed | $FAILED_TESTS | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            NUM_TOTAL=$(node -p "require('./module3-test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./module3-test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./module3-test-results.json').numFailedTests || 'N/A'")
+            
+            echo "| 📝 Total Tests | $NUM_TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" = "0" ]; then
+              echo "| ✅ Passed | $NUM_PASSED | 🎉 All tests passed! |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ✨ Perfect! |" >> $GITHUB_STEP_SUMMARY
             else
-              echo "| ❌ Failed | $FAILED_TESTS | - |" >> $GITHUB_STEP_SUMMARY
+              echo "| ✅ Passed | $NUM_PASSED | - |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
             fi
             
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+
+            # Show test coverage by function
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Function | Test Cases | Description |" >> $GITHUB_STEP_SUMMARY
             echo "|----------|-----------|-------------|" >> $GITHUB_STEP_SUMMARY
@@ -84,99 +87,149 @@ jobs:
             echo "| Get Product | 3 tests | Xem chi tiết sản phẩm |" >> $GITHUB_STEP_SUMMARY
             echo "| Search Products | 3 tests | Tìm kiếm sản phẩm |" >> $GITHUB_STEP_SUMMARY
             echo "| Filter Products | 6 tests | Lọc sản phẩm |" >> $GITHUB_STEP_SUMMARY
-            echo "| Create Product | 9 tests | Thêm sản phẩm (Admin/Employee) |" >> $GITHUB_STEP_SUMMARY
-            echo "| Update Product | 4 tests | Cập nhật sản phẩm (Admin/Employee) |" >> $GITHUB_STEP_SUMMARY
-            echo "| Delete Product | 4 tests | Xóa sản phẩm (Admin/Employee) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Create Product (Admin/Employee) | 9 tests | Thêm sản phẩm |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Product (Admin/Employee) | 4 tests | Cập nhật sản phẩm |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete Product (Admin/Employee) | 4 tests | Xóa sản phẩm |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
             
-            if [ "$FAILED_TESTS" -gt 0 ]; then
-              echo "" >> $GITHUB_STEP_SUMMARY
-              echo "### ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+            # Show failed tests if any
+            if [ "$NUM_FAILED" != "0" ] && [ "$NUM_FAILED" != "N/A" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
               
-              jq -r '.testResults[].assertionResults[] | select(.status == "failed") | "🔴 **" + .ancestorTitles[0] + " > " + .ancestorTitles[1] + "**\n\nTest: " + .title + "\n\nError:\n```\n" + (.failureMessages[0] // "No error message") + "\n```\n"' test-results.json >> $GITHUB_STEP_SUMMARY || echo "⚠️ Could not parse failed test details" >> $GITHUB_STEP_SUMMARY
+              node -e "
+                const results = require('./module3-test-results.json');
+                if (results.testResults && results.testResults.length > 0) {
+                  results.testResults.forEach(suite => {
+                    if (suite.assertionResults) {
+                      suite.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          console.log('### 🔴 ' + test.ancestorTitles.join(' > '));
+                          console.log('**Test:** ' + test.title);
+                          console.log('');
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('**Error:**');
+                            console.log('');
+                            console.log('\`\`\`');
+                            console.log(test.failureMessages[0].substring(0, 500));
+                            console.log('\`\`\`');
+                            console.log('');
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Cannot parse failed tests details" >> $GITHUB_STEP_SUMMARY
             fi
-            
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Chi tiết test cases được định nghĩa trong: **Module3_Product.md**" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Test Case IDs:**" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-001 to PROD-006: Get All Products tests (List, Pagination, Sort, Fields)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-007 to PROD-009: Get Product tests (Detail, Not Found, Invalid ID)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-010 to PROD-012: Search Products tests (By Name, Description, Empty)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-013 to PROD-018: Filter Products tests (Category, Brand, Price, Rating, Combined)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-019 to PROD-027: Create Product tests (Admin, Employee, Validation, Security)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-028 to PROD-031: Update Product tests (Admin, Employee, Not Found, Security)" >> $GITHUB_STEP_SUMMARY
-            echo "- PROD-032 to PROD-035: Delete Product tests (Admin, Not Found, Security)" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Function Groups:**" >> $GITHUB_STEP_SUMMARY
-            echo "- 📋 **Public Functions**: Get All, Get One, Search, Filter (18 tests)" >> $GITHUB_STEP_SUMMARY
-            echo "- 🔐 **Admin/Employee Functions**: Create, Update, Delete (17 tests)" >> $GITHUB_STEP_SUMMARY
           else
             echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
             echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Upload Test Results
-        if: always()
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Chi tiết test cases được định nghĩa trong: **\`Module3_Product.md\`**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Case IDs:" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-001 to PROD-006**: Get All Products tests (List, Pagination, Sort, Fields)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-007 to PROD-009**: Get Product tests (Detail, Not Found, Invalid ID)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-010 to PROD-012**: Search Products tests (By Name, Description, Empty)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-013 to PROD-018**: Filter Products tests (Category, Brand, Price, Rating, Combined)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-019 to PROD-027**: Create Product tests (Admin, Employee, Validation, Security)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-028 to PROD-031**: Update Product tests (Admin, Employee, Not Found, Security)" >> $GITHUB_STEP_SUMMARY
+          echo "- **PROD-032 to PROD-035**: Delete Product tests (Admin, Not Found, Security)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Function Groups:" >> $GITHUB_STEP_SUMMARY
+          echo "- **📋 Public Functions**: Get All, Get One, Search, Filter (18 tests)" >> $GITHUB_STEP_SUMMARY
+          echo "- **🔐 Admin/Employee Functions**: Create, Update, Delete (17 tests)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📖 **Documentation:** [View Module3_Product.md](../blob/${{ github.sha }}/Module3_Product.md)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📤 Upload Module3 Test Results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: module3-product-test-results
-          path: |
-            Back-end/test-results.json
-            Back-end/coverage/
+          path: Back-end/module3-test-results.json
+          retention-days: 30
 
-      - name: Comment PR with Test Results
+      - name: 📊 Generate Coverage for Module3
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module3..."
+          npm test -- productController.test.js --coverage --coverageDirectory=./coverage-module3
+        continue-on-error: true
+
+      - name: 📤 Upload Module3 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module3-product-coverage
+          path: Back-end/coverage-module3
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
         if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const testResultsPath = './Back-end/test-results.json';
-            
-            if (fs.existsSync(testResultsPath)) {
-              const testResults = JSON.parse(fs.readFileSync(testResultsPath, 'utf8'));
-              const totalTests = testResults.numTotalTests;
-              const passedTests = testResults.numPassedTests;
-              const failedTests = testResults.numFailedTests;
-              const passRate = ((passedTests / totalTests) * 100).toFixed(2);
+            let comment = '## 🛍️ Module3 - Product Management Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module3-test-results.json', 'utf8'));
+              const numTotal = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
               
-              let body = `## 🛍️ Module3 - Product Management Test Results\n\n`;
-              body += `| Metric | Value |\n`;
-              body += `|--------|-------|\n`;
-              body += `| 📝 Total Tests | ${totalTests} |\n`;
-              body += `| ✅ Passed | ${passedTests} (${passRate}%) |\n`;
-              body += `| ❌ Failed | ${failedTests} |\n\n`;
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| 📝 Total Tests | ${numTotal} |\n`;
+              comment += `| ✅ Passed | ${numPassed} |\n`;
+              comment += `| ❌ Failed | ${numFailed} |\n\n`;
               
-              if (failedTests > 0) {
-                body += `### ⚠️ Some tests failed. Please check the details above.\n`;
+              if (numFailed === 0) {
+                comment += '### 🎉 All tests passed!\n';
+                comment += 'Module3 Product Management is working perfectly! ✨\n';
               } else {
-                body += `### ✅ All tests passed! Great job!\n`;
+                comment += '### ⚠️ Some tests failed\n';
+                comment += 'Please check the workflow logs for details.\n';
               }
               
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
+              comment += '\n### 📋 Test Coverage:\n';
+              comment += '- Public Functions (Get, Search, Filter): 18 tests\n';
+              comment += '- Admin/Employee Functions (CRUD): 17 tests\n';
+              comment += '\n📖 **Details:** Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for full report.';
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
             }
 
-      - name: Fail if tests failed
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
         working-directory: ./Back-end
         run: |
-          if [ -f test-results.json ]; then
-            FAILED_TESTS=$(jq '.numFailedTests' test-results.json)
-            if [ "$FAILED_TESTS" -gt 0 ]; then
-              echo "❌ $FAILED_TESTS test(s) failed"
+          if [ -f module3-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module3-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
               exit 1
             else
               echo "✅ All tests passed!"
             fi
           else
-            echo "⚠️ Test results file not found"
+            echo "⚠️ Test results not found, assuming failure"
             exit 1
           fi
 

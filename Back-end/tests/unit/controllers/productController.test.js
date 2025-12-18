@@ -33,8 +33,8 @@ describe("Product Controller - Quản lý Sản phẩm", () => {
     adminUser = await User.create({
       name: "Admin User",
       email: "admin@example.com",
-      password: "admin123",
-      passwordConfirm: "admin123",
+      password: "Haolatui2703@",
+      passwordConfirm: "Haolatui2703@",
       role: "admin",
       active: "active",
     });
@@ -42,8 +42,8 @@ describe("Product Controller - Quản lý Sản phẩm", () => {
     employeeUser = await User.create({
       name: "Employee User",
       email: "employee@example.com",
-      password: "employee123",
-      passwordConfirm: "employee123",
+      password: "Haolatui2703@",
+      passwordConfirm: "Haolatui2703@",
       role: "employee",
       active: "active",
     });
@@ -51,8 +51,8 @@ describe("Product Controller - Quản lý Sản phẩm", () => {
     regularUser = await User.create({
       name: "Regular User",
       email: "user@example.com",
-      password: "user123",
-      passwordConfirm: "user123",
+      password: "Haolatui2703@",
+      passwordConfirm: "Haolatui2703@",
       role: "user",
       active: "active",
     });
