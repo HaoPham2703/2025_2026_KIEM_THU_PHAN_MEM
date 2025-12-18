@@ -1,0 +1,230 @@
+name: Module5 - Payment Test
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+
+jobs:
+  test-module5-payment:
+    name: 💳 Module5 - Payment Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module5 Payment Tests
+        working-directory: ./Back-end
+        run: |
+          echo "💳 Testing Module5 - Payment..."
+          npm test -- transactionController.test.js --json --outputFile=module5-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module5-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+          vnp_TmnCode: TEST_TMN_CODE
+          vnp_HashSecret: TEST_SECRET_KEY
+          vnp_Url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+          vnp_ReturnUrl: http://localhost:3000/payment/return
+          vnp_Locale: vn
+
+      - name: 📊 Generate Module5 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 💳 Module5 - Payment Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module5 - Payment" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** transactionController.test.js" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f module5-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            TOTAL=$(node -p "require('./module5-test-results.json').numTotalTests || 0")
+            PASSED=$(node -p "require('./module5-test-results.json').numPassedTests || 0")
+            FAILED=$(node -p "require('./module5-test-results.json').numFailedTests || 0")
+            
+            echo "| 📝 Total Tests | $TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Passed | $PASSED | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "| ❌ Failed | $FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ❌ Failed | $FAILED | ✅ All tests passed |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Function | Test Cases | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-----------|-------------|" >> $GITHUB_STEP_SUMMARY
+            echo "| VNPay Payment | 6 tests | Tạo URL & xác nhận thanh toán VNPay |" >> $GITHUB_STEP_SUMMARY
+            echo "| PayPal Payment | 3 tests | Xác nhận thanh toán PayPal |" >> $GITHUB_STEP_SUMMARY
+            echo "| COD Payment | 3 tests | Thanh toán khi nhận hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get List Payments | 4 tests | Xem lịch sử thanh toán |" >> $GITHUB_STEP_SUMMARY
+            echo "| Auto Update Balance | 4 tests | Post-save hook cập nhật balance |" >> $GITHUB_STEP_SUMMARY
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./module5-test-results.json');
+                const failedTests = [];
+                
+                if (results.testResults) {
+                  results.testResults.forEach(file => {
+                    if (file.assertionResults) {
+                      file.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          failedTests.push({
+                            suite: file.name,
+                            test: test.title,
+                            fullName: test.fullName,
+                            error: test.failureMessages ? test.failureMessages.join('\\n').substring(0, 500) : 'Unknown'
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+                
+                failedTests.forEach((fail, index) => {
+                  console.log(\`🔴 **Test \${index + 1}:** \${fail.fullName}\`);
+                  console.log(\`\`);
+                  console.log(\`**Error:**\`);
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(fail.error.substring(0, 500));
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(\`\`);
+                });
+              " >> $GITHUB_STEP_SUMMARY || echo "No failed tests details available" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Chi tiết test cases được định nghĩa trong: **Module5_Payment.md**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Test Case IDs:**" >> $GITHUB_STEP_SUMMARY
+            echo "- **PAY-001 to PAY-006:** VNPay Payment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **PAY-007 to PAY-009:** PayPal Payment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **PAY-010 to PAY-012:** COD Payment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **PAY-013 to PAY-016:** Get List Payments tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **PAY-017 to PAY-020:** Auto Update Balance tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Function Groups:**" >> $GITHUB_STEP_SUMMARY
+            echo "- 💳 **VNPay:** Create payment URL, Return status, Security validation (6 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 🌐 **PayPal:** Return status, Validation (3 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 💵 **COD:** Cash on delivery, Balance handling (3 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 📜 **Transaction History:** View permissions, Filtering (4 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔄 **Balance Update:** Post-save hook, Accumulation (4 tests)" >> $GITHUB_STEP_SUMMARY
+            
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Module5 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module5-payment-test-results
+          path: Back-end/module5-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module5
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module5..."
+          npm test -- transactionController.test.js --coverage --coverageDirectory=./coverage-module5
+        continue-on-error: true
+
+      - name: 📤 Upload Module5 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module5-payment-coverage
+          path: Back-end/coverage-module5
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 💳 Module5 - Payment Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module5-test-results.json', 'utf8'));
+              const total = results.numTotalTests || 0;
+              const passed = results.numPassedTests || 0;
+              const failed = results.numFailedTests || 0;
+              
+              comment += `### 📊 Test Summary\n\n`;
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| Total Tests | ${total} |\n`;
+              comment += `| ✅ Passed | ${passed} |\n`;
+              comment += `| ❌ Failed | ${failed} |\n`;
+              
+              if (failed > 0) {
+                comment += `\n⚠️ **Some tests failed. Please review the details above.**\n`;
+              } else {
+                comment += `\n✅ **All tests passed successfully!**\n`;
+              }
+              
+              comment += `\n📋 **Full report:** Check the workflow summary for detailed results.\n`;
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module5-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module5-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
