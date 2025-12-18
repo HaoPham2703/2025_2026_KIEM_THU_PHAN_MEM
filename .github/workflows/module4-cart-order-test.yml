@@ -1,0 +1,258 @@
+name: Module4 - Cart & Order Test
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+
+jobs:
+  test-module4-cart-order:
+    name: 🛒 Module4 - Cart & Order Management Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module4 Cart & Order Tests
+        working-directory: ./Back-end
+        run: |
+          echo "🛒 Testing Module4 - Cart & Order Management..."
+          npm test -- orderController.test.js --json --outputFile=module4-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module4-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+          EMAIL_HOST: smtp.gmail.com
+          EMAIL_PORT: 587
+          EMAIL_USERNAME: test@example.com
+          EMAIL_PASSWORD: testpassword
+          EMAIL_FROM: test@example.com
+
+      - name: 📊 Generate Module4 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 🛒 Module4 - Cart & Order Management Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module4 - Cart & Order Management" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** orderController.test.js" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f module4-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            TOTAL=$(node -p "require('./module4-test-results.json').numTotalTests || 0")
+            PASSED=$(node -p "require('./module4-test-results.json').numPassedTests || 0")
+            FAILED=$(node -p "require('./module4-test-results.json').numFailedTests || 0")
+            
+            echo "| 📝 Total Tests | $TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Passed | $PASSED | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "| ❌ Failed | $FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ❌ Failed | $FAILED | ✅ All tests passed |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Function | Test Cases | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-----------|-------------|" >> $GITHUB_STEP_SUMMARY
+            echo "| **Cart Functions (Front-end)** | | |" >> $GITHUB_STEP_SUMMARY
+            echo "| Add To Cart | 4 tests | Thêm sản phẩm vào giỏ hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Set Quantity | 3 tests | Cập nhật số lượng sản phẩm |" >> $GITHUB_STEP_SUMMARY
+            echo "| Remove From Cart | 3 tests | Xóa sản phẩm khỏi giỏ |" >> $GITHUB_STEP_SUMMARY
+            echo "| **Order Functions (Back-end)** | | |" >> $GITHUB_STEP_SUMMARY
+            echo "| Create Order | 6 tests | Tạo đơn hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get All Orders | 3 tests | Xem danh sách đơn hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get Order | 4 tests | Xem chi tiết đơn hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Cancel Order (User) | 4 tests | Hủy đơn hàng |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Order (Admin) | 6 tests | Cập nhật trạng thái |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statistics (Admin) | 7 tests | Thống kê đơn hàng |" >> $GITHUB_STEP_SUMMARY
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./module4-test-results.json');
+                const failedTests = [];
+                
+                function extractFailed(suite) {
+                  if (suite.testResults) {
+                    suite.testResults.forEach(test => {
+                      if (test.status === 'failed') {
+                        failedTests.push({
+                          suite: suite.name,
+                          test: test.fullName,
+                          error: test.failureMessages ? test.failureMessages.join('\\n') : 'Unknown error'
+                        });
+                      }
+                    });
+                  }
+                  if (suite.testResults && suite.testResults.length > 0) {
+                    suite.testResults.forEach(innerSuite => {
+                      if (innerSuite.testResults) {
+                        extractFailed(innerSuite);
+                      }
+                    });
+                  }
+                }
+                
+                if (results.testResults) {
+                  results.testResults.forEach(file => {
+                    if (file.assertionResults) {
+                      file.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          failedTests.push({
+                            suite: file.name,
+                            test: test.title,
+                            fullName: test.fullName,
+                            error: test.failureMessages ? test.failureMessages.join('\\n').substring(0, 300) : 'Unknown'
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+                
+                failedTests.forEach((fail, index) => {
+                  console.log(\`🔴 **\${fail.suite}**\`);
+                  console.log(\`  **Test:** \${fail.test || fail.fullName}\`);
+                  console.log(\`  **Error:** \`);
+                  console.log('');
+                });
+              " >> $GITHUB_STEP_SUMMARY || echo "No failed tests details available" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Chi tiết test cases được định nghĩa trong: **Module4_Cart_Order.md**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Test Case IDs:**" >> $GITHUB_STEP_SUMMARY
+            echo "- **CART-001 to CART-004:** Add To Cart tests (Front-end)" >> $GITHUB_STEP_SUMMARY
+            echo "- **CART-005 to CART-007:** Set Quantity tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **CART-008 to CART-010:** Remove From Cart tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-001 to ORDER-006:** Create Order tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-007 to ORDER-009:** Get All Orders tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-010 to ORDER-013:** Get Order tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-014 to ORDER-017:** Cancel Order tests (User)" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-018 to ORDER-023:** Update Order Status tests (Admin)" >> $GITHUB_STEP_SUMMARY
+            echo "- **ORDER-024 to ORDER-030:** Statistics tests (Admin)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Function Groups:**" >> $GITHUB_STEP_SUMMARY
+            echo "- 🛒 **Cart Functions (Front-end):** Add, Update, Remove from cart (10 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 📦 **Order Management:** Create, View, Cancel orders (13 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔐 **Admin Functions:** Update status, View all orders (6 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 📊 **Statistics:** Revenue, Top products, Date range reports (7 tests)" >> $GITHUB_STEP_SUMMARY
+            
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Module4 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module4-cart-order-test-results
+          path: Back-end/module4-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module4
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module4..."
+          npm test -- orderController.test.js --coverage --coverageDirectory=./coverage-module4
+        continue-on-error: true
+
+      - name: 📤 Upload Module4 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module4-cart-order-coverage
+          path: Back-end/coverage-module4
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🛒 Module4 - Cart & Order Management Test Results\n\n';
+            
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module4-test-results.json', 'utf8'));
+              const total = results.numTotalTests || 0;
+              const passed = results.numPassedTests || 0;
+              const failed = results.numFailedTests || 0;
+              
+              comment += `### 📊 Test Summary\n\n`;
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| Total Tests | ${total} |\n`;
+              comment += `| ✅ Passed | ${passed} |\n`;
+              comment += `| ❌ Failed | ${failed} |\n`;
+              
+              if (failed > 0) {
+                comment += `\n⚠️ **Some tests failed. Please review the details above.**\n`;
+              } else {
+                comment += `\n✅ **All tests passed successfully!**\n`;
+              }
+              
+              comment += `\n📋 **Full report:** Check the workflow summary for detailed results.\n`;
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module4-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module4-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
+

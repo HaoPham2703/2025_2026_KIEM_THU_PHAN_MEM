@@ -15,7 +15,7 @@
 
 | Pass | Fail | Untested | N/A | Number of Test Cases |
 | ---- | ---- | -------- | --- | -------------------- |
-| 0    | 0    | 35       | 0   | 35                   |
+| 27   | 8    | 0        | 0   | 35                   |
 
 > **Ghi chú:** Kết quả từ GitHub Actions - Branch `weblau` - Test Date: 18/12/2025
 
@@ -25,85 +25,85 @@
 
 ### Function A: Xem danh sách sản phẩm (Get All Products)
 
-| ID       | Test Case Description                    | Test Case Procedure                                          | Expected Output                                                     | Test Data  | Result   | Test Date | Description             |
-| -------- | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- | ---------- | -------- | --------- | ----------------------- |
-| PROD-001 | Xem danh sách sản phẩm thành công        | 1. Không cần đăng nhập<br>2. Gọi API GET /api/v1/products    | 1. Trả về status 200<br>2. Trả về danh sách sản phẩm                | TestData01 | Untested |           | Không yêu cầu đăng nhập |
-| PROD-002 | Xem danh sách với pagination             | 1. Gọi API GET /api/v1/products?page=2&limit=10              | 1. Trả về status 200<br>2. Trả về 10 sản phẩm trang 2               | TestData02 | Untested |           | Pagination hoạt động    |
-| PROD-003 | Xem danh sách với sort theo giá tăng dần | 1. Gọi API GET /api/v1/products?sort=price                   | 1. Trả về status 200<br>2. Sản phẩm được sắp xếp theo giá tăng      | TestData03 | Untested |           | Sort ascending          |
-| PROD-004 | Xem danh sách với sort theo giá giảm dần | 1. Gọi API GET /api/v1/products?sort=-price                  | 1. Trả về status 200<br>2. Sản phẩm được sắp xếp theo giá giảm      | TestData04 | Untested |           | Sort descending         |
-| PROD-005 | Xem danh sách với fields selection       | 1. Gọi API GET /api/v1/products?fields=title,price,promotion | 1. Trả về status 200<br>2. Chỉ trả về các field được chọn           | TestData05 | Untested |           | Select specific fields  |
-| PROD-006 | Xem top 5 sản phẩm rẻ nhất               | 1. Gọi API GET /api/v1/products/top-5-cheap                  | 1. Trả về status 200<br>2. Trả về 5 sản phẩm rẻ nhất với rating cao | TestData06 | Untested |           | Alias route             |
+| ID       | Test Case Description                    | Test Case Procedure                                          | Expected Output                                                     | Test Data  | Result | Test Date  | Description             |
+| -------- | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- | ---------- | ------ | ---------- | ----------------------- |
+| PROD-001 | Xem danh sách sản phẩm thành công        | 1. Không cần đăng nhập<br>2. Gọi API GET /api/v1/products    | 1. Trả về status 200<br>2. Trả về danh sách sản phẩm                | TestData01 | Pass   | 18/12/2025 | Không yêu cầu đăng nhập |
+| PROD-002 | Xem danh sách với pagination             | 1. Gọi API GET /api/v1/products?page=2&limit=10              | 1. Trả về status 200<br>2. Trả về 10 sản phẩm trang 2               | TestData02 | Pass   | 18/12/2025 | Pagination hoạt động    |
+| PROD-003 | Xem danh sách với sort theo giá tăng dần | 1. Gọi API GET /api/v1/products?sort=price                   | 1. Trả về status 200<br>2. Sản phẩm được sắp xếp theo giá tăng      | TestData03 | Pass   | 18/12/2025 | Sort ascending          |
+| PROD-004 | Xem danh sách với sort theo giá giảm dần | 1. Gọi API GET /api/v1/products?sort=-price                  | 1. Trả về status 200<br>2. Sản phẩm được sắp xếp theo giá giảm      | TestData04 | Pass   | 18/12/2025 | Sort descending         |
+| PROD-005 | Xem danh sách với fields selection       | 1. Gọi API GET /api/v1/products?fields=title,price,promotion | 1. Trả về status 200<br>2. Chỉ trả về các field được chọn           | TestData05 | Pass   | 18/12/2025 | Select specific fields  |
+| PROD-006 | Xem top 5 sản phẩm rẻ nhất               | 1. Gọi API GET /api/v1/products/top-5-cheap                  | 1. Trả về status 200<br>2. Trả về 5 sản phẩm rẻ nhất với rating cao | TestData06 | Pass   | 18/12/2025 | Alias route             |
 
 ---
 
 ### Function B: Xem chi tiết sản phẩm (Get Product)
 
-| ID       | Test Case Description                            | Test Case Procedure                           | Expected Output                                                           | Test Data  | Result   | Test Date | Description           |
-| -------- | ------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------- | ---------- | -------- | --------- | --------------------- |
-| PROD-007 | Xem chi tiết sản phẩm thành công                 | 1. Gọi API GET /api/v1/products/:validId      | 1. Trả về status 200<br>2. Trả về thông tin chi tiết sản phẩm kèm reviews | TestData07 | Untested |           | Sản phẩm tồn tại      |
-| PROD-008 | Xem chi tiết thất bại - Product ID không tồn tại | 1. Gọi API GET /api/v1/products/:invalidId    | 1. Trả về status 404<br>2. Message: "No document found with that ID"      | TestData08 | Untested |           | Product không tồn tại |
-| PROD-009 | Xem chi tiết thất bại - Product ID không hợp lệ  | 1. Gọi API GET /api/v1/products/invalidformat | 1. Trả về status 500<br>2. Message lỗi cast ID                            | TestData09 | Untested |           | Invalid ObjectId      |
+| ID       | Test Case Description                            | Test Case Procedure                           | Expected Output                                                           | Test Data  | Result | Test Date  | Description                                 |
+| -------- | ------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------- | ---------- | ------ | ---------- | ------------------------------------------- |
+| PROD-007 | Xem chi tiết sản phẩm thành công                 | 1. Gọi API GET /api/v1/products/:validId      | 1. Trả về status 200<br>2. Trả về thông tin chi tiết sản phẩm kèm reviews | TestData07 | Fail   | 18/12/2025 | Mock factory không gọi res.status - Cần fix |
+| PROD-008 | Xem chi tiết thất bại - Product ID không tồn tại | 1. Gọi API GET /api/v1/products/:invalidId    | 1. Trả về status 404<br>2. Message: "No document found with that ID"      | TestData08 | Pass   | 18/12/2025 | Product không tồn tại                       |
+| PROD-009 | Xem chi tiết thất bại - Product ID không hợp lệ  | 1. Gọi API GET /api/v1/products/invalidformat | 1. Trả về status 500<br>2. Message lỗi cast ID                            | TestData09 | Pass   | 18/12/2025 | Invalid ObjectId                            |
 
 ---
 
 ### Function C: Tìm kiếm sản phẩm (Search Products)
 
-| ID       | Test Case Description                      | Test Case Procedure                                       | Expected Output                                                                | Test Data  | Result   | Test Date | Description      |
-| -------- | ------------------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------- | -------- | --------- | ---------------- |
-| PROD-010 | Tìm kiếm sản phẩm theo tên thành công      | 1. Gọi API GET /api/v1/products?search=laptop             | 1. Trả về status 200<br>2. Trả về các sản phẩm có chứa "laptop"                | TestData10 | Untested |           | Text search      |
-| PROD-011 | Tìm kiếm sản phẩm theo từ khóa description | 1. Gọi API GET /api/v1/products?search=gaming             | 1. Trả về status 200<br>2. Trả về sản phẩm có "gaming" trong title/description | TestData11 | Untested |           | Full-text search |
-| PROD-012 | Tìm kiếm không có kết quả                  | 1. Gọi API GET /api/v1/products?search=nonexistentproduct | 1. Trả về status 200<br>2. Trả về mảng rỗng []                                 | TestData12 | Untested |           | Empty result     |
+| ID       | Test Case Description                      | Test Case Procedure                                       | Expected Output                                                                | Test Data  | Result | Test Date  | Description      |
+| -------- | ------------------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------- | ------ | ---------- | ---------------- |
+| PROD-010 | Tìm kiếm sản phẩm theo tên thành công      | 1. Gọi API GET /api/v1/products?search=laptop             | 1. Trả về status 200<br>2. Trả về các sản phẩm có chứa "laptop"                | TestData10 | Pass   | 18/12/2025 | Text search      |
+| PROD-011 | Tìm kiếm sản phẩm theo từ khóa description | 1. Gọi API GET /api/v1/products?search=gaming             | 1. Trả về status 200<br>2. Trả về sản phẩm có "gaming" trong title/description | TestData11 | Pass   | 18/12/2025 | Full-text search |
+| PROD-012 | Tìm kiếm không có kết quả                  | 1. Gọi API GET /api/v1/products?search=nonexistentproduct | 1. Trả về status 200<br>2. Trả về mảng rỗng []                                 | TestData12 | Pass   | 18/12/2025 | Empty result     |
 
 ---
 
 ### Function D: Lọc sản phẩm (Filter Products)
 
-| ID       | Test Case Description                  | Test Case Procedure                                                                   | Expected Output                                                                       | Test Data  | Result   | Test Date | Description        |
-| -------- | -------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------- | -------- | --------- | ------------------ |
-| PROD-013 | Lọc sản phẩm theo category thành công  | 1. Gọi API GET /api/v1/products?category=:categoryId                                  | 1. Trả về status 200<br>2. Trả về sản phẩm thuộc category đó                          | TestData13 | Untested |           | Filter by category |
-| PROD-014 | Lọc sản phẩm theo brand thành công     | 1. Gọi API GET /api/v1/products?brand=:brandId                                        | 1. Trả về status 200<br>2. Trả về sản phẩm thuộc brand đó                             | TestData14 | Untested |           | Filter by brand    |
-| PROD-015 | Lọc sản phẩm theo khoảng giá           | 1. Gọi API GET /api/v1/products?price[gte]=10000000&price[lte]=20000000               | 1. Trả về status 200<br>2. Trả về sản phẩm có giá từ 10tr - 20tr                      | TestData15 | Untested |           | Price range filter |
-| PROD-016 | Lọc sản phẩm theo rating tối thiểu     | 1. Gọi API GET /api/v1/products?ratingsAverage[gte]=4.5                               | 1. Trả về status 200<br>2. Trả về sản phẩm có rating >= 4.5                           | TestData16 | Untested |           | Rating filter      |
-| PROD-017 | Lọc sản phẩm kết hợp nhiều điều kiện   | 1. Gọi API GET /api/v1/products?category=:id&price[lte]=15000000&sort=-ratingsAverage | 1. Trả về status 200<br>2. Trả về sản phẩm đúng category, giá <= 15tr, sort by rating | TestData17 | Untested |           | Multiple filters   |
-| PROD-018 | Lọc sản phẩm theo inventory (còn hàng) | 1. Gọi API GET /api/v1/products?inventory[gt]=0                                       | 1. Trả về status 200<br>2. Trả về sản phẩm còn trong kho                              | TestData18 | Untested |           | In-stock products  |
+| ID       | Test Case Description                  | Test Case Procedure                                                                   | Expected Output                                                                       | Test Data  | Result | Test Date  | Description                                        |
+| -------- | -------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------- | ------ | ---------- | -------------------------------------------------- |
+| PROD-013 | Lọc sản phẩm theo category thành công  | 1. Gọi API GET /api/v1/products?category=:categoryId                                  | 1. Trả về status 200<br>2. Trả về sản phẩm thuộc category đó                          | TestData13 | Fail   | 18/12/2025 | Không có sản phẩm nào match category - Test data   |
+| PROD-014 | Lọc sản phẩm theo brand thành công     | 1. Gọi API GET /api/v1/products?brand=:brandId                                        | 1. Trả về status 200<br>2. Trả về sản phẩm thuộc brand đó                             | TestData14 | Fail   | 18/12/2025 | Không có sản phẩm nào match brand - Test data      |
+| PROD-015 | Lọc sản phẩm theo khoảng giá           | 1. Gọi API GET /api/v1/products?price[gte]=10000000&price[lte]=20000000               | 1. Trả về status 200<br>2. Trả về sản phẩm có giá từ 10tr - 20tr                      | TestData15 | Fail   | 18/12/2025 | Không có sản phẩm trong khoảng giá - Test data     |
+| PROD-016 | Lọc sản phẩm theo rating tối thiểu     | 1. Gọi API GET /api/v1/products?ratingsAverage[gte]=4.5                               | 1. Trả về status 200<br>2. Trả về sản phẩm có rating >= 4.5                           | TestData16 | Pass   | 18/12/2025 | Rating filter                                      |
+| PROD-017 | Lọc sản phẩm kết hợp nhiều điều kiện   | 1. Gọi API GET /api/v1/products?category=:id&price[lte]=15000000&sort=-ratingsAverage | 1. Trả về status 200<br>2. Trả về sản phẩm đúng category, giá <= 15tr, sort by rating | TestData17 | Pass   | 18/12/2025 | Multiple filters                                   |
+| PROD-018 | Lọc sản phẩm theo inventory (còn hàng) | 1. Gọi API GET /api/v1/products?inventory[gt]=0                                       | 1. Trả về status 200<br>2. Trả về sản phẩm còn trong kho                              | TestData18 | Fail   | 18/12/2025 | Không có sản phẩm trong kho >0 - Cần populate data |
 
 ---
 
 ### Function E: Thêm sản phẩm (Admin - Create Product)
 
-| ID       | Test Case Description                                  | Test Case Procedure                                                                                                           | Expected Output                                                          | Test Data  | Result   | Test Date | Description             |
-| -------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------- | -------- | --------- | ----------------------- |
-| PROD-019 | Admin thêm sản phẩm thành công với đầy đủ thông tin    | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi: title, price, description, images, category, brand | 1. Trả về status 201<br>2. Sản phẩm được tạo thành công                  | TestData19 | Untested |           | Role = admin, full data |
-| PROD-020 | Employee thêm sản phẩm thành công                      | 1. Đăng nhập với role=employee<br>2. Gọi API POST /api/v1/products<br>3. Gửi thông tin sản phẩm                               | 1. Trả về status 201<br>2. Sản phẩm được tạo thành công                  | TestData20 | Untested |           | Role = employee         |
-| PROD-021 | Thêm sản phẩm với promotion                            | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi: title, price, promotion (promotion < price)        | 1. Trả về status 201<br>2. Sản phẩm có giá khuyến mãi hợp lệ             | TestData21 | Untested |           | Promotion valid         |
-| PROD-022 | Thêm sản phẩm thất bại - Thiếu trường bắt buộc (title) | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi dữ liệu thiếu title                                 | 1. Trả về lỗi validation<br>2. Message: "Sản phẩm phải có tên phân biệt" | TestData22 | Untested |           | Missing required field  |
-| PROD-023 | Thêm sản phẩm thất bại - Thiếu trường bắt buộc (price) | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi dữ liệu thiếu price                                 | 1. Trả về lỗi validation<br>2. Message: "Vui lòng cung cấp giá sản phẩm" | TestData23 | Untested |           | Missing price           |
-| PROD-024 | Thêm sản phẩm thất bại - Title trùng lặp               | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi title đã tồn tại                                    | 1. Trả về lỗi duplicate<br>2. Message lỗi title unique                   | TestData24 | Untested |           | Duplicate title         |
-| PROD-025 | Thêm sản phẩm thất bại - Promotion > Price             | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi promotion > price                                   | 1. Trả về lỗi validation<br>2. Message: "Giá giảm phải nhỏ hơn giá gốc"  | TestData25 | Untested |           | Invalid promotion       |
-| PROD-026 | Thêm sản phẩm thất bại - Không có quyền (User)         | 1. Đăng nhập với role=user<br>2. Gọi API POST /api/v1/products                                                                | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."              | TestData26 | Untested |           | Forbidden - role user   |
-| PROD-027 | Thêm sản phẩm thất bại - Chưa đăng nhập                | 1. Không đăng nhập<br>2. Gọi API POST /api/v1/products                                                                        | 1. Trả về status 401<br>2. Message lỗi authentication                    | TestData27 | Untested |           | Unauthorized            |
+| ID       | Test Case Description                                  | Test Case Procedure                                                                                                           | Expected Output                                                          | Test Data  | Result | Test Date  | Description                                           |
+| -------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------- | ------ | ---------- | ----------------------------------------------------- |
+| PROD-019 | Admin thêm sản phẩm thành công với đầy đủ thông tin    | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi: title, price, description, images, category, brand | 1. Trả về status 201<br>2. Sản phẩm được tạo thành công                  | TestData19 | Pass   | 18/12/2025 | Role = admin, full data                               |
+| PROD-020 | Employee thêm sản phẩm thành công                      | 1. Đăng nhập với role=employee<br>2. Gọi API POST /api/v1/products<br>3. Gửi thông tin sản phẩm                               | 1. Trả về status 201<br>2. Sản phẩm được tạo thành công                  | TestData20 | Pass   | 18/12/2025 | Role = employee                                       |
+| PROD-021 | Thêm sản phẩm với promotion                            | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi: title, price, promotion (promotion < price)        | 1. Trả về status 201<br>2. Sản phẩm có giá khuyến mãi hợp lệ             | TestData21 | Pass   | 18/12/2025 | Promotion valid                                       |
+| PROD-022 | Thêm sản phẩm thất bại - Thiếu trường bắt buộc (title) | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi dữ liệu thiếu title                                 | 1. Trả về lỗi validation<br>2. Message: "Sản phẩm phải có tên phân biệt" | TestData22 | Pass   | 18/12/2025 | Missing required field                                |
+| PROD-023 | Thêm sản phẩm thất bại - Thiếu trường bắt buộc (price) | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi dữ liệu thiếu price                                 | 1. Trả về lỗi validation<br>2. Message: "Vui lòng cung cấp giá sản phẩm" | TestData23 | Pass   | 18/12/2025 | Missing price                                         |
+| PROD-024 | Thêm sản phẩm thất bại - Title trùng lặp               | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi title đã tồn tại                                    | 1. Trả về lỗi duplicate<br>2. Message lỗi title unique                   | TestData24 | Fail   | 18/12/2025 | Mock không gọi next(error) - Cần handle duplicate key |
+| PROD-025 | Thêm sản phẩm thất bại - Promotion > Price             | 1. Đăng nhập với role=admin<br>2. Gọi API POST /api/v1/products<br>3. Gửi promotion > price                                   | 1. Trả về lỗi validation<br>2. Message: "Giá giảm phải nhỏ hơn giá gốc"  | TestData25 | Pass   | 18/12/2025 | Invalid promotion                                     |
+| PROD-026 | Thêm sản phẩm thất bại - Không có quyền (User)         | 1. Đăng nhập với role=user<br>2. Gọi API POST /api/v1/products                                                                | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."              | TestData26 | Pass   | 18/12/2025 | Forbidden - role user                                 |
+| PROD-027 | Thêm sản phẩm thất bại - Chưa đăng nhập                | 1. Không đăng nhập<br>2. Gọi API POST /api/v1/products                                                                        | 1. Trả về status 401<br>2. Message lỗi authentication                    | TestData27 | Pass   | 18/12/2025 | Unauthorized                                          |
 
 ---
 
 ### Function F: Cập nhật sản phẩm (Admin - Update Product)
 
-| ID       | Test Case Description                              | Test Case Procedure                                                                                | Expected Output                                                      | Test Data  | Result   | Test Date | Description       |
-| -------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------- | -------- | --------- | ----------------- |
-| PROD-028 | Admin cập nhật sản phẩm thành công                 | 1. Đăng nhập với role=admin<br>2. Gọi API PATCH /api/v1/products/:id<br>3. Gửi dữ liệu cập nhật    | 1. Trả về status 200<br>2. Sản phẩm được cập nhật                    | TestData28 | Untested |           | Role = admin      |
-| PROD-029 | Employee cập nhật sản phẩm thành công              | 1. Đăng nhập với role=employee<br>2. Gọi API PATCH /api/v1/products/:id<br>3. Gửi dữ liệu cập nhật | 1. Trả về status 200<br>2. Sản phẩm được cập nhật                    | TestData29 | Untested |           | Role = employee   |
-| PROD-030 | Cập nhật sản phẩm thất bại - Product không tồn tại | 1. Đăng nhập với role=admin<br>2. Gọi API PATCH /api/v1/products/:invalidId                        | 1. Trả về status 404<br>2. Message: "No document found with that ID" | TestData30 | Untested |           | Product not found |
-| PROD-031 | Cập nhật sản phẩm thất bại - Không có quyền (User) | 1. Đăng nhập với role=user<br>2. Gọi API PATCH /api/v1/products/:id                                | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."          | TestData31 | Untested |           | Forbidden         |
+| ID       | Test Case Description                              | Test Case Procedure                                                                                | Expected Output                                                      | Test Data  | Result | Test Date  | Description                              |
+| -------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------- | ------ | ---------- | ---------------------------------------- |
+| PROD-028 | Admin cập nhật sản phẩm thành công                 | 1. Đăng nhập với role=admin<br>2. Gọi API PATCH /api/v1/products/:id<br>3. Gửi dữ liệu cập nhật    | 1. Trả về status 200<br>2. Sản phẩm được cập nhật                    | TestData28 | Fail   | 18/12/2025 | Mock không gọi res.status - Cần fix mock |
+| PROD-029 | Employee cập nhật sản phẩm thành công              | 1. Đăng nhập với role=employee<br>2. Gọi API PATCH /api/v1/products/:id<br>3. Gửi dữ liệu cập nhật | 1. Trả về status 200<br>2. Sản phẩm được cập nhật                    | TestData29 | Fail   | 18/12/2025 | Mock không gọi res.status - Cần fix mock |
+| PROD-030 | Cập nhật sản phẩm thất bại - Product không tồn tại | 1. Đăng nhập với role=admin<br>2. Gọi API PATCH /api/v1/products/:invalidId                        | 1. Trả về status 404<br>2. Message: "No document found with that ID" | TestData30 | Pass   | 18/12/2025 | Product not found                        |
+| PROD-031 | Cập nhật sản phẩm thất bại - Không có quyền (User) | 1. Đăng nhập với role=user<br>2. Gọi API PATCH /api/v1/products/:id                                | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."          | TestData31 | Pass   | 18/12/2025 | Forbidden                                |
 
 ---
 
 ### Function G: Xóa sản phẩm (Admin - Delete Product)
 
-| ID       | Test Case Description                         | Test Case Procedure                                                          | Expected Output                                                      | Test Data  | Result   | Test Date | Description       |
-| -------- | --------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------- | -------- | --------- | ----------------- |
-| PROD-032 | Admin xóa sản phẩm thành công                 | 1. Đăng nhập với role=admin<br>2. Gọi API DELETE /api/v1/products/:id        | 1. Trả về status 204<br>2. Sản phẩm được xóa khỏi database           | TestData32 | Untested |           | Role = admin      |
-| PROD-033 | Xóa sản phẩm thất bại - Product không tồn tại | 1. Đăng nhập với role=admin<br>2. Gọi API DELETE /api/v1/products/:invalidId | 1. Trả về status 404<br>2. Message: "No document found with that ID" | TestData33 | Untested |           | Product not found |
-| PROD-034 | Xóa sản phẩm thất bại - Không có quyền (User) | 1. Đăng nhập với role=user<br>2. Gọi API DELETE /api/v1/products/:id         | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."          | TestData34 | Untested |           | Forbidden         |
-| PROD-035 | Xóa sản phẩm thất bại - Chưa đăng nhập        | 1. Không đăng nhập<br>2. Gọi API DELETE /api/v1/products/:id                 | 1. Trả về status 401<br>2. Message lỗi authentication                | TestData35 | Untested |           | Unauthorized      |
+| ID       | Test Case Description                         | Test Case Procedure                                                          | Expected Output                                                      | Test Data  | Result | Test Date  | Description       |
+| -------- | --------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------- | ------ | ---------- | ----------------- |
+| PROD-032 | Admin xóa sản phẩm thành công                 | 1. Đăng nhập với role=admin<br>2. Gọi API DELETE /api/v1/products/:id        | 1. Trả về status 204<br>2. Sản phẩm được xóa khỏi database           | TestData32 | Pass   | 18/12/2025 | Role = admin      |
+| PROD-033 | Xóa sản phẩm thất bại - Product không tồn tại | 1. Đăng nhập với role=admin<br>2. Gọi API DELETE /api/v1/products/:invalidId | 1. Trả về status 404<br>2. Message: "No document found with that ID" | TestData33 | Pass   | 18/12/2025 | Product not found |
+| PROD-034 | Xóa sản phẩm thất bại - Không có quyền (User) | 1. Đăng nhập với role=user<br>2. Gọi API DELETE /api/v1/products/:id         | 1. Trả về status 403<br>2. Message: "Bạn không có quyền..."          | TestData34 | Pass   | 18/12/2025 | Forbidden         |
+| PROD-035 | Xóa sản phẩm thất bại - Chưa đăng nhập        | 1. Không đăng nhập<br>2. Gọi API DELETE /api/v1/products/:id                 | 1. Trả về status 401<br>2. Message lỗi authentication                | TestData35 | Pass   | 18/12/2025 | Unauthorized      |
 
 ---
 
@@ -146,6 +146,90 @@
 | TestData33   | DELETE /api/v1/products/:invalidId                                                                                                                 |
 | TestData34   | DELETE /api/v1/products/:id by user role                                                                                                           |
 | TestData35   | DELETE /api/v1/products/:id without Authorization                                                                                                  |
+
+---
+
+## Báo Cáo Test Tự Động (GitHub Actions)
+
+### 📊 Tổng Quan Test Results
+
+| Metric          | Value      | Status             |
+| --------------- | ---------- | ------------------ |
+| **Total Tests** | 35         | -                  |
+| **✅ Passed**   | 27         | 77.14%             |
+| **❌ Failed**   | 8          | 22.86% - Cần xử lý |
+| **Branch**      | weblau     | -                  |
+| **Test Date**   | 18/12/2025 | -                  |
+
+### ❌ Chi Tiết Các Test Failed
+
+| STT | Test Suite  | Test Case Description                    | Test ID  | Status    | Note                                             |
+| --- | ----------- | ---------------------------------------- | -------- | --------- | ------------------------------------------------ |
+| 1   | Get Product | Xem chi tiết sản phẩm thành công         | PROD-007 | ❌ Failed | Mock factory không gọi res.status                |
+| 2   | Filter      | Lọc sản phẩm theo category thành công    | PROD-013 | ❌ Failed | Không có sản phẩm match category trong test data |
+| 3   | Filter      | Lọc sản phẩm theo brand thành công       | PROD-014 | ❌ Failed | Không có sản phẩm match brand trong test data    |
+| 4   | Filter      | Lọc sản phẩm theo khoảng giá             | PROD-015 | ❌ Failed | Không có sản phẩm trong khoảng giá test          |
+| 5   | Filter      | Lọc sản phẩm theo inventory (còn hàng)   | PROD-018 | ❌ Failed | Không có sản phẩm với inventory > 0              |
+| 6   | Create      | Thêm sản phẩm thất bại - Title trùng lặp | PROD-024 | ❌ Failed | Mock không handle duplicate key error            |
+| 7   | Update      | Admin cập nhật sản phẩm thành công       | PROD-028 | ❌ Failed | Mock không gọi res.status                        |
+| 8   | Update      | Employee cập nhật sản phẩm thành công    | PROD-029 | ❌ Failed | Mock không gọi res.status                        |
+
+### 🎯 Độ Coverage Theo Function
+
+| Function         | Test Cases | Passed | Failed | Pass Rate |
+| ---------------- | ---------- | ------ | ------ | --------- |
+| Get All Products | 6          | 6      | 0      | 100% ✅   |
+| Get Product      | 3          | 2      | 1      | 67% ⚠️    |
+| Search Products  | 3          | 3      | 0      | 100% ✅   |
+| Filter Products  | 6          | 2      | 4      | 33% ❌    |
+| Create Product   | 9          | 8      | 1      | 89% ✅    |
+| Update Product   | 4          | 2      | 2      | 50% ⚠️    |
+| Delete Product   | 4          | 4      | 0      | 100% ✅   |
+
+### 📋 Phân Loại Theo Nhóm Chức Năng
+
+**📋 Public Functions (18 tests)**
+
+- ✅ Passed: 13 tests
+- ❌ Failed: 5 tests
+- Pass Rate: 72.22%
+
+**🔐 Admin/Employee Functions (17 tests)**
+
+- ✅ Passed: 14 tests
+- ❌ Failed: 3 tests
+- Pass Rate: 82.35%
+
+### 🔧 Hành Động Tiếp Theo
+
+**Ưu tiên cao:**
+
+1. ❌ Fix function `Filter Products` (PROD-013, PROD-014, PROD-015, PROD-018) - 33% pass rate
+   - Cần tạo test data phù hợp với các filter conditions
+   - Đảm bảo có sản phẩm với category, brand, price range, inventory phù hợp
+2. ⚠️ Fix function `Update Product` (PROD-028, PROD-029) - 50% pass rate
+   - Fix mock factory updateOne để gọi res.status đúng cách
+3. ⚠️ Fix function `Get Product` (PROD-007) - 67% pass rate
+   - Fix mock factory getOne để gọi res.status đúng cách
+
+**Ưu tiên trung bình:**
+
+4. Fix function `Create Product` (PROD-024) - 89% pass rate
+   - Mock cần handle duplicate key error đúng cách
+
+**Khuyến nghị:**
+
+- Test data cần được populate đầy đủ trước khi chạy filter tests
+- Mock factory functions cần được fix để gọi res.status/res.json đúng
+- Duplicate key validation cần được test với database thực tế hoặc mock tốt hơn
+
+### 📈 So Sánh Với Module Khác
+
+| Module            | Total Tests | Passed | Failed | Pass Rate |
+| ----------------- | ----------- | ------ | ------ | --------- |
+| Module1 (Auth)    | 31          | 26     | 5      | 83.87%    |
+| Module2 (User)    | 30          | 23     | 7      | 76.67%    |
+| Module3 (Product) | 35          | 27     | 8      | 77.14%    |
 
 ---
 
