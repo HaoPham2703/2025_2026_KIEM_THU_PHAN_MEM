@@ -1,0 +1,232 @@
+name: Module6 - Review & Comment Test
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+
+jobs:
+  test-module6-review-comment:
+    name: 💬 Module6 - Review & Comment Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module6 Review & Comment Tests
+        working-directory: ./Back-end
+        run: |
+          echo "💬 Testing Module6 - Review & Comment..."
+          npm test -- reviewController.test.js commentController.test.js --json --outputFile=module6-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module6-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+
+      - name: 📊 Generate Module6 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 💬 Module6 - Review & Comment Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Module6 - Review & Comment" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Files:** reviewController.test.js, commentController.test.js" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f module6-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            TOTAL=$(node -p "require('./module6-test-results.json').numTotalTests || 0")
+            PASSED=$(node -p "require('./module6-test-results.json').numPassedTests || 0")
+            FAILED=$(node -p "require('./module6-test-results.json').numFailedTests || 0")
+            
+            echo "| 📝 Total Tests | $TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Passed | $PASSED | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "| ❌ Failed | $FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ❌ Failed | $FAILED | ✅ All tests passed |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🎯 Test Coverage by Function" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Function | Test Cases | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-----------|-------------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Get All Reviews | 3 tests | Xem danh sách đánh giá sản phẩm |" >> $GITHUB_STEP_SUMMARY
+            echo "| Create Review | 8 tests | Tạo đánh giá (cần mua sản phẩm) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Review | 4 tests | Cập nhật đánh giá (owner/admin) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete Review | 3 tests | Xóa đánh giá (owner/admin) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Get All Comments | 2 tests | Xem danh sách bình luận |" >> $GITHUB_STEP_SUMMARY
+            echo "| Create Comment | 4 tests | Tạo bình luận (không cần mua) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Update Comment | 2 tests | Cập nhật bình luận |" >> $GITHUB_STEP_SUMMARY
+            echo "| Delete Comment | 3 tests | Xóa bình luận |" >> $GITHUB_STEP_SUMMARY
+            echo "| Like/Unlike Comment | 3 tests | Like/Unlike bình luận (toggle) |" >> $GITHUB_STEP_SUMMARY
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" != "0" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./module6-test-results.json');
+                const failedTests = [];
+                
+                if (results.testResults) {
+                  results.testResults.forEach(file => {
+                    if (file.assertionResults) {
+                      file.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          failedTests.push({
+                            suite: file.name,
+                            test: test.title,
+                            fullName: test.fullName,
+                            error: test.failureMessages ? test.failureMessages.join('\\n').substring(0, 500) : 'Unknown'
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+                
+                failedTests.forEach((fail, index) => {
+                  console.log(\`🔴 **Test \${index + 1}:** \${fail.fullName}\`);
+                  console.log(\`\`);
+                  console.log(\`**Error:**\`);
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(fail.error.substring(0, 500));
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(\`\`);
+                });
+              " >> $GITHUB_STEP_SUMMARY || echo "No failed tests details available" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 📚 Test Case Mapping" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Chi tiết test cases được định nghĩa trong: **Module6_Review_Comment.md**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Test Case IDs:**" >> $GITHUB_STEP_SUMMARY
+            echo "- **REV-001 to REV-003:** Get All Reviews tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **REV-004 to REV-011:** Create Review tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **REV-012 to REV-015:** Update Review tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **REV-016 to REV-018:** Delete Review tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **COM-001 to COM-002:** Get All Comments tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **COM-003 to COM-006:** Create Comment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **COM-007 to COM-008:** Update Comment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **COM-009 to COM-011:** Delete Comment tests" >> $GITHUB_STEP_SUMMARY
+            echo "- **COM-012 to COM-014:** Like/Unlike Comment tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Function Groups:**" >> $GITHUB_STEP_SUMMARY
+            echo "- ⭐ **Review:** CRUD operations, Pre-condition check (must purchase), Unique constraint (18 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 💬 **Comment:** CRUD operations, Nested comments, Like/Unlike feature (14 tests)" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔒 **Permissions:** Owner/Admin for update/delete, User-only for review creation" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔄 **Post-Hook:** Auto update product ratings after review changes" >> $GITHUB_STEP_SUMMARY
+            
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Module6 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module6-review-comment-test-results
+          path: Back-end/module6-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module6
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module6..."
+          npm test -- reviewController.test.js commentController.test.js --coverage --coverageDirectory=./coverage-module6
+        continue-on-error: true
+
+      - name: 📤 Upload Module6 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module6-review-comment-coverage
+          path: Back-end/coverage-module6
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 💬 Module6 - Review & Comment Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module6-test-results.json', 'utf8'));
+              const total = results.numTotalTests || 0;
+              const passed = results.numPassedTests || 0;
+              const failed = results.numFailedTests || 0;
+              
+              comment += `### 📊 Test Summary\n\n`;
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| Total Tests | ${total} |\n`;
+              comment += `| ✅ Passed | ${passed} |\n`;
+              comment += `| ❌ Failed | ${failed} |\n`;
+              
+              if (failed > 0) {
+                comment += `\n⚠️ **Some tests failed. Please review the details above.**\n`;
+              } else {
+                comment += `\n✅ **All tests passed successfully!**\n`;
+              }
+              
+              comment += `\n📋 **Full report:** Check the workflow summary for detailed results.\n`;
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module6-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module6-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
