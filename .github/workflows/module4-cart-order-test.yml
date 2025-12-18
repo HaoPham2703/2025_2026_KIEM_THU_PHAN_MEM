@@ -101,27 +101,6 @@ jobs:
                 const results = require('./module4-test-results.json');
                 const failedTests = [];
                 
-                function extractFailed(suite) {
-                  if (suite.testResults) {
-                    suite.testResults.forEach(test => {
-                      if (test.status === 'failed') {
-                        failedTests.push({
-                          suite: suite.name,
-                          test: test.fullName,
-                          error: test.failureMessages ? test.failureMessages.join('\\n') : 'Unknown error'
-                        });
-                      }
-                    });
-                  }
-                  if (suite.testResults && suite.testResults.length > 0) {
-                    suite.testResults.forEach(innerSuite => {
-                      if (innerSuite.testResults) {
-                        extractFailed(innerSuite);
-                      }
-                    });
-                  }
-                }
-                
                 if (results.testResults) {
                   results.testResults.forEach(file => {
                     if (file.assertionResults) {
@@ -131,7 +110,7 @@ jobs:
                             suite: file.name,
                             test: test.title,
                             fullName: test.fullName,
-                            error: test.failureMessages ? test.failureMessages.join('\\n').substring(0, 300) : 'Unknown'
+                            error: test.failureMessages ? test.failureMessages.join('\\n').substring(0, 500) : 'Unknown'
                           });
                         }
                       });
@@ -140,10 +119,13 @@ jobs:
                 }
                 
                 failedTests.forEach((fail, index) => {
-                  console.log(\`🔴 **\${fail.suite}**\`);
-                  console.log(\`  **Test:** \${fail.test || fail.fullName}\`);
-                  console.log(\`  **Error:** \`);
-                  console.log('');
+                  console.log(\`🔴 **Test \${index + 1}:** \${fail.fullName}\`);
+                  console.log(\`\`);
+                  console.log(\`**Error:**\`);
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(fail.error.substring(0, 500));
+                  console.log(\`\\\`\\\`\\\`\`);
+                  console.log(\`\`);
                 });
               " >> $GITHUB_STEP_SUMMARY || echo "No failed tests details available" >> $GITHUB_STEP_SUMMARY
             fi
