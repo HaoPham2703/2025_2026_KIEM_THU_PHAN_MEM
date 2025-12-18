@@ -1,0 +1,177 @@
+name: Module7 - Brand & Category Test
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+
+jobs:
+  test-module7-brand-category:
+    name: 🏷️ Module7 - Brand & Category Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Module7 Brand & Category Tests
+        working-directory: ./Back-end
+        run: |
+          echo "🏷️ Testing Module7 - Brand & Category Management..."
+          npm test -- brandController.test.js categoryController.test.js --json --outputFile=module7-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-module7-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+
+      - name: 📊 Generate Module7 Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 🏷️ Module7 - Brand & Category Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f module7-test-results.json ]; then
+            NUM_TESTS=$(node -p "require('./module7-test-results.json').numTotalTests || 0")
+            NUM_PASSED=$(node -p "require('./module7-test-results.json').numPassedTests || 0")
+            NUM_FAILED=$(node -p "require('./module7-test-results.json').numFailedTests || 0")
+            
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| **Total Tests** | $NUM_TESTS |" >> $GITHUB_STEP_SUMMARY
+            echo "| **✅ Passed** | $NUM_PASSED |" >> $GITHUB_STEP_SUMMARY
+            echo "| **❌ Failed** | $NUM_FAILED |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "## ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo '```json' >> $GITHUB_STEP_SUMMARY
+              node -e "
+                const results = require('./module7-test-results.json');
+                if (results.testResults) {
+                  results.testResults.forEach(file => {
+                    if (file.assertionResults) {
+                      file.assertionResults
+                        .filter(test => test.status === 'failed')
+                        .forEach(test => {
+                          console.log('Test: ' + test.fullName);
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('Error: ' + test.failureMessages[0].split('\\n')[0]);
+                          }
+                          console.log('---');
+                        });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "No detailed error info available" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+            else
+              echo "## ✅ All Tests Passed!" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Module7 Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module7-brand-category-test-results
+          path: Back-end/module7-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Module7
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Module7..."
+          npm test -- brandController.test.js categoryController.test.js --coverage --coverageDirectory=./coverage-module7
+        continue-on-error: true
+
+      - name: 📤 Upload Module7 Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: module7-brand-category-coverage
+          path: Back-end/coverage-module7
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🏷️ Module7 - Brand & Category Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/module7-test-results.json', 'utf8'));
+              const numTests = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
+              
+              comment += '| Metric | Value |\n';
+              comment += '|--------|-------|\n';
+              comment += `| **Total Tests** | ${numTests} |\n`;
+              comment += `| **✅ Passed** | ${numPassed} |\n`;
+              comment += `| **❌ Failed** | ${numFailed} |\n\n`;
+              
+              if (numFailed > 0) {
+                comment += '### ❌ Failed Tests\n\n';
+                results.testResults.forEach(file => {
+                  file.assertionResults
+                    .filter(test => test.status === 'failed')
+                    .forEach(test => {
+                      comment += `- **${test.fullName}**\n`;
+                      if (test.failureMessages && test.failureMessages.length > 0) {
+                        comment += `  \`\`\`\n  ${test.failureMessages[0].split('\n')[0]}\n  \`\`\`\n`;
+                      }
+                    });
+                });
+              } else {
+                comment += '### ✅ All Tests Passed!\n';
+              }
+            } catch (error) {
+              comment += '⚠️ Could not read test results.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f module7-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./module7-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
