@@ -299,7 +299,7 @@ describe('Auth Controller - Đăng ký và Xác thực', () => {
       });
 
       req.body = {
-        encode: verifyToken,
+        token: verifyToken,
       };
 
       await authController.verifyUser(req, res, next);
@@ -314,7 +314,7 @@ describe('Auth Controller - Đăng ký và Xác thực', () => {
 
     it('nên trả về lỗi khi token không hợp lệ', async () => {
       req.body = {
-        encode: 'invalidtoken',
+        token: 'invalidtoken',
       };
 
       await authController.verifyUser(req, res, next);
@@ -435,7 +435,7 @@ describe('Auth Controller - Đăng ký và Xác thực', () => {
       });
 
       req.params = {
-        token: hashedToken,
+        token: resetToken,
       };
       req.body = {
         password: 'newpassword123',
@@ -601,13 +601,18 @@ describe('Auth Controller - Đăng ký và Xác thực', () => {
     });
 
     it('nên trả về lỗi khi password đã thay đổi sau khi token được tạo', async () => {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      // Create token with old timestamp
+      const oldTimestamp = Math.floor(Date.now() / 1000) - 1000;
+      const token = jwt.sign({ id: user._id, iat: oldTimestamp }, process.env.JWT_SECRET);
       req.headers.authorization = `Bearer ${token}`;
 
-      // Change password
+      // Change password (this will update passwordChangedAt)
       user.password = 'newpassword';
       user.passwordConfirm = 'newpassword';
       await user.save();
+      
+      // Wait a bit to ensure passwordChangedAt is set
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       await authController.protect(req, res, next);
 
@@ -690,18 +695,26 @@ describe('Auth Controller - Đăng ký và Xác thực', () => {
     });
 
     it('nên thay đổi trạng thái user thành công', async () => {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      // Ensure user exists and get fresh instance
+      const freshUser = await User.findById(user._id);
+      expect(freshUser).toBeTruthy();
+      
+      const token = jwt.sign({ id: freshUser._id }, process.env.JWT_SECRET);
       req.cookies.jwt = token;
       req.body = {
         state: 'ban',
       };
 
       await authController.changeStateUser(req, res, next);
+      
+      // Wait for async save operation to complete
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalled();
       
-      const updatedUser = await User.findById(user._id);
+      const updatedUser = await User.findById(freshUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.active).toBe('ban');
     });
 
