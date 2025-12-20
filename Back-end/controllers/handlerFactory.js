@@ -197,6 +197,9 @@ exports.createOne = (Model) =>
             ? value.product.title.slice(0, 40)
             : value.product.title;
         const invent = await Product.findById(value.id);
+        if (!invent) {
+          return next(new AppError(`Không tìm thấy sản phẩm với ID: ${value.id}`, 404));
+        }
         if (value.quantity > invent.inventory) {
           return next(
             new AppError(`Số lượng hàng ${name} trong kho không đủ`, 500)
