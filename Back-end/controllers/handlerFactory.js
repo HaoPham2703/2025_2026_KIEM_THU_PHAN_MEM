@@ -216,7 +216,8 @@ exports.createOne = (Model) =>
       // Giảm balance nếu thanh toán bằng số dư
       if (doc.payments === "số dư" && doc.user) {
         const User = require("../models/userModel");
-        const userId = typeof doc.user === "object" ? doc.user._id : doc.user;
+        // doc.user có thể là ObjectId hoặc object với _id
+        const userId = doc.user._id ? doc.user._id.toString() : doc.user.toString();
         await User.findByIdAndUpdate(userId, {
           $inc: { balance: -doc.totalPrice },
         });

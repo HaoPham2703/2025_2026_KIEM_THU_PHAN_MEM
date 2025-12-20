@@ -75,10 +75,11 @@ orderSchema.pre(/^find/, function (next) {
 orderSchema.statics.updateUserBalance = async function (userId, balance) {
   await User.findByIdAndUpdate(userId, { $inc: { balance: balance } });
 };
-orderSchema.post("save", function () {
-  if (this.payments === "số dư")
-    this.constructor.updateUserBalance(this.user, -this.totalPrice);
-});
+// Post save hook đã được xử lý trong controller, comment để tránh duplicate
+// orderSchema.post("save", function () {
+//   if (this.payments === "số dư")
+//     this.constructor.updateUserBalance(this.user, -this.totalPrice);
+// });
 
 orderSchema.post("findOneAndUpdate", async function (doc) {
   if (doc.payments !== "tiền mặt" && doc.status === "Cancelled")

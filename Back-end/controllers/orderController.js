@@ -67,7 +67,7 @@ exports.updateOrder = catchAsync(async (req, res, next) => {
 exports.deleteOrder = factory.deleteOne(Order);
 exports.isOwner = factory.checkPermission(Order);
 exports.setUser = (req, res, next) => {
-  if (!req.body.user) req.body.user = req.user;
+  if (!req.body.user) req.body.user = req.user._id || req.user.id || req.user;
   next();
 };
 exports.countStatus = catchAsync(async (req, res, next) => {
