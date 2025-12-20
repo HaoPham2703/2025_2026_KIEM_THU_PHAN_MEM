@@ -1,0 +1,23 @@
+{
+  "name": "auth-testing-helper",
+  "version": "1.0.0",
+  "description": "Helper configuration for running Auth module tests",
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:auth": "jest --runInBand tests/unit/controllers/authController.test.js",
+    "test:auth-comprehensive": "jest --runInBand tests/unit/controllers/authController.comprehensive.test.js",
+    "test:auth-all": "jest --runInBand tests/unit/controllers/authController*.test.js",
+    "test:watch": "jest --watch --runInBand",
+    "test:coverage": "jest --coverage --runInBand",
+    "test:verbose": "jest --runInBand --verbose",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
+  },
+  "testCommands": {
+    "note": "Các lệnh để chạy test",
+    "allTests": "npm test",
+    "authOnly": "npm run test:auth",
+    "authComprehensive": "npm run test:auth-comprehensive",
+    "watchMode": "npm run test:watch",
+    "withCoverage": "npm run test:coverage"
+  }
+}

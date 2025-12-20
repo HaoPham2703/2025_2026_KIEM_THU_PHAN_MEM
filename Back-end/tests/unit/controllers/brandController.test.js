@@ -123,6 +123,49 @@ describe("Brand Controller - Quản lý thương hiệu", () => {
       const jsonCall = res.json.mock.calls[0][0];
       expect(jsonCall.status).toBe("success");
     });
+
+    it("BRD-004A: nên trả về totalPage=1 khi page vượt quá tổng trang", async () => {
+      req.query = { page: "10", limit: "2" };
+
+      await brandController.getAllBrands(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      const jsonCall = res.json.mock.calls[0][0];
+      expect(jsonCall.data.totalPage).toBe(1);
+      expect(jsonCall.data.data.length).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  // ========================================
+  // Function A2: Get Brand By ID (Xem chi tiết thương hiệu)
+  // ========================================
+  describe("getBrand - Xem chi tiết thương hiệu", () => {
+    it("BRD-004B: nên xem chi tiết brand thành công", async () => {
+      const brand = await Brand.create({ name: "Detail Brand" });
+
+      req.params.id = brand._id.toString();
+
+      await brandController.getBrand(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      const jsonCall = res.json.mock.calls[0][0];
+      expect(jsonCall.status).toBe("success");
+      expect(jsonCall.data.data._id.toString()).toBe(brand._id.toString());
+
+      await Brand.findByIdAndDelete(brand._id);
+    });
+
+    it("BRD-004C: nên báo lỗi khi brand không tồn tại", async () => {
+      req.params.id = new mongoose.Types.ObjectId().toString();
+
+      await brandController.getBrand(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "Không tìm thấy dữ liệu với ID này",
+        })
+      );
+    });
   });
 
   // ========================================
