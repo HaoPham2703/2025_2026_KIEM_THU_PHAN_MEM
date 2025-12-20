@@ -46,7 +46,7 @@ jobs:
         working-directory: ./FrontEnd
         run: |
           echo "🎨 Running Frontend UI Tests..."
-          npm test -- --json --outputFile=ui-test-results.json --coverage --coverageReporters=json --coverageReporters=text || true
+          npm test -- --json --outputFile=./ui-test-results.json --coverage --coverageReporters=json --coverageReporters=text --coverageDirectory=./coverage || true
         continue-on-error: true
         timeout-minutes: 10
 
@@ -248,7 +248,7 @@ jobs:
         if: always()
         working-directory: ./FrontEnd
         run: |
-          if [ -f ui-test-results.json ]; then
+          if [ -f ./ui-test-results.json ]; then
             NUM_FAILED=$(node -p "require('./ui-test-results.json').numFailedTests || 0")
             if [ "$NUM_FAILED" != "0" ]; then
               echo "❌ $NUM_FAILED test(s) failed!"
@@ -257,7 +257,10 @@ jobs:
               echo "✅ All UI tests passed!"
             fi
           else
-            echo "⚠️ Test results not found, assuming failure"
+            echo "⚠️ Test results not found, checking if tests ran..."
+            # Check if npm test actually ran
+            npm test -- --listTests || echo "Tests could not be listed"
+            echo "⚠️ Test results file not found, assuming failure"
             exit 1
           fi
 
