@@ -62,6 +62,14 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
   describe("Bước 2: Admin tạo sản phẩm mới", () => {
     it("nên tạo sản phẩm mới thành công", async () => {
+      // Đảm bảo có token hợp lệ
+      if (!adminToken) {
+        const loginResponse = await request(app).post("/api/v1/users/login").send({
+          email: "adminproductcrud@example.com",
+          password: "Haolatuii2703@",
+        });
+        adminToken = loginResponse.body.token;
+      }
       const productData = {
         title: "New Product CRUD Test",
         price: 20000000,
@@ -116,6 +124,29 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
     });
 
     it("nên cập nhật một phần thông tin sản phẩm", async () => {
+      // Đảm bảo có token và product ID
+      if (!adminToken) {
+        const loginResponse = await request(app).post("/api/v1/users/login").send({
+          email: "adminproductcrud@example.com",
+          password: "Haolatuii2703@",
+        });
+        adminToken = loginResponse.body.token;
+      }
+      if (!createdProductId) {
+        const productData = {
+          title: "New Product CRUD Test",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id.toString(),
+          brand: testBrand._id.toString(),
+          images: ["https://example.com/newproduct.jpg"],
+        };
+        const createResponse = await request(app)
+          .post("/api/v1/products")
+          .set("Authorization", `Bearer ${adminToken}`)
+          .send(productData);
+        createdProductId = createResponse.body.data.data._id;
+      }
       const partialUpdate = {
         price: 22000000,
       };
@@ -139,6 +170,29 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
   describe("Bước 4: Admin xóa sản phẩm", () => {
     it("nên xóa sản phẩm thành công", async () => {
+      // Đảm bảo có token và product ID
+      if (!adminToken) {
+        const loginResponse = await request(app).post("/api/v1/users/login").send({
+          email: "adminproductcrud@example.com",
+          password: "Haolatuii2703@",
+        });
+        adminToken = loginResponse.body.token;
+      }
+      if (!createdProductId) {
+        const productData = {
+          title: "New Product CRUD Test",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id.toString(),
+          brand: testBrand._id.toString(),
+          images: ["https://example.com/newproduct.jpg"],
+        };
+        const createResponse = await request(app)
+          .post("/api/v1/products")
+          .set("Authorization", `Bearer ${adminToken}`)
+          .send(productData);
+        createdProductId = createResponse.body.data.data._id;
+      }
       const response = await request(app)
         .delete(`/api/v1/products/${createdProductId}`)
         .set("Authorization", `Bearer ${adminToken}`);

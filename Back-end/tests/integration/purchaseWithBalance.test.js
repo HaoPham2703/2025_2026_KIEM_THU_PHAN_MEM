@@ -80,6 +80,14 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
 
   describe("Bước 2: Tạo đơn hàng với payments=số dư", () => {
     it("nên tạo đơn hàng với thanh toán bằng số dư", async () => {
+      // Đảm bảo có token hợp lệ
+      if (!authToken) {
+        const loginResponse = await request(app).post("/api/v1/users/login").send({
+          email: "balancetest@example.com",
+          password: "Haolatuii2703@",
+        });
+        authToken = loginResponse.body.token;
+      }
       const orderData = {
         cart: [
           {

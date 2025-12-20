@@ -78,6 +78,16 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
 
   describe("Bước 2: Xác thực tài khoản (nếu cần)", () => {
     it("nên đăng nhập được ngay sau khi đăng ký (vì active = active)", async () => {
+      // Đảm bảo user đã được tạo trước đó
+      let testUser = await User.findOne({ email: "newuser@example.com" });
+      if (!testUser) {
+        await request(app).post("/api/v1/users/signup").send({
+          name: "New User",
+          email: "newuser@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+        });
+      }
       const response = await request(app).post("/api/v1/users/login").send({
         email: "newuser@example.com",
         password: "Haolatuii2703@",
@@ -177,7 +187,9 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
       // Kiểm tra order đã được tạo với user mới
       const createdOrder = await Order.findById(response.body.data.id);
       expect(createdOrder).toBeTruthy();
-      expect(createdOrder.user.toString()).toBe(newUser._id.toString());
+      // Order model populate user, nên user là object với _id
+      const userId = createdOrder.user._id ? createdOrder.user._id.toString() : createdOrder.user.toString();
+      expect(userId).toBe(newUser._id.toString());
       expect(createdOrder.address).toBe(orderData.address);
     });
 

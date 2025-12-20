@@ -133,6 +133,16 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     });
 
     it("nên tạo đơn hàng thành công", async () => {
+      // Đảm bảo có token hợp lệ
+      if (!userToken) {
+        const loginResponse = await request(app)
+          .post("/api/v1/users/login")
+          .send({
+            email: "emailtest@example.com",
+            password: "Haolatuii2703@",
+          });
+        userToken = loginResponse.body.token;
+      }
       const orderData = {
         cart: [
           {
@@ -293,6 +303,51 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     });
 
     it("nên cập nhật order status = Success và gửi email", async () => {
+      // Đảm bảo có token và order tồn tại
+      if (!adminToken) {
+        const loginResponse = await request(app)
+          .post("/api/v1/users/login")
+          .send({
+            email: "adminemail@example.com",
+            password: "Haolatuii2703@",
+          });
+        adminToken = loginResponse.body.token;
+      }
+      if (!testOrder) {
+        if (!userToken) {
+          const loginResponse = await request(app)
+            .post("/api/v1/users/login")
+            .send({
+              email: "emailtest@example.com",
+              password: "Haolatuii2703@",
+            });
+          userToken = loginResponse.body.token;
+        }
+        const orderData = {
+          cart: [
+            {
+              id: testProduct._id.toString(),
+              product: {
+                _id: testProduct._id.toString(),
+                title: testProduct.title,
+                price: testProduct.price,
+                images: testProduct.images,
+              },
+              quantity: 1,
+            },
+          ],
+          address: "123 Email Test Street",
+          receiver: "Email Test User",
+          phone: "0123456789",
+          payments: "tiền mặt",
+          totalPrice: 15000000,
+        };
+        const orderResponse = await request(app)
+          .post("/api/v1/orders")
+          .set("Authorization", `Bearer ${userToken}`)
+          .send(orderData);
+        testOrder = await Order.findById(orderResponse.body.data.id);
+      }
       sendEmail.mockClear();
 
       const response = await request(app)

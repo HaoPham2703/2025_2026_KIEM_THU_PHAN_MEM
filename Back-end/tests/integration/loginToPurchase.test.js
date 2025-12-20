@@ -190,7 +190,11 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
       // Kiểm tra order đã được tạo trong database
       const createdOrder = await Order.findById(response.body.data.id);
       expect(createdOrder).toBeTruthy();
-      expect(createdOrder.user.toString()).toBe(testUser._id.toString());
+      // Order model populate user, nên user là object với _id
+      const userId = createdOrder.user._id
+        ? createdOrder.user._id.toString()
+        : createdOrder.user.toString();
+      expect(userId).toBe(testUser._id.toString());
       expect(createdOrder.address).toBe(orderData.address);
       expect(createdOrder.receiver).toBe(orderData.receiver);
       expect(createdOrder.phone).toBe(orderData.phone);
@@ -439,9 +443,11 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
       expect(response.body.status).toBe("success");
       expect(response.body.data).toBeDefined();
       expect(response.body.data.data).toBeDefined();
-      expect(response.body.data.data.user.toString()).toBe(
-        testUser._id.toString()
-      );
+      // Order model populate user, nên user là object với _id
+      const userId = response.body.data.data.user._id
+        ? response.body.data.data.user._id.toString()
+        : response.body.data.data.user.toString();
+      expect(userId).toBe(testUser._id.toString());
     });
   });
 
