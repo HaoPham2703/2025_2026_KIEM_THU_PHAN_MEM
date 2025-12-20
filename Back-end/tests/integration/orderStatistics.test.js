@@ -201,6 +201,73 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
     });
 
     it("nên lấy được thống kê số lượng đơn theo status", async () => {
+      // Tạo một số orders để có data thống kê
+      await Category.deleteMany({ name: "Laptop Statistics Test" });
+      await Brand.deleteMany({ name: "Dell Statistics Test" });
+      await Product.deleteMany({ title: /Statistics Product/ });
+      await User.deleteMany({ email: "userstatistics@example.com" });
+
+      const testCategory = await Category.create({
+        name: "Laptop Statistics Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell Statistics Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop Statistics Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      const testUser = await User.create({
+        name: "User Statistics Test",
+        email: "userstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      const userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "userstatistics@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo một số orders
+      for (let i = 0; i < 3; i++) {
+        await request(app)
+          .post("/api/v1/orders")
+          .set("Authorization", `Bearer ${userToken}`)
+          .send({
+            cart: [
+              {
+                id: testProduct._id.toString(),
+                product: {
+                  _id: testProduct._id.toString(),
+                  title: testProduct.title,
+                  price: testProduct.price,
+                  images: testProduct.images,
+                },
+                quantity: 1,
+              },
+            ],
+            address: `123 Statistics Test Street ${i}`,
+            receiver: "Statistics Test User",
+            phone: "0123456789",
+            payments: "tiền mặt",
+            totalPrice: 15000000,
+          });
+      }
+
       const response = await request(app)
         .get("/api/v1/orders/count")
         .set("Authorization", `Bearer ${adminToken}`);

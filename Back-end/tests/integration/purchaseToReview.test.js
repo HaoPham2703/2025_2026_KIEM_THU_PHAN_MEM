@@ -171,6 +171,9 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.id).toBeDefined();
       testOrder = await Order.findById(response.body.data.id);
       expect(testOrder).toBeTruthy();
     });
@@ -282,6 +285,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         });
 
       expect(response.status).toBe(200);
+      expect(response.body.status).toBe("success");
 
       // Kiểm tra order status đã được cập nhật
       const updatedOrder = await Order.findById(testOrder._id);
@@ -291,6 +295,107 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
   });
 
   describe("Bước 3: User tạo review cho sản phẩm đã mua", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Review Test" });
+      await Brand.deleteMany({ name: "Dell Review Test" });
+      await Product.deleteMany({ title: "Dell Laptop Review Test Product" });
+      await User.deleteMany({
+        email: { $in: ["reviewtest@example.com", "adminreview@example.com"] },
+      });
+      await Order.deleteMany({});
+      await Review.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Review Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+        ratingsAverage: 4.5,
+        ratingsQuantity: 10,
+      });
+
+      initialRatingsQuantity = testProduct.ratingsQuantity;
+
+      testUser = await User.create({
+        name: "Review Test User",
+        email: "reviewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      adminUser = await User.create({
+        name: "Admin Review Test",
+        email: "adminreview@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      // Tạo order và set status = Success
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "reviewtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      adminToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "adminreview@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Review Test Street",
+        receiver: "Review Test User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      // Set order status = Success
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ status: "Success" });
+    });
+
     it("nên tạo review thành công cho sản phẩm đã mua", async () => {
       const reviewData = {
         rating: 5,
@@ -304,6 +409,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
       expect(response.status).toBe(201);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
 
       // Kiểm tra review được tạo
       const review = await Review.findOne({
@@ -316,6 +422,15 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên cập nhật ratingsAverage và ratingsQuantity của product", async () => {
+      // Tạo review trước
+      await request(app)
+        .post(`/api/v1/products/${testProduct._id}/reviews`)
+        .set("Authorization", `Bearer ${userToken}`)
+        .send({
+          rating: 5,
+          review: "Sản phẩm rất tốt!",
+        });
+
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.ratingsQuantity).toBe(initialRatingsQuantity + 1);
@@ -426,6 +541,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         .send({ status: "Success" });
 
       expect(adminUpdateResponse.status).toBe(200);
+      expect(adminUpdateResponse.body.status).toBe("success");
 
       // Bước 4: User tạo review
       const reviewResponse = await request(app)
@@ -437,6 +553,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         });
 
       expect(reviewResponse.status).toBe(201);
+      expect(reviewResponse.body.status).toBe("success");
     });
   });
 });

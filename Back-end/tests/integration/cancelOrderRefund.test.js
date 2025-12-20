@@ -160,6 +160,9 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.id).toBeDefined();
       testOrder = await Order.findById(response.body.data.id);
       expect(testOrder).toBeTruthy();
       expect(testOrder.payments).toBe("vnpay");

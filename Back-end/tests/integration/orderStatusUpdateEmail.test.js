@@ -159,6 +159,9 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.id).toBeDefined();
       testOrder = await Order.findById(response.body.data.id);
       expect(testOrder).toBeTruthy();
     });
@@ -404,10 +407,13 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
       sendEmail.mockClear();
 
-      await request(app)
+      const updateResponse = await request(app)
         .patch(`/api/v1/orders/${orderId}`)
         .set("Authorization", `Bearer ${adminLogin.body.token}`)
         .send({ status: "Waiting Goods" });
+
+      expect(updateResponse.status).toBe(200);
+      expect(updateResponse.body.status).toBe("success");
 
       await new Promise((resolve) => setTimeout(resolve, 100));
       expect(sendEmail).toHaveBeenCalled();

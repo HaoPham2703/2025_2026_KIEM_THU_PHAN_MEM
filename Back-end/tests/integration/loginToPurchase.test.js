@@ -447,6 +447,43 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
   describe("Flow hoàn chỉnh: Đăng nhập --> Mua hàng --> Xem đơn hàng", () => {
     it("nên thực hiện toàn bộ flow từ đầu đến cuối thành công", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop System Test" });
+      await Brand.deleteMany({ name: "Dell System Test" });
+      await Product.deleteMany({ title: "Dell Laptop System Test Product" });
+      await User.deleteMany({ email: "systemtest@example.com" });
+      await Order.deleteMany({});
+
+      // Tạo lại data
+      const testCategory = await Category.create({
+        name: "Laptop System Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell System Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop System Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      await User.create({
+        name: "System Test User",
+        email: "systemtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
       // Bước 1: Đăng nhập
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
@@ -456,6 +493,7 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
         });
 
       expect(loginResponse.status).toBe(200);
+      expect(loginResponse.body.token).toBeDefined();
       const token = loginResponse.body.token;
 
       // Bước 2: Tạo đơn hàng
@@ -485,6 +523,9 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
       const orderId = orderResponse.body.data.id;
 
       // Bước 3: Xem đơn hàng vừa tạo
@@ -493,6 +534,9 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
         .set("Authorization", `Bearer ${token}`);
 
       expect(getOrderResponse.status).toBe(200);
+      expect(getOrderResponse.body.status).toBe("success");
+      expect(getOrderResponse.body.data).toBeDefined();
+      expect(getOrderResponse.body.data.data).toBeDefined();
       expect(getOrderResponse.body.data.data._id.toString()).toBe(
         orderId.toString()
       );
@@ -501,8 +545,7 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
       // Bước 4: Kiểm tra inventory đã giảm
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
-      const expectedInventory = initialInventory - 2 - 1 - 1; // Trừ đi các đơn hàng đã tạo trong các test trước
-      expect(updatedProduct.inventory).toBeLessThan(initialInventory);
+      expect(updatedProduct.inventory).toBe(100 - 1); // Giảm 1 sản phẩm từ order vừa tạo
     });
   });
 });

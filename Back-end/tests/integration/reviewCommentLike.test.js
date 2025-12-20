@@ -867,6 +867,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
         .set("Authorization", `Bearer ${userToken}`);
 
       expect(likeResponse.status).toBe(200);
+      expect(likeResponse.body.status).toBe("success");
     });
   });
 });
