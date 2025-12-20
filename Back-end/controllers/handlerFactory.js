@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const APIFeatures = require("./../utils/apiFeatures");
@@ -37,11 +38,16 @@ exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     if (Model == Import) {
       const invoice = await Model.findById(req.params.id);
-      await invoice.invoice.forEach(async (value, index) => {
-        await Product.findByIdAndUpdate(value.product, {
-          $inc: { inventory: -value.quantity },
-        });
-      });
+      if (invoice && invoice.invoice && Array.isArray(invoice.invoice)) {
+        for (const value of invoice.invoice) {
+          // Chỉ update nếu product là ObjectId hợp lệ
+          if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
+            await Product.findByIdAndUpdate(value.product, {
+              $inc: { inventory: -value.quantity },
+            });
+          }
+        }
+      }
     }
     const doc = await Model.findByIdAndDelete(req.params.id);
 
@@ -124,16 +130,26 @@ exports.updateOne = (Model) =>
     }
     if (Model == Import) {
       const invoice = await Model.findById(req.params.id);
-      await invoice.invoice.forEach(async (value, index) => {
-        await Product.findByIdAndUpdate(value.product, {
-          $inc: { inventory: -value.quantity },
-        });
-      });
+      if (invoice && invoice.invoice && Array.isArray(invoice.invoice)) {
+        for (const value of invoice.invoice) {
+          // Chỉ update nếu product là ObjectId hợp lệ
+          if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
+            await Product.findByIdAndUpdate(value.product, {
+              $inc: { inventory: -value.quantity },
+            });
+          }
+        }
+      }
       const product = req.body.invoice;
-      for (const value of product) {
-        await Product.findByIdAndUpdate(value.product, {
-          $inc: { inventory: value.quantity },
-        });
+      if (product && Array.isArray(product)) {
+        for (const value of product) {
+          // Chỉ update nếu product là ObjectId hợp lệ
+          if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
+            await Product.findByIdAndUpdate(value.product, {
+              $inc: { inventory: value.quantity },
+            });
+          }
+        }
       }
     }
 
@@ -206,10 +222,15 @@ exports.createOne = (Model) =>
 
     if (Model == Import) {
       const invoice = req.body.invoice;
-      for (const value of invoice) {
-        await Product.findByIdAndUpdate(value.product, {
-          $inc: { inventory: value.quantity },
-        });
+      if (invoice && Array.isArray(invoice)) {
+        for (const value of invoice) {
+          // Chỉ update nếu product là ObjectId hợp lệ
+          if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
+            await Product.findByIdAndUpdate(value.product, {
+              $inc: { inventory: value.quantity },
+            });
+          }
+        }
       }
     }
 

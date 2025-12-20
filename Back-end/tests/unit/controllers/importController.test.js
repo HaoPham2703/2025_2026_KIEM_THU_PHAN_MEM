@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Import = require("../../../models/importModel");
 const User = require("../../../models/userModel");
+const Product = require("../../../models/productModel");
 const importController = require("../../../controllers/importController");
 
 describe("Import Controller - Quản lý phiếu nhập hàng", () => {
@@ -70,12 +71,16 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
       // Create test imports
       await Import.create({
         user: adminUser._id,
-        invoice: [{ product: "prod1", title: "Product 1", quantity: 10, price: 100000 }],
+        invoice: [
+          { product: "prod1", title: "Product 1", quantity: 10, price: 100000 },
+        ],
         totalPrice: 1000000,
       });
       await Import.create({
         user: employeeUser._id,
-        invoice: [{ product: "prod2", title: "Product 2", quantity: 5, price: 200000 }],
+        invoice: [
+          { product: "prod2", title: "Product 2", quantity: 5, price: 200000 },
+        ],
         totalPrice: 1000000,
       });
     });
@@ -126,7 +131,19 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
   // Function B: Create Import (Tạo phiếu nhập hàng)
   // ========================================
   describe("createImport - Tạo phiếu nhập hàng", () => {
+    let productFindByIdAndUpdateSpy;
+
+    beforeEach(() => {
+      // Mock Product.findByIdAndUpdate để tránh lỗi CastError
+      productFindByIdAndUpdateSpy = jest
+        .spyOn(Product, "findByIdAndUpdate")
+        .mockResolvedValue({ _id: new mongoose.Types.ObjectId() });
+    });
+
     afterEach(async () => {
+      if (productFindByIdAndUpdateSpy) {
+        productFindByIdAndUpdateSpy.mockRestore();
+      }
       await Import.deleteMany({ totalPrice: { $in: [1500000, 800000] } });
     });
 
@@ -146,6 +163,7 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
       await importController.createImport(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalled();
       const jsonCall = res.json.mock.calls[0][0];
       expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.user).toBeDefined();
@@ -165,7 +183,9 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
       await importController.createImport(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalled();
       const jsonCall = res.json.mock.calls[0][0];
+      expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.user).toBeDefined();
     });
 
@@ -190,6 +210,9 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
       await importController.createImport(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalled();
+      const jsonCall = res.json.mock.calls[0][0];
+      expect(jsonCall.status).toBe("success");
     });
   });
 
@@ -198,16 +221,27 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
   // ========================================
   describe("updateImport - Cập nhật phiếu nhập", () => {
     let importToUpdate;
+    let productFindByIdAndUpdateSpy;
 
     beforeEach(async () => {
+      // Mock Product.findByIdAndUpdate để tránh lỗi CastError
+      productFindByIdAndUpdateSpy = jest
+        .spyOn(Product, "findByIdAndUpdate")
+        .mockResolvedValue({ _id: new mongoose.Types.ObjectId() });
+
       importToUpdate = await Import.create({
         user: adminUser._id,
-        invoice: [{ product: "prod6", title: "Product 6", quantity: 5, price: 100000 }],
+        invoice: [
+          { product: "prod6", title: "Product 6", quantity: 5, price: 100000 },
+        ],
         totalPrice: 500000,
       });
     });
 
     afterEach(async () => {
+      if (productFindByIdAndUpdateSpy) {
+        productFindByIdAndUpdateSpy.mockRestore();
+      }
       if (importToUpdate) {
         await Import.deleteMany({ _id: importToUpdate._id });
       }
@@ -216,26 +250,35 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
     it("IMP-010: Admin nên cập nhật phiếu nhập thành công", async () => {
       req.user = { id: adminUser._id, role: "admin" };
       req.params.id = importToUpdate._id.toString();
-      req.body = { totalPrice: 600000 };
+      // Khi update Import, nếu không có invoice mới, chỉ update totalPrice
+      // HandlerFactory sẽ giảm inventory từ invoice cũ và không tăng (vì không có invoice mới)
+      req.body = { totalPrice: 600000 }; // Không có invoice mới
 
       await importController.updateImport(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalled();
       const jsonCall = res.json.mock.calls[0][0];
       expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.totalPrice).toBe(600000);
+      // Verify Product.findByIdAndUpdate was called (for decreasing old inventory)
+      expect(productFindByIdAndUpdateSpy).toHaveBeenCalled();
     });
 
     it("IMP-011: Employee nên cập nhật phiếu nhập thành công", async () => {
       req.user = { id: employeeUser._id, role: "employee" };
       req.params.id = importToUpdate._id.toString();
-      req.body = { totalPrice: 550000 };
+      req.body = { totalPrice: 550000 }; // Không có invoice mới
 
       await importController.updateImport(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalled();
       const jsonCall = res.json.mock.calls[0][0];
+      expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.totalPrice).toBe(550000);
+      // Verify Product.findByIdAndUpdate was called
+      expect(productFindByIdAndUpdateSpy).toHaveBeenCalled();
     });
 
     // IMP-012 will be tested at route level
@@ -243,15 +286,14 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
     it("IMP-013: nên fail khi import không tồn tại", async () => {
       req.user = { id: adminUser._id, role: "admin" };
       req.params.id = new mongoose.Types.ObjectId().toString();
-      req.body = { totalPrice: 700000 };
+      req.body = { totalPrice: 700000 }; // Không có invoice
 
       await importController.updateImport(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "Không tìm thấy dữ liệu với ID này",
-        })
-      );
+      expect(next).toHaveBeenCalled();
+      const error = next.mock.calls[0][0];
+      expect(error.message).toBe("Không tìm thấy dữ liệu với ID này");
+      expect(error.statusCode).toBe(404);
     });
   });
 
@@ -259,10 +301,27 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
   // Function D: Delete Import (Xóa phiếu nhập)
   // ========================================
   describe("deleteImport - Xóa phiếu nhập", () => {
+    let productFindByIdAndUpdateSpy;
+
+    beforeEach(() => {
+      // Mock Product.findByIdAndUpdate để tránh lỗi CastError
+      productFindByIdAndUpdateSpy = jest
+        .spyOn(Product, "findByIdAndUpdate")
+        .mockResolvedValue({ _id: new mongoose.Types.ObjectId() });
+    });
+
+    afterEach(() => {
+      if (productFindByIdAndUpdateSpy) {
+        productFindByIdAndUpdateSpy.mockRestore();
+      }
+    });
+
     it("IMP-014: Admin nên xóa phiếu nhập thành công", async () => {
       const importToDelete = await Import.create({
         user: adminUser._id,
-        invoice: [{ product: "prod7", title: "Product 7", quantity: 3, price: 100000 }],
+        invoice: [
+          { product: "prod7", title: "Product 7", quantity: 3, price: 100000 },
+        ],
         totalPrice: 300000,
       });
 
@@ -281,7 +340,9 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
     it("IMP-015: Employee nên xóa phiếu nhập thành công", async () => {
       const importToDelete = await Import.create({
         user: employeeUser._id,
-        invoice: [{ product: "prod8", title: "Product 8", quantity: 2, price: 150000 }],
+        invoice: [
+          { product: "prod8", title: "Product 8", quantity: 2, price: 150000 },
+        ],
         totalPrice: 300000,
       });
 
@@ -304,11 +365,10 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
 
       await importController.deleteImport(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "Không tìm thấy dữ liệu với ID này",
-        })
-      );
+      expect(next).toHaveBeenCalled();
+      const error = next.mock.calls[0][0];
+      expect(error.message).toBe("Không tìm thấy dữ liệu với ID này");
+      expect(error.statusCode).toBe(404);
     });
   });
 
@@ -321,20 +381,36 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
       const now = new Date();
       await Import.create({
         user: adminUser._id,
-        invoice: [{ product: "stat1", title: "Stat Product 1", quantity: 10, price: 100000 }],
+        invoice: [
+          {
+            product: "stat1",
+            title: "Stat Product 1",
+            quantity: 10,
+            price: 100000,
+          },
+        ],
         totalPrice: 1000000,
         createdAt: new Date(now.getFullYear(), now.getMonth(), 1),
       });
       await Import.create({
         user: adminUser._id,
-        invoice: [{ product: "stat2", title: "Stat Product 2", quantity: 5, price: 200000 }],
+        invoice: [
+          {
+            product: "stat2",
+            title: "Stat Product 2",
+            quantity: 5,
+            price: 200000,
+          },
+        ],
         totalPrice: 1000000,
         createdAt: new Date(now.getFullYear(), now.getMonth(), 15),
       });
     });
 
     afterAll(async () => {
-      await Import.deleteMany({ invoice: { $elemMatch: { product: /^stat/ } } });
+      await Import.deleteMany({
+        invoice: { $elemMatch: { product: /^stat/ } },
+      });
     });
 
     it("IMP-018: Admin nên xem thống kê tổng chi phí theo tháng", async () => {
@@ -384,5 +460,3 @@ describe("Import Controller - Quản lý phiếu nhập hàng", () => {
     });
   });
 });
-
-
