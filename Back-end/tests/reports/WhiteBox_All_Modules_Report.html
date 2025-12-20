@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo cáo Kiểm thử Hộp Trắng – Toàn Bộ Controllers & Utils</title>
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; line-height: 1.5; color: #1a1a1a; }
+    h1, h2, h3 { color: #0f4c81; margin-bottom: 6px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; margin-top: 18px; }
+    h3 { font-size: 16px; margin-top: 14px; }
+    .meta { margin-bottom: 12px; color: #444; }
+    .section { margin: 14px 0; }
+    .code { font-family: Consolas, "Courier New", monospace; background: #f7f7f7; padding: 6px 8px; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; }
+    th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+    th { background: #f0f4f8; }
+    .note { font-size: 12px; color: #666; }
+    .ok { color: #1b5e20; }
+    .fail { color: #b71c1c; }
+    .tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 12px; margin-right: 6px; }
+    .tag-controller { background: #e3f2fd; color: #0d47a1; }
+    .tag-model { background: #e8f5e9; color: #1b5e20; }
+    .tag-service { background: #fff3e0; color: #e65100; }
+    .tag-utils { background: #f3e5f5; color: #4a148c; }
+    .diagram { margin: 12px 0; padding: 8px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Báo cáo Kiểm thử Hộp Trắng – Toàn Bộ Controllers & Utils</h1>
+  <div class="meta">Ngày: 20/12/2025 • Dự án: Back-end (Node.js + Jest)</div>
+
+  <div class="section">
+    <h2>Mục tiêu</h2>
+    <ul>
+      <li>Xác thực các nhánh, đường dẫn và xử lý lỗi của toàn bộ controllers.</li>
+      <li>Đo và tổng hợp độ phủ cho controllers/models/utils liên quan.</li>
+      <li>Nêu phát hiện và khuyến nghị nâng cao độ tin cậy.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Tổng quan chạy test</h2>
+    <p>
+      Kết quả toàn bộ: <span class="fail">9 failed</span>, <span class="ok">2 passed</span>, tổng 11 suites; <span class="fail">48 failed</span>, <span class="ok">196 passed</span>, tổng 244 tests. Thời gian ~49.23s.<br />
+      Độ phủ toàn dự án: Statements 81.44%, Branches 60.76%, Functions 85.36%, Lines 83.55%.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Độ phủ theo file (rút gọn)</h2>
+    <table>
+      <thead>
+        <tr><th>Nhóm</th><th>File</th><th>Stmts</th><th>Branch</th><th>Funcs</th><th>Lines</th><th>Ghi chú</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>controllers</td><td class="code">authController.js</td><td>89.11%</td><td>87.5%</td><td>94.44%</td><td>89.72%</td><td>Uncovered: 46,234-254,300-304</td></tr>
+        <tr><td>controllers</td><td class="code">brandController.js</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>Đã phủ đầy đủ</td></tr>
+        <tr><td>controllers</td><td class="code">categoryController.js</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>Đã phủ đầy đủ</td></tr>
+        <tr><td>controllers</td><td class="code">commentController.js</td><td>86.2%</td><td>50%</td><td>66.66%</td><td>100%</td><td>Uncovered: 8-25</td></tr>
+        <tr><td>controllers</td><td class="code">handlerFactory.js</td><td>58.92%</td><td>51.02%</td><td>88.88%</td><td>60.24%</td><td>Uncovered nhánh domain khác</td></tr>
+        <tr><td>controllers</td><td class="code">importController.js</td><td>92.85%</td><td>50%</td><td>100%</td><td>100%</td><td>Uncovered: 7-43</td></tr>
+        <tr><td>controllers</td><td class="code">locationController.js</td><td>82.75%</td><td>75%</td><td>100%</td><td>82.75%</td><td>Uncovered: 28,63,76-79</td></tr>
+        <tr><td>controllers</td><td class="code">mailTemplate.js</td><td>72.72%</td><td>75%</td><td>100%</td><td>72.72%</td><td>Uncovered: 18-576</td></tr>
+        <tr><td>controllers</td><td class="code">orderController.js</td><td>77.67%</td><td>62.5%</td><td>81.81%</td><td>85.85%</td><td>Uncovered: 41,46,65-66,199-233</td></tr>
+        <tr><td>controllers</td><td class="code">productController.js</td><td>43.13%</td><td>0%</td><td>16.66%</td><td>44%</td><td>Uncovered: 11-23,28-53,56-69</td></tr>
+        <tr><td>controllers</td><td class="code">reviewController.js</td><td>85.71%</td><td>58.33%</td><td>100%</td><td>92.3%</td><td>Uncovered: 24-25</td></tr>
+        <tr><td>controllers</td><td class="code">transactionController.js</td><td>95%</td><td>52.63%</td><td>100%</td><td>94.93%</td><td>Uncovered: 92-104</td></tr>
+        <tr><td>controllers</td><td class="code">userController.js</td><td>98.82%</td><td>90%</td><td>91.66%</td><td>98.79%</td><td>Uncovered: 59</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Số liệu dựa trên kết quả Jest gần nhất do bạn cung cấp.</p>
+  </div>
+
+  <div class="section">
+    <h2>Ánh xạ luồng & điểm kiểm thử chính cho từng module</h2>
+
+    <h3>Auth Controller</h3>
+    <ul>
+      <li>Luồng: đăng ký, đăng nhập, refresh token, quên mật khẩu, đặt lại mật khẩu.</li>
+      <li>Nhánh: token hợp lệ/không, email gửi thành công/thất bại, người dùng active/inactive.</li>
+      <li>Đề xuất: mock <span class="code">email.js</span>, kiểm thử lỗi SMTP và hết hạn token.</li>
+    </ul>
+
+    <h3>Brand/Category Controller</h3>
+    <ul>
+      <li>Luồng: CRUD công khai và quyền admin/employee.</li>
+      <li>Nhánh: thành công, lỗi 404, duplicate key, validation min/max.</li>
+      <li>Đã phủ tốt (100%).</li>
+    </ul>
+
+    <h3>Comment Controller</h3>
+    <ul>
+      <li>Luồng: CRUD, phân cấp <span class="code">parent/children</span>, xóa lan truyền.</li>
+      <li>Nhánh: xóa <span class="code">children</span>, cập nhật <span class="code">parent.children</span>, root vs nested.</li>
+      <li>Đề xuất: kiểm thử đầy đủ nhánh xóa chuỗi <span class="code">children</span> (Uncovered 8-25).</li>
+    </ul>
+
+    <h3>Import Controller</h3>
+    <ul>
+      <li>Luồng: tạo/cập nhật/xóa phiếu nhập, cập nhật <span class="code">Product.inventory</span>.</li>
+      <li>Nhánh: cộng tồn khi import, trừ tồn khi update/delete theo hóa đơn.</li>
+      <li>Đề xuất: kiểm thử từng mặt hàng trong <span class="code">invoice</span>, sai lệch tồn.</li>
+    </ul>
+
+    <h3>Location Controller</h3>
+    <ul>
+      <li>Luồng: CRUD địa điểm, lọc/sắp xếp/phân trang.</li>
+      <li>Đề xuất: bổ sung test cho các dòng chưa phủ (28,63,76-79).</li>
+    </ul>
+
+    <h3>Order Controller</h3>
+    <ul>
+      <li>Luồng: tạo đơn từ <span class="code">cart</span>, kiểm tồn kho trước khi trừ.</li>
+      <li>Nhánh: thiếu tồn, tên dài cắt bớt, trừ tồn sau tạo, lỗi 404.</li>
+      <li>Đề xuất: kiểm thử lỗi tồn kho từng item (Uncovered 199-233) và các nhánh còn lại.</li>
+    </ul>
+
+    <h3>Product Controller</h3>
+    <ul>
+      <li>Luồng: create/update validations: <span class="code">promotion ≤ price</span>, <span class="code">inventory ∈ [0,1000]</span>, <span class="code">weight ∈ [0,1000)</span>.</li>
+      <li>Nhánh: từ chối nếu vi phạm, chuyển đổi mô tả HTML entities.</li>
+      <li>Đề xuất: bổ sung test cho toàn bộ validations và nhánh response đặc biệt trong <span class="code">updateOne</span> (Uncovered 11-69).</li>
+    </ul>
+
+    <h3>Review Controller</h3>
+    <ul>
+      <li>Luồng: CRUD và recalculation <span class="code">calcAverageRatings</span> khi update/delete.</li>
+      <li>Đề xuất: test recalculation từng bước và nhánh list-with-ratings.</li>
+    </ul>
+
+    <h3>Transaction/User Controller</h3>
+    <ul>
+      <li>Luồng: CRUD và quy tắc quyền truy cập người dùng.</li>
+      <li>Đề xuất: test permission checks và các nhánh bị bỏ sót.</li>
+    </ul>
+
+    <h3>Utils: apiFeatures/email/multer/cloudinary</h3>
+    <ul>
+      <li><span class="code">apiFeatures</span>: test <span class="code">keyword→regex</span>, <span class="code">fields</span>, mặc định sắp xếp và paginate.</li>
+      <li><span class="code">email.js</span>: mock transporter và kiểm thử lỗi gửi.</li>
+      <li><span class="code">multer.js</span>: test cấu hình và giới hạn file.</li>
+      <li><span class="code">cloudinary.js</span>: mock SDK, test nhánh upload/xóa.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Khuyến nghị để sửa 9 suites failed / 48 tests failed</h2>
+    <ol>
+      <li>Chạy từng suite để hiển thị lỗi chi tiết:
+        <div class="code">PowerShell</div>
+        <pre class="code">Push-Location "D:\KTPM\new\2025_2026_KIEM_THU_PHAN_MEM\Back-end"
+npm test -- --runInBand -- verbose
+Pop-Location</pre>
+      </li>
+      <li>Mock các dịch vụ ngoài (email/cloudinary/multer) trong <span class="code">tests/setup.js</span> hoặc từng test file.</li>
+      <li>Bổ sung test cho các nhánh chưa phủ đã nêu trên (đặc biệt Product/Order/Import/Comment).</li>
+      <li>Đảm bảo dữ liệu seed phù hợp với các ràng buộc unique và quan hệ để tránh flake.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>Thực thi & Xuất báo cáo Word</h2>
+    <div class="code">PowerShell</div>
+    <pre class="code">Invoke-Item "D:\KTPM\new\2025_2026_KIEM_THU_PHAN_MEM\Back-end\tests\reports\WhiteBox_All_Modules_Report.html"
+Start-Process winword "D:\KTPM\new\2025_2026_KIEM_THU_PHAN_MEM\Back-end\tests\reports\WhiteBox_All_Modules_Report.html"</pre>
+    <p>Trong Word: File → Save As → Word Document (*.docx).</p>
+  </div>
+
+  <div class="section">
+    <h2>Sơ đồ luồng (Flowcharts) các nhánh quan trọng</h2>
+    <p class="note">Lưu ý: Sơ đồ dùng Mermaid, xem tốt nhất trong trình duyệt. Word có thể không hiển thị Mermaid; hãy mở bằng trình duyệt và xuất PDF hoặc chụp hình để chèn vào Word.</p>
+    <div class="diagram">
+      <h3>handlerFactory.updateOne – Product validations</h3>
+      <div class="mermaid">flowchart TD
+A[Start_updateOne_Model] --> B{Model_is_Product}
+B -->|Yes| C[Set_updatedBy_and_updatedAt]
+C --> D[Sanitize_description]
+D --> E{promotion_gt_price}
+E -->|Yes| E1[Error_Promotion_gt_Price]
+E -->|No| F{inventory_lt_0}
+F -->|Yes| F1[Error_Inventory_positive]
+F -->|No| G{inventory_gt_1000}
+G -->|Yes| G1[Error_Inventory_le_1000]
+G -->|No| H{weight_lt_0}
+H -->|Yes| H1[Error_Weight_positive]
+H -->|No| I{weight_ge_1000}
+I -->|Yes| I1[Error_Weight_lt_1000]
+I -->|No| J[Update_doc_runValidators_true]
+J --> K{doc_exists}
+K -->|No| K1[Error_Not_found]
+K -->|Yes| L[Return_200_success]
+B -->|No| M[Generic_update_branch]
+</div>
+    </div>
+    <div class="diagram">
+      <h3>handlerFactory.createOne – Order inventory check</h3>
+      <div class="mermaid">flowchart TD
+A[Start_createOne_Model] --> B{Model_is_Order}
+B -->|Yes| C[Iterate_cart_items]
+C --> D{qty_gt_inventory}
+D -->|Yes| D1[Error_Inventory_not_enough]
+D -->|No| E[Create_order]
+E --> F[Decrement_inventory_each_item]
+F --> G[Return_201_success]
+B -->|No| H[Other_model_branches]
+</div>
+    </div>
+    <div class="diagram">
+      <h3>handlerFactory.deleteOne – Import inventory rollback</h3>
+      <div class="mermaid">flowchart TD
+A[Start_deleteOne_Model] --> B{Model_is_Import}
+B -->|Yes| C[Find_invoice_by_id]
+C --> D[Decrement_inventory_each_line]
+D --> E[Delete_document]
+B -->|No| E
+E --> F{doc_exists}
+F -->|No| F1[Error_Not_found]
+F -->|Yes| G[Return_204_success]
+</div>
+    </div>
+    <div class="diagram">
+      <h3>handlerFactory.getAll – Pagination totalPage branch</h3>
+      <div class="mermaid">flowchart TD
+A[Start_getAll_Model] --> B[Apply_filter_sort_fields_paginate]
+B --> C[Execute_query_doc]
+C --> D{has_page}
+D -->|Yes| E[Compute_totalPage_from_filtered_length]
+E --> F{page_gt_totalPage}
+F -->|Yes| F1[Return_200_totalPage_1]
+F -->|No| G[Return_200_with_totalPage]
+D -->|No| H[Return_200_default]
+</div>
+    </div>
+    <div class="diagram">
+      <h3>apiFeatures.filter – keyword & advanced operators</h3>
+      <div class="mermaid">flowchart TD
+A[Start_filter] --> B[Clone_queryString]
+B --> C[Remove_page_sort_limit_fields]
+C --> D{has_keyword}
+D -->|Yes| E[Set_title_regex_and_delete_keyword]
+D -->|No| F[Set_in_for_non_price_promotion_keys]
+E --> G[Replace_gte_gt_lte_lt_to_dollar_ops]
+F --> G
+G --> H[Apply_find_with_queryStr]
+H --> I[Return_this]
+</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true });</script>
+</body>
+</html>
