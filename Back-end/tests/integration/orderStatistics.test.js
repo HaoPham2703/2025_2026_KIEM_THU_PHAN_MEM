@@ -172,6 +172,19 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 2: Thống kê số lượng đơn hàng theo status", () => {
+    beforeEach(async () => {
+      // Đảm bảo có token trước mỗi test
+      if (!adminToken) {
+        const loginResponse = await request(app)
+          .post("/api/v1/users/login")
+          .send({
+            email: "adminstatistics@example.com",
+            password: "Haolatuii2703@",
+          });
+        adminToken = loginResponse.body.token;
+      }
+    });
+
     it("nên lấy được thống kê số lượng đơn theo status", async () => {
       const response = await request(app)
         .get("/api/v1/orders/count")

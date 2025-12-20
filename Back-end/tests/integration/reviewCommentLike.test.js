@@ -128,17 +128,24 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
 
   describe("Bước 2: Admin cập nhật order status = Success", () => {
     it("nên cập nhật order status thành Success", async () => {
+      // Đảm bảo testOrder đã được tạo
+      expect(testOrder).toBeTruthy();
+      expect(testOrder._id).toBeDefined();
+
       const adminLogin = await request(app).post("/api/v1/users/login").send({
         email: "adminreviewcomment@example.com",
         password: "Haolatuii2703@",
       });
 
+      expect(adminLogin.status).toBe(200);
       adminToken = adminLogin.body.token;
 
-      await request(app)
+      const response = await request(app)
         .patch(`/api/v1/orders/${testOrder._id}`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ status: "Success" });
+
+      expect(response.status).toBe(200);
 
       const updatedOrder = await Order.findById(testOrder._id);
       expect(updatedOrder).toBeTruthy();

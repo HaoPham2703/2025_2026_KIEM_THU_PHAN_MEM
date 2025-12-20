@@ -66,8 +66,8 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
 
   describe("Bước 2: Xác thực mã reset", () => {
     it("nên xác thực mã reset thành công", async () => {
-      // Tạo token hợp lệ
-      const token = crypto.randomBytes(32).toString("hex");
+      // Tạo token hợp lệ (6 hex chars như createPasswordResetToken)
+      const token = crypto.randomBytes(3).toString("hex");
       const hashedToken = crypto
         .createHash("sha256")
         .update(token)
@@ -101,8 +101,8 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
 
   describe("Bước 3: Đặt lại mật khẩu mới", () => {
     it("nên đặt lại mật khẩu thành công", async () => {
-      // Tạo token hợp lệ
-      const token = crypto.randomBytes(32).toString("hex");
+      // Tạo token hợp lệ (6 hex chars như createPasswordResetToken)
+      const token = crypto.randomBytes(3).toString("hex");
       const hashedToken = crypto
         .createHash("sha256")
         .update(token)
@@ -133,7 +133,7 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
   describe("Bước 4: Đăng nhập với mật khẩu mới", () => {
     it("nên đăng nhập thành công với mật khẩu mới", async () => {
       // Đảm bảo password đã được reset
-      const token = crypto.randomBytes(32).toString("hex");
+      const token = crypto.randomBytes(3).toString("hex");
       const hashedToken = crypto
         .createHash("sha256")
         .update(token)
@@ -144,10 +144,14 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
         passwordResetExpires: Date.now() + 10 * 60 * 1000,
       });
 
-      await request(app).patch(`/api/v1/users/resetPassword/${token}`).send({
-        password: "NewPassword123@",
-        passwordConfirm: "NewPassword123@",
-      });
+      const resetResponse = await request(app)
+        .patch(`/api/v1/users/resetPassword/${token}`)
+        .send({
+          password: "NewPassword123@",
+          passwordConfirm: "NewPassword123@",
+        });
+
+      expect(resetResponse.status).toBe(200);
 
       // Đăng nhập với mật khẩu mới
       const response = await request(app).post("/api/v1/users/login").send({
