@@ -134,6 +134,8 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
 
       // Kiểm tra địa chỉ mới đã được thêm
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
+      expect(updatedUser.address).toBeDefined();
       expect(updatedUser.address).toHaveLength(2);
       expect(updatedUser.address[1].detail).toBe(addressData.detail);
       expect(updatedUser.address[1].setDefault).toBe(false); // Không phải default
@@ -183,6 +185,9 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
 
       // Kiểm tra địa chỉ đã được đặt làm mặc định
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
+      expect(updatedUser.address).toBeDefined();
+      expect(updatedUser.address.length).toBeGreaterThan(1);
       expect(updatedUser.address[1].setDefault).toBe(true);
       expect(updatedUser.address[0].setDefault).toBe(false); // Địa chỉ cũ không còn default
     });
@@ -191,9 +196,12 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   describe("Bước 7: User tạo đơn hàng với địa chỉ đã lưu", () => {
     it("nên tạo đơn hàng với địa chỉ đã lưu", async () => {
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
+      expect(updatedUser.address).toBeDefined();
       const defaultAddress = updatedUser.address.find(
         (addr) => addr.setDefault === true
       );
+      expect(defaultAddress).toBeDefined();
 
       // Tạo địa chỉ đầy đủ từ các field
       const fullAddress = `${defaultAddress.detail}, ${defaultAddress.ward}, ${defaultAddress.district}, ${defaultAddress.province}`;

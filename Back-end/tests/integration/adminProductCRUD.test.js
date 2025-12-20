@@ -109,6 +109,7 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
       // Kiểm tra sản phẩm đã được cập nhật
       const updatedProduct = await Product.findById(createdProductId);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.title).toBe("Updated Product CRUD Test");
       expect(updatedProduct.price).toBe(25000000);
       expect(updatedProduct.inventory).toBe(75);
@@ -127,6 +128,7 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
       expect(response.status).toBe(200);
 
       const updatedProduct = await Product.findById(createdProductId);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.price).toBe(22000000);
       // Các field khác không thay đổi
       expect(updatedProduct.title).toBe("Updated Product CRUD Test");
@@ -164,6 +166,8 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
         .set("Authorization", `Bearer ${adminToken}`)
         .send(productData);
 
+      expect(createResponse.body.data).toBeDefined();
+      expect(createResponse.body.data.data).toBeDefined();
       const productId = createResponse.body.data.data._id;
 
       // Cập nhật sản phẩm
@@ -177,6 +181,7 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
       // Kiểm tra đã cập nhật
       const updatedProduct = await Product.findById(productId);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.price).toBe(35000000);
       expect(updatedProduct.inventory).toBe(120);
 

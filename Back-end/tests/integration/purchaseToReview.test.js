@@ -147,6 +147,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
       // Kiểm tra order status đã được cập nhật
       const updatedOrder = await Order.findById(testOrder._id);
+      expect(updatedOrder).toBeTruthy();
       expect(updatedOrder.status).toBe("Success");
     });
   });
@@ -178,6 +179,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
     it("nên cập nhật ratingsAverage và ratingsQuantity của product", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.ratingsQuantity).toBe(initialRatingsQuantity + 1);
       // ratingsAverage sẽ được tính lại tự động
       expect(updatedProduct.ratingsAverage).toBeDefined();

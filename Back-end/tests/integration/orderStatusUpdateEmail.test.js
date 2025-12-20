@@ -144,6 +144,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
       // Kiểm tra order status đã được cập nhật
       const updatedOrder = await Order.findById(testOrder._id);
+      expect(updatedOrder).toBeTruthy();
       expect(updatedOrder.status).toBe("Delivery");
 
       // Kiểm tra email được gửi (mock)
@@ -165,6 +166,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
       expect(response.status).toBe(200);
 
       const updatedOrder = await Order.findById(testOrder._id);
+      expect(updatedOrder).toBeTruthy();
       expect(updatedOrder.status).toBe("Success");
 
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -204,6 +206,8 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         .set("Authorization", `Bearer ${userLogin.body.token}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
       const orderId = orderResponse.body.data.id;
 
       // Admin cập nhật status

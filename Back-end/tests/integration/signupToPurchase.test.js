@@ -132,6 +132,7 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
 
     it("nên giảm inventory sau khi user mới tạo đơn hàng", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 1);
     });
   });

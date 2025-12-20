@@ -125,6 +125,7 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
 
       // Kiểm tra password đã được cập nhật
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.passwordResetToken).toBeUndefined();
     });
   });

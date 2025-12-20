@@ -110,11 +110,13 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
 
       // Kiểm tra order được tạo
       const createdOrder = await Order.findById(response.body.data.id);
+      expect(createdOrder).toBeTruthy();
       expect(createdOrder.payments).toBe("số dư");
     });
 
     it("nên giảm balance user đúng số tiền", async () => {
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(initialBalance - 15000000); // 50 triệu - 15 triệu = 35 triệu
     });
 
@@ -128,6 +130,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
 
     it("nên giảm inventory sản phẩm", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 1);
     });
   });
@@ -184,6 +187,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
 
       // Kiểm tra balance đã giảm thêm 30 triệu (2 đơn x 15 triệu)
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(initialBalance - 45000000); // 50 triệu - 45 triệu = 5 triệu
     });
   });
@@ -235,6 +239,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
       const userAfter = await User.findOne({
         email: "balancetest@example.com",
       });
+      expect(userAfter).toBeTruthy();
       expect(userAfter.balance).toBe(balanceBefore - 15000000);
     });
   });

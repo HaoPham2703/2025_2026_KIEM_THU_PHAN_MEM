@@ -112,6 +112,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
       // Kiểm tra inventory đã giảm
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 2);
     });
   });
@@ -132,6 +133,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
       // Kiểm tra order status đã được cập nhật
       const updatedOrder = await Order.findById(testOrder._id);
+      expect(updatedOrder).toBeTruthy();
       expect(updatedOrder.status).toBe("Cancelled");
     });
   });
@@ -159,6 +161,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       // Balance ban đầu + refund amount
       expect(updatedUser.balance).toBe(initialBalance + 30000000);
     });
@@ -167,6 +170,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
   describe("Bước 5: Kiểm tra inventory tăng lại", () => {
     it("nên tăng inventory sản phẩm sau khi hủy đơn", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       // Inventory ban đầu - 2 (đã mua) + 2 (hoàn lại) = ban đầu
       expect(updatedProduct.inventory).toBe(initialInventory);
     });
@@ -201,6 +205,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
       const orderId = orderResponse.body.data.id;
       const productBeforeCancel = await Product.findById(testProduct._id);
+      expect(productBeforeCancel).toBeTruthy();
       const inventoryBeforeCancel = productBeforeCancel.inventory;
 
       // Hủy đơn
@@ -212,6 +217,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
       // Kiểm tra inventory tăng lại
       await new Promise((resolve) => setTimeout(resolve, 100));
       const productAfterCancel = await Product.findById(testProduct._id);
+      expect(productAfterCancel).toBeTruthy();
       expect(productAfterCancel.inventory).toBe(inventoryBeforeCancel + 1);
 
       // Kiểm tra transaction refund

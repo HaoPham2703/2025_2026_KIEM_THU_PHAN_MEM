@@ -118,6 +118,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
     it("nên tăng inventory sản phẩm sau khi nhập hàng", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       // Inventory ban đầu: 50, nhập thêm: 20 => tổng: 70
       expect(updatedProduct.inventory).toBe(initialInventory + 20);
     });
@@ -157,6 +158,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
       const newProduct = await Product.findOne({
         title: "New Product From Import Test",
       });
+      expect(newProduct).toBeTruthy();
 
       const importData = {
         location: testLocation._id.toString(),
@@ -179,6 +181,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
       // Kiểm tra inventory tăng
       const updatedProduct = await Product.findById(newProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(30 + 50); // 80
     });
   });
@@ -200,6 +203,8 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
         .set("Authorization", `Bearer ${adminToken}`)
         .send(productData);
 
+      expect(productResponse.body.data).toBeDefined();
+      expect(productResponse.body.data.data).toBeDefined();
       const productId = productResponse.body.data.data._id;
 
       // Bước 2: Nhập hàng
@@ -224,6 +229,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
       // Bước 3: Kiểm tra inventory
       const finalProduct = await Product.findById(productId);
+      expect(finalProduct).toBeTruthy();
       expect(finalProduct.inventory).toBe(10 + 100); // 110
 
       // Cleanup

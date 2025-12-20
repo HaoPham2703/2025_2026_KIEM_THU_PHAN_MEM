@@ -122,6 +122,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
 
       expect(orderResponse.status).toBe(201);
       testOrder = await Order.findById(orderResponse.body.data.id);
+      expect(testOrder).toBeTruthy();
     });
   });
 
@@ -140,6 +141,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
         .send({ status: "Success" });
 
       const updatedOrder = await Order.findById(testOrder._id);
+      expect(updatedOrder).toBeTruthy();
       expect(updatedOrder.status).toBe("Success");
     });
   });
@@ -195,6 +197,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
 
       // Kiểm tra user đã được thêm vào likes array
       const updatedComment = await Comment.findById(testComment._id);
+      expect(updatedComment).toBeTruthy();
       expect(updatedComment.likes).toContainEqual(
         expect.objectContaining({
           _id: testUser._id,
@@ -212,6 +215,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
 
       // Kiểm tra user đã được xóa khỏi likes array
       const updatedComment = await Comment.findById(testComment._id);
+      expect(updatedComment).toBeTruthy();
       const userInLikes = updatedComment.likes.find(
         (like) => like._id.toString() === testUser._id.toString()
       );

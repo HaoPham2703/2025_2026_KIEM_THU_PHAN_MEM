@@ -89,7 +89,16 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
 
       expect(response.status).toBe(200);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.data).toBeDefined();
       expect(Array.isArray(response.body.data.data)).toBe(true);
+      // Note: Products có thể rỗng nếu chưa có data, nhưng test expect có data
+      // Nếu test fail ở đây, cần kiểm tra xem products có được tạo đúng trong beforeAll không
+      if (response.body.data.data.length === 0) {
+        console.warn(
+          "Warning: Products array is empty. Check beforeAll setup."
+        );
+      }
       expect(response.body.data.data.length).toBeGreaterThan(0);
     });
 
@@ -116,6 +125,8 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
 
       expect(response.status).toBe(200);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.data).toBeDefined();
       expect(response.body.data.data._id.toString()).toBe(
         testProducts[0]._id.toString()
       );
@@ -166,7 +177,16 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
         .set("Authorization", `Bearer ${authToken}`);
 
       expect(listResponse.status).toBe(200);
+      expect(listResponse.body.data).toBeDefined();
+      expect(listResponse.body.data.data).toBeDefined();
       const products = listResponse.body.data.data;
+      expect(Array.isArray(products)).toBe(true);
+      // Note: Products có thể rỗng nếu chưa có data
+      if (products.length === 0) {
+        console.warn(
+          "Warning: Products array is empty. Check beforeAll setup."
+        );
+      }
       expect(products.length).toBeGreaterThan(0);
 
       // Bước 2: Xem chi tiết sản phẩm đầu tiên

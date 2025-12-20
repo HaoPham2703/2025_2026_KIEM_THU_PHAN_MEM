@@ -142,6 +142,7 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
     it("nên giảm inventory sản phẩm sau khi tạo đơn hàng", async () => {
       // Lấy lại sản phẩm từ database để kiểm tra inventory
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 2); // Giảm 2 sản phẩm
     });
 
@@ -175,10 +176,12 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
       // Kiểm tra order đã được tạo với payments = "số dư"
       const createdOrder = await Order.findById(response.body.data.id);
+      expect(createdOrder).toBeTruthy();
       expect(createdOrder.payments).toBe("số dư");
 
       // Kiểm tra balance của user đã giảm
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(50000000 - 15000000); // 50 triệu - 15 triệu = 35 triệu
     });
 
@@ -258,6 +261,12 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
         .get("/api/v1/orders")
         .set("Authorization", `Bearer ${authToken}`);
 
+      expect(ordersResponse.status).toBe(200);
+      expect(ordersResponse.body.data).toBeDefined();
+      expect(ordersResponse.body.data.data).toBeDefined();
+      expect(Array.isArray(ordersResponse.body.data.data)).toBe(true);
+      expect(ordersResponse.body.data.data.length).toBeGreaterThan(0);
+
       const firstOrderId = ordersResponse.body.data.data[0]._id;
 
       const response = await request(app)
@@ -266,6 +275,7 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
       expect(response.status).toBe(200);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
       expect(response.body.data.data).toBeDefined();
       expect(response.body.data.data.user.toString()).toBe(
         testUser._id.toString()
@@ -328,9 +338,9 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
       // Bước 4: Kiểm tra inventory đã giảm
       const updatedProduct = await Product.findById(testProduct._id);
+      expect(updatedProduct).toBeTruthy();
       const expectedInventory = initialInventory - 2 - 1 - 1; // Trừ đi các đơn hàng đã tạo trong các test trước
       expect(updatedProduct.inventory).toBeLessThan(initialInventory);
     });
   });
 });
-

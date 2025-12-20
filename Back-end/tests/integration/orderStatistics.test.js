@@ -152,6 +152,7 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
     const orderId = response.body.data.id;
     const order = await Order.findById(orderId);
+    expect(order).toBeTruthy();
     order.status = status;
     await order.save();
 

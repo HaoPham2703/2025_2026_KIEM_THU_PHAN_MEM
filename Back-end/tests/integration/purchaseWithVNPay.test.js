@@ -201,6 +201,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
 
       // Kiểm tra balance user tăng
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(initialBalance + 15000000);
     });
   });

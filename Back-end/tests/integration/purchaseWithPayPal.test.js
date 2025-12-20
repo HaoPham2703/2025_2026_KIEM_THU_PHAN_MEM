@@ -143,6 +143,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán PayPal --> Xác nhận", 
 
       // Kiểm tra balance user tăng (do post-save hook)
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(initialBalance + 15000000);
     });
   });
