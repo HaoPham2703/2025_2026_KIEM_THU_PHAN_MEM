@@ -23,6 +23,13 @@ router
     commentController.likeComment
   );
 router
+  .route("/:id/like")
+  .patch(
+    authController.protect,
+    authController.restrictTo("user", "employee", "admin"),
+    commentController.likeComment
+  );
+router
   .route("/:id")
   .get(commentController.getComment)
   .patch(

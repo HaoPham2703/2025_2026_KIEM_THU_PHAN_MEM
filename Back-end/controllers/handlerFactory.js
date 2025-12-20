@@ -205,9 +205,20 @@ exports.createOne = (Model) =>
       }
 
       const doc = await Model.create(req.body);
+      
+      // Giảm inventory sau khi tạo order
       for (const value of cart) {
         await Product.findByIdAndUpdate(value.id, {
           $inc: { inventory: -value.quantity },
+        });
+      }
+
+      // Giảm balance nếu thanh toán bằng số dư
+      if (doc.payments === "số dư" && doc.user) {
+        const User = require("../models/userModel");
+        const userId = typeof doc.user === "object" ? doc.user._id : doc.user;
+        await User.findByIdAndUpdate(userId, {
+          $inc: { balance: -doc.totalPrice },
         });
       }
 
@@ -221,17 +232,25 @@ exports.createOne = (Model) =>
     }
 
     if (Model == Import) {
+      // Tạo import trước, sau đó tăng inventory
+      const doc = await Model.create(req.body);
       const invoice = req.body.invoice;
       if (invoice && Array.isArray(invoice)) {
-      for (const value of invoice) {
+        for (const value of invoice) {
           // Chỉ update nếu product là ObjectId hợp lệ
           if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
-        await Product.findByIdAndUpdate(value.product, {
-          $inc: { inventory: value.quantity },
-        });
+            await Product.findByIdAndUpdate(value.product, {
+              $inc: { inventory: value.quantity },
+            });
           }
         }
       }
+      return res.status(201).json({
+        status: "success",
+        data: {
+          data: doc,
+        },
+      });
     }
 
     const doc = await Model.create(req.body);

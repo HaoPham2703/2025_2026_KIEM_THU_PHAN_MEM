@@ -36,18 +36,23 @@ exports.updateOrder = catchAsync(async (req, res, next) => {
   const doc = await Order.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
+  }).populate({
+    path: "user",
+    select: "name email",
   });
   if (!doc) {
     return next(new AppError("Không tìm thấy dữ liệu với ID này", 404));
   }
   try {
-    const domain = `https://hctech.onrender.com`;
-    const message = mailTemplate(doc, domain);
-    await sendEmail({
-      email: doc.user.email,
-      subject: "Cập nhật trạng thái đơn hàng",
-      message,
-    });
+    if (doc.user && doc.user.email) {
+      const domain = `https://hctech.onrender.com`;
+      const message = mailTemplate(doc, domain);
+      await sendEmail({
+        email: doc.user.email,
+        subject: "Cập nhật trạng thái đơn hàng",
+        message,
+      });
+    }
   } catch (err) {
     console.log(err);
   } finally {

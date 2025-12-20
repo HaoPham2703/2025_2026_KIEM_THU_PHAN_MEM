@@ -108,6 +108,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/imports", importRouter);
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/payments", transactionRouter);
+app.use("/api/v1/transactions", transactionRouter);
 app.use("/api/v1/locations", locationRouter);
 app.use("/", viewRouter);
 

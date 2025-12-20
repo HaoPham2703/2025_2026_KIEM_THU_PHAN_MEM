@@ -18,11 +18,25 @@ exports.deleteComment = factory.deleteOne(Comment);
 exports.isOwner = factory.checkPermission(Comment);
 exports.likeComment = catchAsync(async (req, res, next) => {
   const data = await Comment.findById(req.params.id);
-  const like = (data.like);
-//   console.log(like,typeof like)
-  if (!data) return next(new AppError("Không tìm thấy comment này"), 404);
-  let result = await like.filter((u) => u != req.user.id);
-  if (JSON.stringify(result) === JSON.stringify(like)) result.push(req.user.id);
+  if (!data) return next(new AppError("Không tìm thấy comment này", 404));
+  
+  const like = data.like || [];
+  const userId = req.user.id.toString();
+  
+  // Kiểm tra xem user đã like chưa (so sánh ObjectId đúng cách)
+  const userIndex = like.findIndex(
+    (likeId) => likeId.toString() === userId
+  );
+  
+  let result;
+  if (userIndex === -1) {
+    // Chưa like thì thêm vào
+    result = [...like, req.user.id];
+  } else {
+    // Đã like thì xóa khỏi array (unlike)
+    result = like.filter((likeId) => likeId.toString() !== userId);
+  }
+  
   data.like = result;
   await data.save({ validateBeforeSave: false });
   res.status(200).json({
