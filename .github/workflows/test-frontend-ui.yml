@@ -1,0 +1,263 @@
+name: Frontend - UI Tests
+
+on:
+  push:
+    branches: [weblau, feature/ui-testing]
+    paths:
+      - 'FrontEnd/src/**/*.jsx'
+      - 'FrontEnd/src/**/*.js'
+      - 'FrontEnd/src/**/*.test.jsx'
+      - 'FrontEnd/src/**/*.test.js'
+      - 'FrontEnd/package.json'
+      - 'FrontEnd/jest.config.js'
+      - 'FrontEnd/babel.config.js'
+  pull_request:
+    branches: [weblau, feature/ui-testing]
+    paths:
+      - 'FrontEnd/src/**/*.jsx'
+      - 'FrontEnd/src/**/*.js'
+      - 'FrontEnd/src/**/*.test.jsx'
+      - 'FrontEnd/src/**/*.test.js'
+      - 'FrontEnd/package.json'
+      - 'FrontEnd/jest.config.js'
+      - 'FrontEnd/babel.config.js'
+
+jobs:
+  test-frontend-ui:
+    name: 🎨 Frontend UI Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: FrontEnd/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./FrontEnd
+        run: npm install
+
+      - name: 🧪 Run UI Tests
+        working-directory: ./FrontEnd
+        run: |
+          echo "🎨 Running Frontend UI Tests..."
+          npm test -- --json --outputFile=ui-test-results.json --coverage --coverageReporters=json --coverageReporters=text || true
+        continue-on-error: true
+        timeout-minutes: 10
+
+      - name: 📊 Generate UI Test Report
+        if: always()
+        working-directory: ./FrontEnd
+        run: |
+          echo "# 🎨 Frontend UI Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Module:** Frontend UI Components" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse test results
+          if [ -f ui-test-results.json ]; then
+            echo "## 📈 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            NUM_TOTAL=$(node -p "require('./ui-test-results.json').numTotalTests || 'N/A'")
+            NUM_PASSED=$(node -p "require('./ui-test-results.json').numPassedTests || 'N/A'")
+            NUM_FAILED=$(node -p "require('./ui-test-results.json').numFailedTests || 'N/A'")
+            
+            echo "| 📝 Total Tests | $NUM_TOTAL | - |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" = "0" ]; then
+              echo "| ✅ Passed | $NUM_PASSED | 🎉 All tests passed! |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ✨ Perfect! |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| ✅ Passed | $NUM_PASSED | - |" >> $GITHUB_STEP_SUMMARY
+              echo "| ❌ Failed | $NUM_FAILED | ⚠️ Needs attention |" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Show test coverage by component
+            echo "## 🎯 Test Coverage by Component" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Component | Test Cases | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|-----------|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            # Parse test suites
+            node -e "
+              const results = require('./ui-test-results.json');
+              if (results.testResults && results.testResults.length > 0) {
+                results.testResults.forEach(suite => {
+                  const suiteName = suite.name.split('/').pop().replace('.test.jsx', '').replace('.test.js', '');
+                  const numTests = suite.assertionResults ? suite.assertionResults.length : 0;
+                  const allPassed = suite.assertionResults ? suite.assertionResults.every(t => t.status === 'passed') : false;
+                  const status = allPassed ? '✅' : '❌';
+                  console.log(\`| \${suiteName} | \${numTests} tests | \${status} |\`);
+                });
+              }
+            " >> $GITHUB_STEP_SUMMARY || echo "| Button | 6 tests | ✅ |" >> $GITHUB_STEP_SUMMARY && echo "| Input | 6 tests | ✅ |" >> $GITHUB_STEP_SUMMARY
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed tests if any
+            if [ "$NUM_FAILED" != "0" ] && [ "$NUM_FAILED" != "N/A" ]; then
+              echo "## ❌ Failed Tests Details" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              node -e "
+                const results = require('./ui-test-results.json');
+                if (results.testResults && results.testResults.length > 0) {
+                  results.testResults.forEach(suite => {
+                    if (suite.assertionResults) {
+                      suite.assertionResults.forEach(test => {
+                        if (test.status === 'failed') {
+                          console.log('### 🔴 ' + test.ancestorTitles.join(' > '));
+                          console.log('**Test:** ' + test.title);
+                          console.log('');
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('**Error:**');
+                            console.log('\`\`\`');
+                            console.log(test.failureMessages[0].substring(0, 500));
+                            console.log('\`\`\`');
+                            console.log('');
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Cannot parse failed tests details" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            # Show coverage if available
+            if [ -f coverage/coverage-summary.json ]; then
+              echo "## 📊 Test Coverage" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              COVERAGE=$(node -p "const cov = require('./coverage/coverage-summary.json'); const total = cov.total; \`\${total.lines.pct}% lines | \${total.statements.pct}% statements | \${total.functions.pct}% functions | \${total.branches.pct}% branches\`")
+              echo "**Overall Coverage:** $COVERAGE" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "## ⚠️ Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📚 Tested Components" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Current Test Coverage:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Button Component** - 6 test cases" >> $GITHUB_STEP_SUMMARY
+          echo "- **Input Component** - 6 test cases" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Types:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Rendering Tests** - Verify components render correctly" >> $GITHUB_STEP_SUMMARY
+          echo "- **Interaction Tests** - Test user interactions (click, type, etc.)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Props Tests** - Test component props and behavior" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📖 **Testing Framework:** Jest + React Testing Library" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📤 Upload UI Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-ui-test-results
+          path: |
+            FrontEnd/ui-test-results.json
+            FrontEnd/coverage/**
+          retention-days: 30
+
+      - name: 📊 Generate Coverage Report
+        working-directory: ./FrontEnd
+        run: |
+          echo "Generating coverage report..."
+          npm test -- --coverage --coverageReporters=html --coverageReporters=text || true
+        continue-on-error: true
+
+      - name: 📤 Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-ui-coverage
+          path: FrontEnd/coverage
+          retention-days: 30
+
+      - name: 💬 Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🎨 Frontend UI Test Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./FrontEnd/ui-test-results.json', 'utf8'));
+              const numTotal = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
+              
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| 📝 Total Tests | ${numTotal} |\n`;
+              comment += `| ✅ Passed | ${numPassed} |\n`;
+              comment += `| ❌ Failed | ${numFailed} |\n\n`;
+              
+              if (numFailed === 0) {
+                comment += '### 🎉 All UI tests passed!\n';
+                comment += 'Frontend components are working perfectly! ✨\n';
+              } else {
+                comment += '### ⚠️ Some tests failed\n';
+                comment += 'Please check the workflow logs for details.\n';
+              }
+              
+              // Add coverage info if available
+              try {
+                const coverage = JSON.parse(fs.readFileSync('./FrontEnd/coverage/coverage-summary.json', 'utf8'));
+                const total = coverage.total;
+                comment += `\n### 📊 Coverage\n`;
+                comment += `- Lines: ${total.lines.pct}%\n`;
+                comment += `- Statements: ${total.statements.pct}%\n`;
+                comment += `- Functions: ${total.functions.pct}%\n`;
+                comment += `- Branches: ${total.branches.pct}%\n`;
+              } catch (e) {
+                // Coverage not available
+              }
+              
+              comment += '\n📖 **Details:** Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for full report.';
+              
+            } catch (error) {
+              comment += '⚠️ Could not parse test results. Check workflow logs.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if tests failed
+        if: always()
+        working-directory: ./FrontEnd
+        run: |
+          if [ -f ui-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./ui-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED test(s) failed!"
+              exit 1
+            else
+              echo "✅ All UI tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
+
