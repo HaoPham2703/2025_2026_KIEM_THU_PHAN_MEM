@@ -214,17 +214,9 @@ describe("Brand Controller - Quản lý thương hiệu", () => {
   // Function C: Update Brand (Cập nhật thương hiệu - Admin)
   // ========================================
   describe("updateBrand - Cập nhật thương hiệu", () => {
-    let brandToUpdate;
-
-    beforeAll(async () => {
-      brandToUpdate = await Brand.create({ name: "Brand To Update" });
-    });
-
-    afterAll(async () => {
-      await Brand.deleteMany({ _id: brandToUpdate._id });
-    });
-
     it("BRD-013: Admin nên cập nhật brand thành công", async () => {
+      const brandToUpdate = await Brand.create({ name: "Brand To Update Admin" });
+
       req.user = { id: adminUser._id, role: "admin" };
       req.params.id = brandToUpdate._id.toString();
       req.body = { name: "Brand Updated By Admin" };
@@ -236,9 +228,14 @@ describe("Brand Controller - Quản lý thương hiệu", () => {
       const jsonCall = res.json.mock.calls[0][0];
       expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.name).toBe("Brand Updated By Admin");
+
+      // Cleanup
+      await Brand.findByIdAndDelete(brandToUpdate._id);
     });
 
     it("BRD-014: Employee nên cập nhật brand thành công", async () => {
+      const brandToUpdate = await Brand.create({ name: "Brand To Update Employee" });
+
       req.user = { id: employeeUser._id, role: "employee" };
       req.params.id = brandToUpdate._id.toString();
       req.body = { name: "Brand Updated By Employee" };
@@ -249,6 +246,9 @@ describe("Brand Controller - Quản lý thương hiệu", () => {
       const jsonCall = res.json.mock.calls[0][0];
       expect(jsonCall.status).toBe("success");
       expect(jsonCall.data.data.name).toBe("Brand Updated By Employee");
+
+      // Cleanup
+      await Brand.findByIdAndDelete(brandToUpdate._id);
     });
 
     // BRD-015 will be tested at route level
