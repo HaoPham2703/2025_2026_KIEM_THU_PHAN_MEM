@@ -1,0 +1,197 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [weblau]
+  pull_request:
+    branches: [weblau]
+  workflow_dispatch: # Cho phép chạy thủ công
+
+jobs:
+  integration-tests:
+    name: 🔗 Integration Tests Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: Back-end/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./Back-end
+        run: npm install
+
+      - name: 🧪 Run Integration Tests
+        working-directory: ./Back-end
+        run: |
+          echo "🔗 Running Integration Tests..."
+          npm test -- tests/integration --json --outputFile=integration-test-results.json || true
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-integration-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+          EMAIL_HOST: smtp.gmail.com
+          EMAIL_PORT: 587
+          EMAIL_USERNAME: test@example.com
+          EMAIL_PASSWORD: testpassword
+          EMAIL_FROM: test@example.com
+          # VNPay credentials (test mode)
+          VNP_TMN_CODE: test_tmn_code
+          VNP_HASH_SECRET: test_hash_secret
+          VNP_URL: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+          VNP_RETURN_URL: http://localhost:3000/api/v1/transactions/vnpay_return
+          # PayPal credentials (test mode)
+          PAYPAL_CLIENT_ID: test_paypal_client_id
+          PAYPAL_CLIENT_SECRET: test_paypal_client_secret
+          PAYPAL_MODE: sandbox
+
+      - name: 📊 Generate Integration Test Report
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          echo "# 🔗 Integration Tests Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f integration-test-results.json ]; then
+            NUM_TESTS=$(node -p "require('./integration-test-results.json').numTotalTests || 0")
+            NUM_PASSED=$(node -p "require('./integration-test-results.json').numPassedTests || 0")
+            NUM_FAILED=$(node -p "require('./integration-test-results.json').numFailedTests || 0")
+            
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| **Total Tests** | $NUM_TESTS |" >> $GITHUB_STEP_SUMMARY
+            echo "| **✅ Passed** | $NUM_PASSED |" >> $GITHUB_STEP_SUMMARY
+            echo "| **❌ Failed** | $NUM_FAILED |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "## ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo '```json' >> $GITHUB_STEP_SUMMARY
+              node -e "
+                const results = require('./integration-test-results.json');
+                if (results.testResults) {
+                  results.testResults.forEach(file => {
+                    if (file.assertionResults) {
+                      file.assertionResults
+                        .filter(test => test.status === 'failed')
+                        .forEach(test => {
+                          console.log('Test: ' + test.fullName);
+                          if (test.failureMessages && test.failureMessages.length > 0) {
+                            console.log('Error: ' + test.failureMessages[0].split('\\n')[0]);
+                          }
+                          console.log('---');
+                        });
+                    }
+                  });
+                }
+              " >> $GITHUB_STEP_SUMMARY || echo "No detailed error info available" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+            else
+              echo "## ✅ All Integration Tests Passed!" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ Test results file not found. Check logs above." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Integration Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: Back-end/integration-test-results.json
+          retention-days: 30
+
+      - name: 📊 Generate Coverage for Integration Tests
+        working-directory: ./Back-end
+        run: |
+          echo "Generating coverage report for Integration Tests..."
+          npm test -- tests/integration --coverage --coverageDirectory=./coverage-integration
+        continue-on-error: true
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-key-for-integration-testing
+          JWT_EXPIRES_IN: 90d
+          JWT_COOKIE_EXPIRES_IN: 90
+
+      - name: 📤 Upload Integration Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-coverage
+          path: Back-end/coverage-integration
+          retention-days: 30
+
+      - name: 💬 Comment PR with Integration Test Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🔗 Integration Tests Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('./Back-end/integration-test-results.json', 'utf8'));
+              const numTests = results.numTotalTests || 0;
+              const numPassed = results.numPassedTests || 0;
+              const numFailed = results.numFailedTests || 0;
+              
+              comment += '| Metric | Value |\n';
+              comment += '|--------|-------|\n';
+              comment += `| **Total Tests** | ${numTests} |\n`;
+              comment += `| **✅ Passed** | ${numPassed} |\n`;
+              comment += `| **❌ Failed** | ${numFailed} |\n\n`;
+              
+              if (numFailed > 0) {
+                comment += '### ❌ Failed Tests\n\n';
+                results.testResults.forEach(file => {
+                  file.assertionResults
+                    .filter(test => test.status === 'failed')
+                    .forEach(test => {
+                      comment += `- **${test.fullName}**\n`;
+                      if (test.failureMessages && test.failureMessages.length > 0) {
+                        comment += `  \`\`\`\n  ${test.failureMessages[0].split('\n')[0]}\n  \`\`\`\n`;
+                      }
+                    });
+                });
+              } else {
+                comment += '### ✅ All Integration Tests Passed!\n';
+              }
+            } catch (error) {
+              comment += '⚠️ Could not read test results.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: ❌ Fail if integration tests failed
+        if: always()
+        working-directory: ./Back-end
+        run: |
+          if [ -f integration-test-results.json ]; then
+            NUM_FAILED=$(node -p "require('./integration-test-results.json').numFailedTests || 0")
+            if [ "$NUM_FAILED" != "0" ]; then
+              echo "❌ $NUM_FAILED integration test(s) failed!"
+              exit 1
+            else
+              echo "✅ All integration tests passed!"
+            fi
+          else
+            echo "⚠️ Test results not found, assuming failure"
+            exit 1
+          fi
