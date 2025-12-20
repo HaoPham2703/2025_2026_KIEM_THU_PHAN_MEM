@@ -173,16 +173,26 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 2: Thống kê số lượng đơn hàng theo status", () => {
     beforeEach(async () => {
-      // Đảm bảo có token trước mỗi test
-      if (!adminToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "adminstatistics@example.com",
-            password: "Haolatuii2703@",
-          });
-        adminToken = loginResponse.body.token;
+      // Đảm bảo admin user tồn tại (vì afterEach trong setup.js xóa tất cả)
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
       }
+
+      // Đảm bảo có token trước mỗi test
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
     });
 
     it("nên lấy được thống kê số lượng đơn theo status", async () => {
@@ -200,6 +210,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 3: Thống kê số lượng đơn theo option (year/month)", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được thống kê theo year", async () => {
       const response = await request(app)
         .post("/api/v1/orders/countOption")
@@ -226,6 +259,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 4: Thống kê tổng doanh thu", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được thống kê doanh thu theo tháng", async () => {
       const response = await request(app)
         .get("/api/v1/orders/sum")
@@ -237,6 +293,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 5: Thống kê doanh thu theo option", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được thống kê doanh thu theo month", async () => {
       const response = await request(app)
         .post("/api/v1/orders/sumOption")
@@ -251,6 +330,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 6: Thống kê top sản phẩm bán chạy", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được top 5 sản phẩm bán chạy", async () => {
       const response = await request(app)
         .post("/api/v1/orders/topProduct")
@@ -264,6 +366,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 7: Thống kê đơn hàng trong khoảng thời gian", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được thống kê đơn hàng trong khoảng thời gian", async () => {
       const dateFrom = new Date("2025-01-01");
       const dateTo = new Date("2025-12-31");
@@ -282,6 +407,29 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   });
 
   describe("Bước 8: Thống kê doanh thu trong khoảng thời gian", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Statistics Test",
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+
+      // Đảm bảo có token
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminstatistics@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+    });
+
     it("nên lấy được thống kê doanh thu trong khoảng thời gian", async () => {
       const dateFrom = new Date("2025-01-01");
       const dateTo = new Date("2025-12-31");

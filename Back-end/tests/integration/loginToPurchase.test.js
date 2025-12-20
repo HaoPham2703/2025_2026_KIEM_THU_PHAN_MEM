@@ -94,16 +94,48 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
   describe("Bước 2: Tạo đơn hàng sau khi đăng nhập", () => {
     beforeEach(async () => {
-      // Đảm bảo có token trước mỗi test
-      if (!authToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "systemtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        authToken = loginResponse.body.token;
+      // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
+      if (!testUser || !testProduct) {
+        testCategory = await Category.create({
+          name: "Laptop System Test",
+          image: "https://example.com/category.jpg",
+        });
+
+        testBrand = await Brand.create({
+          name: "Dell System Test",
+          image: "https://example.com/brand.jpg",
+        });
+
+        testProduct = await Product.create({
+          title: "Dell Laptop System Test Product",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop.jpg"],
+        });
+
+        initialInventory = testProduct.inventory;
+
+        testUser = await User.create({
+          name: "System Test User",
+          email: "systemtest@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "user",
+          active: "active",
+          balance: 50000000,
+        });
       }
+
+      // Đảm bảo có token trước mỗi test
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "systemtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
     });
 
     it("nên tạo đơn hàng thành công sau khi đăng nhập", async () => {
@@ -271,16 +303,46 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
   describe("Bước 3: Xem đơn hàng sau khi mua", () => {
     beforeEach(async () => {
-      // Đảm bảo có token trước mỗi test
-      if (!authToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "systemtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        authToken = loginResponse.body.token;
+      // Đảm bảo user và product tồn tại
+      if (!testUser || !testProduct) {
+        testCategory = await Category.create({
+          name: "Laptop System Test",
+          image: "https://example.com/category.jpg",
+        });
+
+        testBrand = await Brand.create({
+          name: "Dell System Test",
+          image: "https://example.com/brand.jpg",
+        });
+
+        testProduct = await Product.create({
+          title: "Dell Laptop System Test Product",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop.jpg"],
+        });
+
+        testUser = await User.create({
+          name: "System Test User",
+          email: "systemtest@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "user",
+          active: "active",
+          balance: 50000000,
+        });
       }
+
+      // Đảm bảo có token trước mỗi test
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "systemtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
     });
 
     it("nên xem được danh sách đơn hàng của user sau khi đăng nhập", async () => {

@@ -83,6 +83,46 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
   });
 
   describe("Bước 1: User đăng nhập và tạo đơn hàng", () => {
+    beforeEach(async () => {
+      // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
+      testCategory = await Category.create({
+        name: "Laptop Review Comment Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Comment Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Comment Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Review Comment Test User",
+        email: "reviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      adminUser = await User.create({
+        name: "Admin Review Comment",
+        email: "adminreviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+    });
+
     it("nên đăng nhập và tạo đơn hàng thành công", async () => {
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
@@ -127,6 +167,81 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
   });
 
   describe("Bước 2: Admin cập nhật order status = Success", () => {
+    beforeEach(async () => {
+      // Đảm bảo user, product và order tồn tại
+      testCategory = await Category.create({
+        name: "Laptop Review Comment Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Comment Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Comment Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Review Comment Test User",
+        email: "reviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      adminUser = await User.create({
+        name: "Admin Review Comment",
+        email: "adminreviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      // Tạo đơn hàng
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "reviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Review Comment Test",
+        receiver: "Review Comment User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+    });
+
     it("nên cập nhật order status thành Success", async () => {
       // Đảm bảo testOrder đã được tạo
       expect(testOrder).toBeTruthy();
@@ -154,6 +269,94 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
   });
 
   describe("Bước 3: User tạo review cho sản phẩm", () => {
+    beforeEach(async () => {
+      // Đảm bảo user, product và order tồn tại
+      testCategory = await Category.create({
+        name: "Laptop Review Comment Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Comment Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Comment Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Review Comment Test User",
+        email: "reviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      // Tạo đơn hàng và set status = Success
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "reviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Review Comment Test",
+        receiver: "Review Comment User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      // Set order status = Success
+      adminUser = await User.create({
+        name: "Admin Review Comment",
+        email: "adminreviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      adminToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "adminreviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ status: "Success" });
+    });
+
     it("nên tạo review thành công", async () => {
       const reviewData = {
         rating: 5,
@@ -175,6 +378,107 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
   });
 
   describe("Bước 4: User tạo comment cho sản phẩm", () => {
+    beforeEach(async () => {
+      // Đảm bảo user, product, order và review tồn tại
+      testCategory = await Category.create({
+        name: "Laptop Review Comment Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Comment Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Comment Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Review Comment Test User",
+        email: "reviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "reviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo order và set status = Success
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Review Comment Test",
+        receiver: "Review Comment User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      adminUser = await User.create({
+        name: "Admin Review Comment",
+        email: "adminreviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      adminToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "adminreviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ status: "Success" });
+
+      // Tạo review
+      const reviewResponse = await request(app)
+        .post(`/api/v1/products/${testProduct._id}/reviews`)
+        .set("Authorization", `Bearer ${userToken}`)
+        .send({
+          rating: 5,
+          review: "Sản phẩm tuyệt vời!",
+        });
+
+      testReview = await Review.findOne({
+        user: testUser._id,
+        product: testProduct._id,
+      });
+    });
+
     it("nên tạo comment thành công", async () => {
       const commentData = {
         comment: "Sản phẩm này có vẻ rất tốt!",
@@ -195,6 +499,115 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
   });
 
   describe("Bước 5: User like comment", () => {
+    beforeEach(async () => {
+      // Đảm bảo user, product, order, review và comment tồn tại
+      testCategory = await Category.create({
+        name: "Laptop Review Comment Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Review Comment Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Review Comment Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Review Comment Test User",
+        email: "reviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "reviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo order và set status = Success
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Review Comment Test",
+        receiver: "Review Comment User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      adminUser = await User.create({
+        name: "Admin Review Comment",
+        email: "adminreviewcomment@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      adminToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "adminreviewcomment@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ status: "Success" });
+
+      // Tạo review
+      await request(app)
+        .post(`/api/v1/products/${testProduct._id}/reviews`)
+        .set("Authorization", `Bearer ${userToken}`)
+        .send({
+          rating: 5,
+          review: "Sản phẩm tuyệt vời!",
+        });
+
+      // Tạo comment
+      const commentResponse = await request(app)
+        .post(`/api/v1/products/${testProduct._id}/comments`)
+        .set("Authorization", `Bearer ${userToken}`)
+        .send({
+          comment: "Sản phẩm này có vẻ rất tốt!",
+        });
+
+      testComment = await Comment.findOne({
+        user: testUser._id,
+        product: testProduct._id,
+      });
+    });
+
     it("nên like comment thành công", async () => {
       const response = await request(app)
         .patch(`/api/v1/comments/${testComment._id}/like`)

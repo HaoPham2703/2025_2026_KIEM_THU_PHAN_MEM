@@ -65,6 +65,18 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
   });
 
   describe("Bước 2: Xác thực mã reset", () => {
+    beforeEach(async () => {
+      // Đảm bảo user tồn tại (vì afterEach trong setup.js xóa tất cả)
+      testUser = await User.create({
+        name: "Forgot Password Test User",
+        email: "forgotpassword@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+    });
+
     it("nên xác thực mã reset thành công", async () => {
       // Tạo token hợp lệ (6 hex chars như createPasswordResetToken)
       const token = crypto.randomBytes(3).toString("hex");
@@ -100,6 +112,18 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
   });
 
   describe("Bước 3: Đặt lại mật khẩu mới", () => {
+    beforeEach(async () => {
+      // Đảm bảo user tồn tại (vì afterEach trong setup.js xóa tất cả)
+      testUser = await User.create({
+        name: "Forgot Password Test User",
+        email: "forgotpassword@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+    });
+
     it("nên đặt lại mật khẩu thành công", async () => {
       // Tạo token hợp lệ (6 hex chars như createPasswordResetToken)
       const token = crypto.randomBytes(3).toString("hex");
@@ -131,6 +155,18 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
   });
 
   describe("Bước 4: Đăng nhập với mật khẩu mới", () => {
+    beforeEach(async () => {
+      // Đảm bảo user tồn tại (vì afterEach trong setup.js xóa tất cả)
+      testUser = await User.create({
+        name: "Forgot Password Test User",
+        email: "forgotpassword@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+    });
+
     it("nên đăng nhập thành công với mật khẩu mới", async () => {
       // Đảm bảo password đã được reset
       const token = crypto.randomBytes(3).toString("hex");

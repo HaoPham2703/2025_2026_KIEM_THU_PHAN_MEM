@@ -73,6 +73,46 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
   });
 
   describe("Bước 1: User tạo đơn hàng", () => {
+    beforeEach(async () => {
+      // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
+      testCategory = await Category.create({
+        name: "Laptop Email Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Email Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Email Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Email Test User",
+        email: "emailtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      adminUser = await User.create({
+        name: "Admin Email Test",
+        email: "adminemail@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+    });
+
     it("nên đăng nhập user thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "emailtest@example.com",
@@ -116,6 +156,81 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
   });
 
   describe("Bước 2: Admin đăng nhập", () => {
+    beforeEach(async () => {
+      // Đảm bảo user, product và order tồn tại
+      testCategory = await Category.create({
+        name: "Laptop Email Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Email Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Email Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Email Test User",
+        email: "emailtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      adminUser = await User.create({
+        name: "Admin Email Test",
+        email: "adminemail@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
+      // Tạo đơn hàng
+      userToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "emailtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Email Test Street",
+        receiver: "Email Test User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+    });
+
     it("nên đăng nhập admin thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "adminemail@example.com",
