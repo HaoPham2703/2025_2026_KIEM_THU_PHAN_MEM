@@ -249,6 +249,109 @@ H --> I[Return_this]
     </div>
   </div>
 
+  <div class="section">
+    <h2>Kết luận: Lý do kiểm thử hộp trắng các phần được vẽ sơ đồ</h2>
+    <h3>Tại sao vẽ các sơ đồ luồng này?</h3>
+    <p>
+      Các sơ đồ được chọn đại diện cho <strong>các nhánh và điểm quyết định quan trọng</strong> trong hệ thống, nơi dễ xảy ra lỗi logic:
+    </p>
+    <ul>
+      <li><strong>handlerFactory.updateOne (Product validations)</strong>: Xác nhận rằng tất cả các ràng buộc kinh doanh (giá khuyến mãi ≤ giá gốc, tồn kho trong [0, 1000], trọng lượng < 1000) được kiểm tra trước khi cập nhật. Nếu thiếu nhánh nào, dữ liệu sai lệch có thể lưu vào cơ sở dữ liệu.</li>
+      <li><strong>handlerFactory.createOne (Order inventory check)</strong>: Đảm bảo rằng không đặt đơn hàng nếu tồn kho không đủ, và khi tạo thành công, tồn kho được giảm đúng. Đây là điểm tới hạn cho luồng bán hàng.</li>
+      <li><strong>handlerFactory.deleteOne (Import inventory rollback)</strong>: Khi xóa phiếu nhập, phải hoàn lại đúng số lượng cho từng mặt hàng. Lỗi ở đây dẫn đến sai số tồn kho vĩnh viễn.</li>
+      <li><strong>handlerFactory.getAll (Pagination totalPage)</strong>: Nhánh đặc biệt khi trang hiện tại vượt quá tổng số trang; nếu không xử lý, API trả dữ liệu trống hoặc lỗi 500.</li>
+      <li><strong>apiFeatures.filter (keyword & operators)</strong>: Các phép biến đổi dữ liệu truy vấn; lỗi regex hoặc operator mapping làm tìm kiếm không hoạt động.</li>
+    </ul>
+
+    <h3>Lợi ích của kiểm thử hộp trắng cho các phần này</h3>
+    <table>
+      <thead>
+        <tr><th>Phần kiểm thử</th><th>Nhánh/Logic</th><th>Rủi ro nếu bỏ qua</th><th>Hiệu quả white-box</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Product validations</td>
+          <td>5 nhánh validation (price/promotion, inventory, weight)</td>
+          <td>Dữ liệu không hợp lệ được lưu; hàng bán với giá âm hoặc tồn kho sai</td>
+          <td>100% phủ: kiểm từng nhánh lỗi, phát hiện bugs trong phép so sánh logic</td>
+        </tr>
+        <tr>
+          <td>Order inventory check</td>
+          <td>2 nhánh chính: đủ tồn vs thiếu tồn</td>
+          <td>Bán quá tồn kho, gây lỗi khi giao hàng; mất tiền</td>
+          <td>Kiểm thử ranh giới (qty = inventory, qty > inventory) để tránh race condition</td>
+        </tr>
+        <tr>
+          <td>Import inventory rollback</td>
+          <td>1 nhánh: phải giảm tồn từng item</td>
+          <td>Xóa phiếu nhập mà không hoàn lại tồn kho; số lượng tích lũy sai</td>
+          <td>Mock import với 2-3 items, xác minh tồn sau delete</td>
+        </tr>
+        <tr>
+          <td>Pagination totalPage</td>
+          <td>1 nhánh: page > totalPage</td>
+          <td>API trả page rỗng hoặc exception; người dùng không biết có bao nhiêu trang</td>
+          <td>Kiểm test với page=999 khi chỉ có 1 trang; xác nhận totalPage=1</td>
+        </tr>
+        <tr>
+          <td>Filter keyword transform</td>
+          <td>2 nhánh: có keyword vs không</td>
+          <td>Tìm kiếm không trả kết quả hoặc trả sai; filter $in operator vô dụng</td>
+          <td>Kiểm thử keyword=Nike (regex) và filter name=Brand1,Brand2 ($in)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Cách chạy lại test cho giảng viên xem</h3>
+    <p><strong>Bước 1: Chuẩn bị môi trường</strong></p>
+    <ol>
+      <li>Mở PowerShell (hoặc Terminal trong VS Code).</li>
+      <li>Chuyển đến thư mục Back-end:
+        <div class="code">cd D:\KTPM\new\2025_2026_KIEM_THU_PHAN_MEM\Back-end</div>
+      </li>
+      <li>Kiểm tra Node.js và npm đã cài:
+        <div class="code">node --version
+npm --version</div>
+      </li>
+    </ol>
+
+    <p><strong>Bước 2: Cài đặt dependencies</strong></p>
+    <div class="code">npm install</div>
+
+    <p><strong>Bước 3: Chạy toàn bộ test với coverage</strong></p>
+    <div class="code">npm test -- --coverage</div>
+    <p>Kết quả: coverage % cho từng file như bảng "Độ phủ theo file".</p>
+
+    <p><strong>Bước 4: Chạy test Brand Controller (100% coverage)</strong></p>
+    <div class="code">npm test -- brandController</div>
+    <p>Dự kiến: 19/19 pass.</p>
+
+    <p><strong>Bước 5: Chạy test Product/Order chi tiết</strong></p>
+    <div class="code">npm test -- productController --verbose</div>
+
+    <p><strong>Bước 6: Xem báo cáo HTML</strong></p>
+    <div class="code">Invoke-Item "D:\KTPM\new\2025_2026_KIEM_THU_PHAN_MEM\Back-end\tests\reports\WhiteBox_All_Modules_Report.html"</div>
+
+    <p><strong>Bước 7: Xuất sang PDF</strong></p>
+    <p>Mở báo cáo HTML → Ctrl+P → Save as PDF.</p>
+
+    <h3>Giải thích kết quả</h3>
+    <ul>
+      <li><strong>81.44% Statements coverage</strong>: Tốt cho dự án thực tiễn.</li>
+      <li><strong>brandController 100%</strong>: CRUD thương hiệu hoàn toàn tin cậy.</li>
+      <li><strong>productController 43.13%</strong>: Nơi cần bổ sung test.</li>
+      <li><strong>handlerFactory 58.92%</strong>: Sơ đồ luồng giúp xác định nhánh nào cần test thêm.</li>
+    </ul>
+
+    <h3>Ứng dụng thực tiễn</h3>
+    <ul>
+      <li>🎯 Phát hiện lỗi sớm: Mỗi nhánh được kiểm.</li>
+      <li>🔧 Dễ bảo trì: Khi thay đổi logic, test sẽ cảnh báo.</li>
+      <li>📊 Đo độ tin cậy: Coverage % = chỉ số rủi ro.</li>
+      <li>🚀 Tự tin phát hành: Chạy test trước merge để đảm bảo chất lượng.</li>
+    </ul>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script>mermaid.initialize({ startOnLoad: true });</script>
 </body>
