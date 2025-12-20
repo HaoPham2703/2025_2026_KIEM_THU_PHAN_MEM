@@ -74,6 +74,15 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
   describe("Bước 1: User tạo đơn hàng", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới (tránh duplicate key error)
+      await Category.deleteMany({ name: "Laptop Email Test" });
+      await Brand.deleteMany({ name: "Dell Email Test" });
+      await Product.deleteMany({ title: "Dell Laptop Email Test Product" });
+      await User.deleteMany({
+        email: { $in: ["emailtest@example.com", "adminemail@example.com"] },
+      });
+      await Order.deleteMany({});
+
       // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
       testCategory = await Category.create({
         name: "Laptop Email Test",
@@ -157,6 +166,15 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
   describe("Bước 2: Admin đăng nhập", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới
+      await Category.deleteMany({ name: "Laptop Email Test" });
+      await Brand.deleteMany({ name: "Dell Email Test" });
+      await Product.deleteMany({ title: "Dell Laptop Email Test Product" });
+      await User.deleteMany({
+        email: { $in: ["emailtest@example.com", "adminemail@example.com"] },
+      });
+      await Order.deleteMany({});
+
       // Đảm bảo user, product và order tồn tại
       testCategory = await Category.create({
         name: "Laptop Email Test",
@@ -228,7 +246,10 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         .set("Authorization", `Bearer ${userToken}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
       testOrder = await Order.findById(orderResponse.body.data.id);
+      expect(testOrder).toBeTruthy();
     });
 
     it("nên đăng nhập admin thành công", async () => {
@@ -291,11 +312,60 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
   describe("Flow hoàn chỉnh: Tạo đơn --> Cập nhật status --> Email", () => {
     it("nên thực hiện toàn bộ flow cập nhật status và gửi email", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Email Test" });
+      await Brand.deleteMany({ name: "Dell Email Test" });
+      await Product.deleteMany({ title: "Dell Laptop Email Test Product" });
+      await User.deleteMany({
+        email: { $in: ["emailtest@example.com", "adminemail@example.com"] },
+      });
+      await Order.deleteMany({});
+
+      // Tạo lại data
+      const testCategory = await Category.create({
+        name: "Laptop Email Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell Email Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop Email Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      await User.create({
+        name: "Email Test User",
+        email: "emailtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      await User.create({
+        name: "Admin Email Test",
+        email: "adminemail@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
       // User tạo đơn
       const userLogin = await request(app).post("/api/v1/users/login").send({
         email: "emailtest@example.com",
         password: "Haolatuii2703@",
       });
+
+      expect(userLogin.status).toBe(200);
 
       const orderData = {
         cart: [
@@ -305,6 +375,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
               _id: testProduct._id.toString(),
               title: testProduct.title,
               price: testProduct.price,
+              images: testProduct.images,
             },
             quantity: 1,
           },

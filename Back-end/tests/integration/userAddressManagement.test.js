@@ -735,6 +735,48 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
 
   describe("Flow hoàn chỉnh: Thêm --> Cập nhật --> Xóa --> Tạo đơn", () => {
     it("nên thực hiện toàn bộ flow quản lý địa chỉ", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+      await Order.deleteMany({});
+
+      const testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      const testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      const authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
       // Thêm địa chỉ
       const addResponse = await request(app)
         .patch("/api/v1/users/createAddress")
@@ -750,12 +792,17 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
 
       expect(addResponse.status).toBe(200);
 
+      expect(addResponse.status).toBe(200);
+
       // Lấy user để lấy index
       const user = await User.findById(testUser._id);
+      expect(user).toBeTruthy();
+      expect(user.address).toBeDefined();
+      expect(user.address.length).toBeGreaterThan(0);
       const addressIndex = user.address.length - 1;
 
       // Cập nhật địa chỉ
-      await request(app)
+      const updateResponse = await request(app)
         .patch("/api/v1/users/updateAddress")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
@@ -769,11 +816,16 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
           setDefault: true,
         });
 
+      expect(updateResponse.status).toBe(200);
+
       // Tạo đơn hàng với địa chỉ
       const updatedUser = await User.findById(testUser._id);
+      expect(updatedUser).toBeTruthy();
+      expect(updatedUser.address).toBeDefined();
       const defaultAddr = updatedUser.address.find(
         (addr) => addr.setDefault === true
       );
+      expect(defaultAddr).toBeDefined();
       const fullAddress = `${defaultAddr.detail}, ${defaultAddr.ward}, ${defaultAddr.district}, ${defaultAddr.province}`;
 
       const orderData = {
@@ -784,6 +836,7 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
               _id: testProduct._id.toString(),
               title: testProduct.title,
               price: testProduct.price,
+              images: testProduct.images,
             },
             quantity: 1,
           },
@@ -801,6 +854,7 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
     });
   });
 });

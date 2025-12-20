@@ -42,9 +42,9 @@ exports.deleteOne = (Model) =>
         for (const value of invoice.invoice) {
           // Chỉ update nếu product là ObjectId hợp lệ
           if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
-            await Product.findByIdAndUpdate(value.product, {
-              $inc: { inventory: -value.quantity },
-            });
+        await Product.findByIdAndUpdate(value.product, {
+          $inc: { inventory: -value.quantity },
+        });
           }
         }
       }
@@ -134,20 +134,20 @@ exports.updateOne = (Model) =>
         for (const value of invoice.invoice) {
           // Chỉ update nếu product là ObjectId hợp lệ
           if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
-            await Product.findByIdAndUpdate(value.product, {
-              $inc: { inventory: -value.quantity },
-            });
+        await Product.findByIdAndUpdate(value.product, {
+          $inc: { inventory: -value.quantity },
+        });
           }
         }
       }
       const product = req.body.invoice;
       if (product && Array.isArray(product)) {
-        for (const value of product) {
+      for (const value of product) {
           // Chỉ update nếu product là ObjectId hợp lệ
           if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
-            await Product.findByIdAndUpdate(value.product, {
-              $inc: { inventory: value.quantity },
-            });
+        await Product.findByIdAndUpdate(value.product, {
+          $inc: { inventory: value.quantity },
+        });
           }
         }
       }
@@ -223,12 +223,12 @@ exports.createOne = (Model) =>
     if (Model == Import) {
       const invoice = req.body.invoice;
       if (invoice && Array.isArray(invoice)) {
-        for (const value of invoice) {
+      for (const value of invoice) {
           // Chỉ update nếu product là ObjectId hợp lệ
           if (value.product && mongoose.Types.ObjectId.isValid(value.product)) {
-            await Product.findByIdAndUpdate(value.product, {
-              $inc: { inventory: value.quantity },
-            });
+        await Product.findByIdAndUpdate(value.product, {
+          $inc: { inventory: value.quantity },
+        });
           }
         }
       }

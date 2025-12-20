@@ -202,24 +202,38 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
     });
 
     it("nên giảm inventory sản phẩm sau khi tạo đơn hàng", async () => {
-      // Test này phụ thuộc vào test trước, cần đảm bảo test trước đã chạy thành công
-      // Nếu test trước fail, test này sẽ skip
-      if (!authToken) {
-        // Đăng nhập lại nếu token chưa có
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "systemtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        authToken = loginResponse.body.token;
-      }
+      // Tạo đơn hàng để test inventory giảm
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 2,
+          },
+        ],
+        address: "123 Inventory Test Street",
+        receiver: "System Test User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 30000000,
+      };
 
-      // Lấy lại sản phẩm từ database để kiểm tra inventory
+      const response = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
+      expect(response.status).toBe(201);
+
+      // Kiểm tra inventory đã giảm
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
-      // Inventory đã giảm từ test trước (2 sản phẩm)
-      expect(updatedProduct.inventory).toBeLessThan(initialInventory);
+      expect(updatedProduct.inventory).toBe(initialInventory - 2);
     });
 
     it("nên tạo đơn hàng với thanh toán bằng số dư", async () => {

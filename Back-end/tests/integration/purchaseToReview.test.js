@@ -83,6 +83,16 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
   describe("Bước 1: User đăng nhập và tạo đơn hàng", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới (tránh duplicate key error)
+      await Category.deleteMany({ name: "Laptop Review Test" });
+      await Brand.deleteMany({ name: "Dell Review Test" });
+      await Product.deleteMany({ title: "Dell Laptop Review Test Product" });
+      await User.deleteMany({
+        email: { $in: ["reviewtest@example.com", "adminreview@example.com"] },
+      });
+      await Order.deleteMany({});
+      await Review.deleteMany({});
+
       // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
       testCategory = await Category.create({
         name: "Laptop Review Test",
@@ -168,6 +178,16 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
   describe("Bước 2: Admin cập nhật order status = Success", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới
+      await Category.deleteMany({ name: "Laptop Review Test" });
+      await Brand.deleteMany({ name: "Dell Review Test" });
+      await Product.deleteMany({ title: "Dell Laptop Review Test Product" });
+      await User.deleteMany({
+        email: { $in: ["reviewtest@example.com", "adminreview@example.com"] },
+      });
+      await Order.deleteMany({});
+      await Review.deleteMany({});
+
       // Đảm bảo user, product và order tồn tại
       testCategory = await Category.create({
         name: "Laptop Review Test",
@@ -306,6 +326,54 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
   describe("Flow hoàn chỉnh: Mua hàng --> Nhận hàng --> Đánh giá", () => {
     it("nên thực hiện toàn bộ flow từ mua hàng đến đánh giá", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Review Test" });
+      await Brand.deleteMany({ name: "Dell Review Test" });
+      await Product.deleteMany({ title: "Dell Laptop Review Test Product" });
+      await User.deleteMany({
+        email: { $in: ["reviewtest@example.com", "adminreview@example.com"] },
+      });
+      await Order.deleteMany({});
+      await Review.deleteMany({});
+
+      // Tạo lại data
+      const testCategory = await Category.create({
+        name: "Laptop Review Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell Review Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop Review Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      const testUser = await User.create({
+        name: "Review Test User",
+        email: "reviewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      const adminUser = await User.create({
+        name: "Admin Review Test",
+        email: "adminreview@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
+
       // Bước 1: User đăng nhập
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
@@ -324,6 +392,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
               _id: testProduct._id.toString(),
               title: testProduct.title,
               price: testProduct.price,
+              images: testProduct.images,
             },
             quantity: 1,
           },
@@ -340,6 +409,8 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         .set("Authorization", `Bearer ${token}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
       const orderId = orderResponse.body.data.id;
 
       // Bước 3: Admin cập nhật status
@@ -348,10 +419,13 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         password: "Haolatuii2703@",
       });
 
-      await request(app)
+      expect(adminLogin.status).toBe(200);
+      const adminUpdateResponse = await request(app)
         .patch(`/api/v1/orders/${orderId}`)
         .set("Authorization", `Bearer ${adminLogin.body.token}`)
         .send({ status: "Success" });
+
+      expect(adminUpdateResponse.status).toBe(200);
 
       // Bước 4: User tạo review
       const reviewResponse = await request(app)
