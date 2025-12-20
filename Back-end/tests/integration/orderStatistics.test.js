@@ -173,17 +173,22 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 2: Thống kê số lượng đơn hàng theo status", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại (tránh duplicate key error)
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+      await Category.deleteMany({ name: "Laptop Statistics Test" });
+      await Brand.deleteMany({ name: "Dell Statistics Test" });
+      await Product.deleteMany({ title: /Statistics Product/ });
+      await Order.deleteMany({});
+
       // Đảm bảo admin user tồn tại (vì afterEach trong setup.js xóa tất cả)
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token trước mỗi test
       const loginResponse = await request(app)
@@ -211,17 +216,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 3: Thống kê số lượng đơn theo option (year/month)", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)
@@ -260,17 +266,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 4: Thống kê tổng doanh thu", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)
@@ -294,17 +301,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 5: Thống kê doanh thu theo option", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)
@@ -331,17 +339,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 6: Thống kê top sản phẩm bán chạy", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)
@@ -367,17 +376,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 7: Thống kê đơn hàng trong khoảng thời gian", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)
@@ -408,17 +418,18 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
 
   describe("Bước 8: Thống kê doanh thu trong khoảng thời gian", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await User.deleteMany({ email: "adminstatistics@example.com" });
+
       // Đảm bảo admin user tồn tại
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin Statistics Test",
-          email: "adminstatistics@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "admin",
-          active: "active",
-        });
-      }
+      adminUser = await User.create({
+        name: "Admin Statistics Test",
+        email: "adminstatistics@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "admin",
+        active: "active",
+      });
 
       // Đảm bảo có token
       const loginResponse = await request(app)

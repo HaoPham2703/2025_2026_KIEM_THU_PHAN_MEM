@@ -61,6 +61,45 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 1: User đăng nhập", () => {
+    beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+      await Order.deleteMany({});
+
+      // Tạo lại data
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [], // Khởi tạo mảng địa chỉ rỗng
+      });
+    });
+
     it("nên đăng nhập thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "addresstest@example.com",
@@ -73,6 +112,51 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 2: User thêm địa chỉ mới", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      // Đăng nhập
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+    });
+
     it("nên thêm địa chỉ mới thành công", async () => {
       const addressData = {
         name: "Address Test User",
@@ -103,6 +187,64 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 3: User xem danh sách địa chỉ", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      // Đăng nhập và thêm địa chỉ
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm địa chỉ đầu tiên
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+    });
+
     it("nên xem được danh sách địa chỉ", async () => {
       const response = await request(app)
         .get("/api/v1/users/me/address")
@@ -115,6 +257,65 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 4: User thêm địa chỉ thứ 2", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm địa chỉ đầu tiên
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+
+      createdAddressId = 0;
+    });
+
     it("nên thêm địa chỉ thứ 2 thành công", async () => {
       const addressData = {
         name: "Address Test User",
@@ -143,6 +344,65 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 5: User cập nhật địa chỉ", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm địa chỉ đầu tiên
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+
+      createdAddressId = 0;
+    });
+
     it("nên cập nhật địa chỉ thành công", async () => {
       const updateData = {
         id: createdAddressId, // Index của địa chỉ
@@ -172,6 +432,75 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 6: User đặt địa chỉ mặc định", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm 2 địa chỉ
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0987654321",
+          province: "TP.HCM",
+          district: "Quận 2",
+          ward: "Phường Thảo Điền",
+          detail: "456 New Address Street",
+        });
+    });
+
     it("nên đặt địa chỉ làm mặc định thành công", async () => {
       // Đặt địa chỉ thứ 2 (index 1) làm mặc định
       const response = await request(app)
@@ -194,6 +523,81 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 7: User tạo đơn hàng với địa chỉ đã lưu", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+      await Order.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm địa chỉ và set default
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0987654321",
+          province: "TP.HCM",
+          district: "Quận 2",
+          ward: "Phường Thảo Điền",
+          detail: "456 New Address Street",
+        });
+
+      await request(app)
+        .patch("/api/v1/users/setDefaultAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ id: 1 });
+    });
+
     it("nên tạo đơn hàng với địa chỉ đã lưu", async () => {
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
@@ -242,6 +646,75 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
   });
 
   describe("Bước 8: User xóa địa chỉ", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Address Test" });
+      await Brand.deleteMany({ name: "Dell Address Test" });
+      await Product.deleteMany({ title: "Dell Laptop Address Test Product" });
+      await User.deleteMany({ email: "addresstest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop Address Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Address Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Address Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Address Test User",
+        email: "addresstest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        address: [],
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "addresstest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Thêm 2 địa chỉ
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0123456789",
+          province: "TP.HCM",
+          district: "Quận 1",
+          ward: "Phường Bến Nghé",
+          detail: "123 Address Test Street",
+        });
+
+      await request(app)
+        .patch("/api/v1/users/createAddress")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          name: "Address Test User",
+          phone: "0987654321",
+          province: "TP.HCM",
+          district: "Quận 2",
+          ward: "Phường Thảo Điền",
+          detail: "456 New Address Street",
+        });
+    });
+
     it("nên xóa địa chỉ thành công", async () => {
       const response = await request(app)
         .patch("/api/v1/users/deleteAddress")

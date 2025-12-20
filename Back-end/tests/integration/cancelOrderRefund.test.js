@@ -70,6 +70,14 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
   describe("Bước 1: Đăng nhập và tạo đơn hàng với VNPay (đã thanh toán)", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới (tránh duplicate key error)
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
       // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
       testCategory = await Category.create({
         name: "Laptop Refund Test",
@@ -165,6 +173,14 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
   describe("Bước 2: User hủy đơn hàng", () => {
     beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
       // Đảm bảo user, product và order tồn tại
       testCategory = await Category.create({
         name: "Laptop Refund Test",
@@ -232,7 +248,10 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .set("Authorization", `Bearer ${authToken}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
       testOrder = await Order.findById(orderResponse.body.data.id);
+      expect(testOrder).toBeTruthy();
     });
 
     it("nên hủy đơn hàng thành công (status = Processed)", async () => {
@@ -256,10 +275,96 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
   });
 
   describe("Bước 3: Kiểm tra transaction refund được tạo", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Refund Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Refund Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Refund Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      initialInventory = testProduct.inventory;
+
+      testUser = await User.create({
+        name: "Refund Test User",
+        email: "refundtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      initialBalance = testUser.balance;
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo đơn hàng và hủy
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 2,
+          },
+        ],
+        address: "123 Refund Test Street",
+        receiver: "Refund Test User",
+        phone: "0123456789",
+        payments: "vnpay",
+        totalPrice: 30000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      // Set status = Processed và hủy
+      await Order.findByIdAndUpdate(testOrder._id, { status: "Processed" });
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ status: "Cancelled" });
+    });
+
     it("nên tạo transaction refund tự động", async () => {
       // Transaction refund được tạo trong post findOneAndUpdate hook
       // Cần đợi một chút để hook chạy
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       const refundTransaction = await Transaction.findOne({
         user: testUser._id,
@@ -273,9 +378,93 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
   });
 
   describe("Bước 4: Kiểm tra balance user tăng lại", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Refund Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Refund Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Refund Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Refund Test User",
+        email: "refundtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      initialBalance = testUser.balance;
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo đơn hàng và hủy
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 2,
+          },
+        ],
+        address: "123 Refund Test Street",
+        receiver: "Refund Test User",
+        phone: "0123456789",
+        payments: "vnpay",
+        totalPrice: 30000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      // Set status = Processed và hủy
+      await Order.findByIdAndUpdate(testOrder._id, { status: "Processed" });
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ status: "Cancelled" });
+    });
+
     it("nên tăng balance user sau khi hủy đơn", async () => {
       // Balance tăng do post-save hook của Transaction
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
@@ -285,6 +474,90 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
   });
 
   describe("Bước 5: Kiểm tra inventory tăng lại", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Refund Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Refund Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Refund Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      initialInventory = testProduct.inventory;
+
+      testUser = await User.create({
+        name: "Refund Test User",
+        email: "refundtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
+      // Tạo đơn hàng và hủy
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 2,
+          },
+        ],
+        address: "123 Refund Test Street",
+        receiver: "Refund Test User",
+        phone: "0123456789",
+        payments: "vnpay",
+        totalPrice: 30000000,
+      };
+
+      const orderResponse = await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
+      testOrder = await Order.findById(orderResponse.body.data.id);
+
+      // Set status = Processed và hủy
+      await Order.findByIdAndUpdate(testOrder._id, { status: "Processed" });
+
+      await request(app)
+        .patch(`/api/v1/orders/${testOrder._id}`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ status: "Cancelled" });
+    });
+
     it("nên tăng inventory sản phẩm sau khi hủy đơn", async () => {
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
@@ -295,6 +568,50 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
   describe("Flow hoàn chỉnh: Tạo đơn VNPay --> Hủy --> Hoàn tiền", () => {
     it("nên thực hiện toàn bộ flow hủy đơn và hoàn tiền", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Refund Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Refund Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Refund Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Refund Test User",
+        email: "refundtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
       // Tạo đơn hàng mới
       const orderData = {
         cart: [
@@ -304,6 +621,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
               _id: testProduct._id.toString(),
               title: testProduct.title,
               price: testProduct.price,
+              images: testProduct.images,
             },
             quantity: 1,
           },
@@ -320,6 +638,8 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .set("Authorization", `Bearer ${authToken}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.data).toBeDefined();
       const orderId = orderResponse.body.data.id;
       const productBeforeCancel = await Product.findById(testProduct._id);
       expect(productBeforeCancel).toBeTruthy();
@@ -348,6 +668,50 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
 
   describe("Edge case: Hủy đơn COD không tạo refund", () => {
     it("nên không tạo transaction refund khi hủy đơn COD", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Refund Test" });
+      await Brand.deleteMany({ name: "Dell Refund Test" });
+      await Product.deleteMany({ title: "Dell Laptop Refund Test Product" });
+      await User.deleteMany({ email: "refundtest@example.com" });
+      await Order.deleteMany({});
+      await Transaction.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Refund Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Refund Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Refund Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Refund Test User",
+        email: "refundtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
       // Tạo đơn COD
       const codOrderData = {
         cart: [
@@ -357,6 +721,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
               _id: testProduct._id.toString(),
               title: testProduct.title,
               price: testProduct.price,
+              images: testProduct.images,
             },
             quantity: 1,
           },
@@ -373,6 +738,8 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .set("Authorization", `Bearer ${authToken}`)
         .send(codOrderData);
 
+      expect(codOrderResponse.status).toBe(201);
+      expect(codOrderResponse.body.data).toBeDefined();
       const codOrderId = codOrderResponse.body.data.id;
 
       // Hủy đơn COD

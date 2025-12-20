@@ -82,6 +82,18 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
     });
 
     it("nên trả về lỗi khi đăng nhập với mật khẩu sai", async () => {
+      // Đảm bảo user tồn tại
+      await User.deleteMany({ email: "systemtest@example.com" });
+      await User.create({
+        name: "System Test User",
+        email: "systemtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
       const response = await request(app).post("/api/v1/users/login").send({
         email: "systemtest@example.com",
         password: "WrongPassword123",
@@ -94,39 +106,44 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
   describe("Bước 2: Tạo đơn hàng sau khi đăng nhập", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới (tránh duplicate key error)
+      await Category.deleteMany({ name: "Laptop System Test" });
+      await Brand.deleteMany({ name: "Dell System Test" });
+      await Product.deleteMany({ title: "Dell Laptop System Test Product" });
+      await User.deleteMany({ email: "systemtest@example.com" });
+      await Order.deleteMany({});
+
       // Đảm bảo user và product tồn tại (vì afterEach trong setup.js xóa tất cả)
-      if (!testUser || !testProduct) {
-        testCategory = await Category.create({
-          name: "Laptop System Test",
-          image: "https://example.com/category.jpg",
-        });
+      testCategory = await Category.create({
+        name: "Laptop System Test",
+        image: "https://example.com/category.jpg",
+      });
 
-        testBrand = await Brand.create({
-          name: "Dell System Test",
-          image: "https://example.com/brand.jpg",
-        });
+      testBrand = await Brand.create({
+        name: "Dell System Test",
+        image: "https://example.com/brand.jpg",
+      });
 
-        testProduct = await Product.create({
-          title: "Dell Laptop System Test Product",
-          price: 15000000,
-          inventory: 100,
-          category: testCategory._id,
-          brand: testBrand._id,
-          images: ["https://example.com/laptop.jpg"],
-        });
+      testProduct = await Product.create({
+        title: "Dell Laptop System Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
 
-        initialInventory = testProduct.inventory;
+      initialInventory = testProduct.inventory;
 
-        testUser = await User.create({
-          name: "System Test User",
-          email: "systemtest@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "user",
-          active: "active",
-          balance: 50000000,
-        });
-      }
+      testUser = await User.create({
+        name: "System Test User",
+        email: "systemtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
 
       // Đảm bảo có token trước mỗi test
       const loginResponse = await request(app)
@@ -303,39 +320,43 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
 
   describe("Bước 3: Xem đơn hàng sau khi mua", () => {
     beforeEach(async () => {
+      // Xóa data cũ trước khi tạo mới
+      await Category.deleteMany({ name: "Laptop System Test" });
+      await Brand.deleteMany({ name: "Dell System Test" });
+      await Product.deleteMany({ title: "Dell Laptop System Test Product" });
+      await User.deleteMany({ email: "systemtest@example.com" });
+
       // Đảm bảo user và product tồn tại
-      if (!testUser || !testProduct) {
-        testCategory = await Category.create({
-          name: "Laptop System Test",
-          image: "https://example.com/category.jpg",
-        });
+      testCategory = await Category.create({
+        name: "Laptop System Test",
+        image: "https://example.com/category.jpg",
+      });
 
-        testBrand = await Brand.create({
-          name: "Dell System Test",
-          image: "https://example.com/brand.jpg",
-        });
+      testBrand = await Brand.create({
+        name: "Dell System Test",
+        image: "https://example.com/brand.jpg",
+      });
 
-        testProduct = await Product.create({
-          title: "Dell Laptop System Test Product",
-          price: 15000000,
-          inventory: 100,
-          category: testCategory._id,
-          brand: testBrand._id,
-          images: ["https://example.com/laptop.jpg"],
-        });
+      testProduct = await Product.create({
+        title: "Dell Laptop System Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
 
-        testUser = await User.create({
-          name: "System Test User",
-          email: "systemtest@example.com",
-          password: "Haolatuii2703@",
-          passwordConfirm: "Haolatuii2703@",
-          role: "user",
-          active: "active",
-          balance: 50000000,
-        });
-      }
+      testUser = await User.create({
+        name: "System Test User",
+        email: "systemtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
 
-      // Đảm bảo có token trước mỗi test
+      // Tạo đơn hàng để test xem đơn hàng
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
         .send({
@@ -343,6 +364,31 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
           password: "Haolatuii2703@",
         });
       authToken = loginResponse.body.token;
+
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Test Address",
+        receiver: "System Test User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
     });
 
     it("nên xem được danh sách đơn hàng của user sau khi đăng nhập", async () => {
