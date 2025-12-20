@@ -27,8 +27,8 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
     adminUser = await User.create({
       name: "Admin Import Test",
       email: "adminimport@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "admin",
       active: "active",
     });
@@ -77,7 +77,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
     it("nên đăng nhập admin thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "adminimport@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);

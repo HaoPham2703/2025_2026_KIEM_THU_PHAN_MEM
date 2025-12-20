@@ -80,8 +80,8 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
     testUser = await User.create({
       name: "VNPay Test User",
       email: "vnpaytest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
       balance: 10000000, // 10 triệu
@@ -103,7 +103,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
     it("nên đăng nhập thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "vnpaytest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);

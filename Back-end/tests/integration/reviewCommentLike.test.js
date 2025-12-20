@@ -50,8 +50,8 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
     testUser = await User.create({
       name: "Review Comment Test User",
       email: "reviewcomment@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
     });
@@ -59,8 +59,8 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
     adminUser = await User.create({
       name: "Admin Review Comment Test",
       email: "adminreviewcomment@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "admin",
       active: "active",
     });
@@ -88,7 +88,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
         .post("/api/v1/users/login")
         .send({
           email: "reviewcomment@example.com",
-          password: "Haolatui2703@",
+          password: "Haolatuii2703@",
         });
 
       expect(loginResponse.status).toBe(200);
@@ -130,7 +130,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
     it("nên cập nhật order status thành Success", async () => {
       const adminLogin = await request(app).post("/api/v1/users/login").send({
         email: "adminreviewcomment@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       adminToken = adminLogin.body.token;

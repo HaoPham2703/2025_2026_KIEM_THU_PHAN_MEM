@@ -1,6 +1,6 @@
 # Integration Tests - Fixes Applied
 
-## ✅ Files đã sửa (15 files)
+## ✅ Files đã sửa (14 files)
 
 1. ✅ `loginToPurchase.test.js` - Thêm null checks cho Product, Order, User
 2. ✅ `purchaseWithBalance.test.js` - Thêm null checks cho User, Product
@@ -15,8 +15,7 @@
 11. ✅ `viewProductToCheckout.test.js` - Thêm response structure checks
 12. ✅ `adminProductCRUD.test.js` - Thêm null checks cho Product, response structure
 13. ✅ `forgotPasswordFlow.test.js` - Thêm null checks cho User
-14. ✅ `purchaseWithPayPal.test.js` - Thêm null checks cho User
-15. ✅ `orderStatistics.test.js` - Thêm null check trong helper function
+14. ✅ `orderStatistics.test.js` - Thêm null check trong helper function
 
 ## 🔧 Các thay đổi chính
 

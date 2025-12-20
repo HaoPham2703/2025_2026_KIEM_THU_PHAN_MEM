@@ -26,8 +26,8 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
     adminUser = await User.create({
       name: "Admin Statistics Test",
       email: "adminstatistics@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "admin",
       active: "active",
     });
@@ -37,16 +37,16 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
       {
         name: "Statistics User 1",
         email: "statistics1@example.com",
-        password: "Haolatui2703@",
-        passwordConfirm: "Haolatui2703@",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
         role: "user",
         active: "active",
       },
       {
         name: "Statistics User 2",
         email: "statistics2@example.com",
-        password: "Haolatui2703@",
-        passwordConfirm: "Haolatui2703@",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
         role: "user",
         active: "active",
       },
@@ -119,7 +119,7 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
   async function getToken(email) {
     const response = await request(app).post("/api/v1/users/login").send({
       email: email,
-      password: "Haolatui2703@",
+      password: "Haolatuii2703@",
     });
     return response.body.token;
   }
@@ -163,7 +163,7 @@ describe("System Test - Flow Thống kê đơn hàng và doanh thu", () => {
     it("nên đăng nhập admin thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "adminstatistics@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);

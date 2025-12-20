@@ -48,8 +48,8 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     testUser = await User.create({
       name: "Balance Test User",
       email: "balancetest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
       balance: 50000000, // 50 triệu - đủ để mua
@@ -70,7 +70,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     it("nên đăng nhập thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "balancetest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -199,7 +199,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
         .post("/api/v1/users/login")
         .send({
           email: "balancetest@example.com",
-          password: "Haolatui2703@",
+          password: "Haolatuii2703@",
         });
 
       const token = loginResponse.body.token;

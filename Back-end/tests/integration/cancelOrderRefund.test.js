@@ -49,8 +49,8 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     testUser = await User.create({
       name: "Refund Test User",
       email: "refundtest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
       balance: 50000000, // 50 triệu
@@ -72,7 +72,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     it("nên đăng nhập thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "refundtest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);

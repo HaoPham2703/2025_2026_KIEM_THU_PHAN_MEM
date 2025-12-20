@@ -46,8 +46,8 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     testUser = await User.create({
       name: "Email Test User",
       email: "emailtest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
     });
@@ -55,8 +55,8 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     adminUser = await User.create({
       name: "Admin Email Test",
       email: "adminemail@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "admin",
       active: "active",
     });
@@ -76,7 +76,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     it("nên đăng nhập user thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "emailtest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -119,7 +119,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     it("nên đăng nhập admin thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "adminemail@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -179,7 +179,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
       // User tạo đơn
       const userLogin = await request(app).post("/api/v1/users/login").send({
         email: "emailtest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       const orderData = {
@@ -213,7 +213,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
       // Admin cập nhật status
       const adminLogin = await request(app).post("/api/v1/users/login").send({
         email: "adminemail@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       sendEmail.mockClear();

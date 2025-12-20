@@ -18,8 +18,8 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
     testUser = await User.create({
       name: "Forgot Password Test User",
       email: "forgotpassword@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
     });
@@ -162,7 +162,7 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
     it("nên không đăng nhập được với mật khẩu cũ", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "forgotpassword@example.com",
-        password: "Haolatui2703@", // Mật khẩu cũ
+        password: "Haolatuii2703@", // Mật khẩu cũ
       });
 
       expect(response.status).toBe(401);

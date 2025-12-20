@@ -47,18 +47,7 @@ Integration Test kiểm tra sự tương tác giữa nhiều module/component tr
   6. Kiểm tra balance user tăng
   7. Kiểm tra order status được cập nhật
 
-### 4. **Flow Mua hàng --> Thanh toán PayPal --> Xác nhận**
-
-- **File:** `purchaseWithPayPal.test.js`
-- **Mô tả:** Test flow thanh toán qua PayPal
-- **Các bước:**
-  1. Đăng nhập
-  2. Tạo đơn hàng với payments="paypal"
-  3. Mô phỏng callback từ PayPal
-  4. Kiểm tra transaction được tạo
-  5. Kiểm tra balance user tăng
-
-### 5. **Flow Mua hàng --> Thanh toán số dư --> Kiểm tra balance**
+### 4. **Flow Mua hàng --> Thanh toán số dư --> Kiểm tra balance**
 
 - **File:** `purchaseWithBalance.test.js`
 - **Mô tả:** Test flow thanh toán bằng số dư tài khoản
@@ -211,7 +200,6 @@ Back-end/tests/integration/
 ├── loginToPurchase.test.js          ✅ Đã tạo
 ├── signupToPurchase.test.js        ⏳ Cần tạo
 ├── purchaseWithVNPay.test.js       ⏳ Cần tạo
-├── purchaseWithPayPal.test.js      ⏳ Cần tạo
 ├── purchaseWithBalance.test.js    ⏳ Cần tạo
 ├── purchaseToReview.test.js        ⏳ Cần tạo
 ├── cancelOrderRefund.test.js       ⏳ Cần tạo
@@ -232,7 +220,7 @@ Back-end/tests/integration/
 1. **Mock Services:**
 
    - Email service (đã mock trong loginToPurchase.test.js)
-   - VNPay/PayPal callbacks (cần mock)
+   - VNPay callbacks (cần mock)
    - Cloudinary upload (nếu test upload ảnh)
 
 2. **Test Data:**
@@ -266,4 +254,3 @@ Back-end/tests/integration/
 2. **Kiểm tra business flow:** Đảm bảo flow nghiệp vụ hoạt động đúng
 3. **Tự tin khi deploy:** Biết chắc hệ thống hoạt động end-to-end
 4. **Tài liệu sống:** Test cases mô tả cách hệ thống hoạt động
-

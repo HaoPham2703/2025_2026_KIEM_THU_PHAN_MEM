@@ -54,8 +54,8 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     testUser = await User.create({
       name: "Review Test User",
       email: "reviewtest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
     });
@@ -63,8 +63,8 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     adminUser = await User.create({
       name: "Admin Review Test",
       email: "adminreview@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "admin",
       active: "active",
     });
@@ -85,7 +85,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     it("nên đăng nhập user thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "reviewtest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -128,7 +128,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     it("nên đăng nhập admin thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "adminreview@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -193,7 +193,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         .post("/api/v1/users/login")
         .send({
           email: "reviewtest@example.com",
-          password: "Haolatui2703@",
+          password: "Haolatuii2703@",
         });
       const token = loginResponse.body.token;
 
@@ -227,7 +227,7 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       // Bước 3: Admin cập nhật status
       const adminLogin = await request(app).post("/api/v1/users/login").send({
         email: "adminreview@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       await request(app)

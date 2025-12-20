@@ -44,8 +44,8 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
     testUser = await User.create({
       name: "Address Test User",
       email: "addresstest@example.com",
-      password: "Haolatui2703@",
-      passwordConfirm: "Haolatui2703@",
+      password: "Haolatuii2703@",
+      passwordConfirm: "Haolatuii2703@",
       role: "user",
       active: "active",
       address: [], // Khởi tạo mảng địa chỉ rỗng
@@ -64,7 +64,7 @@ describe("System Test - Flow User quản lý địa chỉ: Thêm --> Cập nhậ
     it("nên đăng nhập thành công", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "addresstest@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);

@@ -177,7 +177,6 @@ console.log("Body:", response.body);
 2. **Medium Priority:**
 
    - `purchaseWithVNPay.test.js` - Response structure
-   - `purchaseWithPayPal.test.js` - Response structure
    - `adminImportProduct.test.js` - Null checks
 
 3. **Low Priority:**

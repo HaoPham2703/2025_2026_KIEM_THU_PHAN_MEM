@@ -61,8 +61,8 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
       const response = await request(app).post("/api/v1/users/signup").send({
         name: "New User",
         email: "newuser@example.com",
-        password: "Haolatui2703@",
-        passwordConfirm: "Haolatui2703@",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(201);
@@ -80,7 +80,7 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
     it("nên đăng nhập được ngay sau khi đăng ký (vì active = active)", async () => {
       const response = await request(app).post("/api/v1/users/login").send({
         email: "newuser@example.com",
-        password: "Haolatui2703@",
+        password: "Haolatuii2703@",
       });
 
       expect(response.status).toBe(200);
@@ -145,8 +145,8 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
         .send({
           name: "Flow Test User",
           email: "flowtest@example.com",
-          password: "Haolatui2703@",
-          passwordConfirm: "Haolatui2703@",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
         });
 
       expect(signupResponse.status).toBe(201);
