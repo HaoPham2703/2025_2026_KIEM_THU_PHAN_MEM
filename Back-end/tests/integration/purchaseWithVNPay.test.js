@@ -139,6 +139,8 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
       expect(response.body.data.id).toBeDefined();
     });
   });
@@ -235,6 +237,9 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
 
       // Bước 2: Tạo URL thanh toán
       const paymentUrlResponse = await request(app)
@@ -246,6 +251,8 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
         });
 
       expect(paymentUrlResponse.status).toBe(201);
+      expect(paymentUrlResponse.body.status).toBe("success");
+      expect(paymentUrlResponse.body.vnpUrl).toBeDefined();
 
       // Bước 3: Mô phỏng callback thành công
       const vnp_Params = {
@@ -269,6 +276,7 @@ describe("System Test - Flow Mua hàng --> Thanh toán VNPay --> Xác nhận", (
         });
 
       expect(callbackResponse.status).toBe(201);
+      expect(callbackResponse.body.message).toBe("success");
       expect(callbackResponse.body.code).toBe("00");
     });
   });

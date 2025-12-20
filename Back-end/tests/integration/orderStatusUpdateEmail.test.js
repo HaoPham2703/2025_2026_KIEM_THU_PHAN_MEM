@@ -303,6 +303,8 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         });
 
       expect(response.status).toBe(200);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
 
       const updatedOrder = await Order.findById(testOrder._id);
       expect(updatedOrder).toBeTruthy();

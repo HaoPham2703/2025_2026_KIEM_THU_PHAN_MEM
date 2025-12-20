@@ -106,6 +106,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
       expect(response.status).toBe(201);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
 
       // Kiểm tra import được tạo
       const createdImport = await Import.findOne({
@@ -117,6 +118,24 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
     });
 
     it("nên tăng inventory sản phẩm sau khi nhập hàng", async () => {
+      // Tạo import trước để test inventory tăng
+      const importData = {
+        location: testLocation._id.toString(),
+        invoice: [
+          {
+            product: testProduct._id.toString(),
+            quantity: 20,
+            price: 12000000,
+          },
+        ],
+        totalPrice: 240000000,
+      };
+
+      await request(app)
+        .post("/api/v1/imports")
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send(importData);
+
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
       // Inventory ban đầu: 50, nhập thêm: 20 => tổng: 70
@@ -143,6 +162,8 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
       expect(response.status).toBe(201);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
+      expect(response.body.data.data).toBeDefined();
 
       // Kiểm tra sản phẩm được tạo
       const createdProduct = await Product.findOne({
@@ -178,6 +199,8 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
         .send(importData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
 
       // Kiểm tra inventory tăng
       const updatedProduct = await Product.findById(newProduct._id);
@@ -203,6 +226,8 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
         .set("Authorization", `Bearer ${adminToken}`)
         .send(productData);
 
+      expect(productResponse.status).toBe(201);
+      expect(productResponse.body.status).toBe("success");
       expect(productResponse.body.data).toBeDefined();
       expect(productResponse.body.data.data).toBeDefined();
       const productId = productResponse.body.data.data._id;
@@ -226,6 +251,7 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
         .send(importData);
 
       expect(importResponse.status).toBe(201);
+      expect(importResponse.body.status).toBe("success");
 
       // Bước 3: Kiểm tra inventory
       const finalProduct = await Product.findById(productId);

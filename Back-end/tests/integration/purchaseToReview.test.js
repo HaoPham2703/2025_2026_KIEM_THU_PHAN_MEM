@@ -262,7 +262,12 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         .set("Authorization", `Bearer ${userToken}`)
         .send(orderData);
 
+      expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
       testOrder = await Order.findById(orderResponse.body.data.id);
+      expect(testOrder).toBeTruthy();
       initialRatingsQuantity = testProduct.ratingsQuantity || 0;
     });
 
@@ -423,13 +428,19 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
 
     it("nên cập nhật ratingsAverage và ratingsQuantity của product", async () => {
       // Tạo review trước
-      await request(app)
+      const reviewResponse = await request(app)
         .post(`/api/v1/products/${testProduct._id}/reviews`)
         .set("Authorization", `Bearer ${userToken}`)
         .send({
           rating: 5,
           review: "Sản phẩm rất tốt!",
         });
+
+      expect(reviewResponse.status).toBe(201);
+      expect(reviewResponse.body.status).toBe("success");
+
+      // Đợi một chút để product được update (có thể có delay)
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();

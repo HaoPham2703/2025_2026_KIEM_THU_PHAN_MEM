@@ -832,10 +832,13 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
       const orderId = orderResponse.body.data.id;
 
       // Admin cập nhật status
-      await request(app)
+      const updateOrderResponse = await request(app)
         .patch(`/api/v1/orders/${orderId}`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ status: "Success" });
+
+      expect(updateOrderResponse.status).toBe(200);
+      expect(updateOrderResponse.body.status).toBe("success");
 
       // User tạo review
       const reviewResponse = await request(app)
@@ -847,6 +850,7 @@ describe("System Test - Flow User đánh giá --> Bình luận --> Like comment"
         });
 
       expect(reviewResponse.status).toBe(201);
+      expect(reviewResponse.body.status).toBe("success");
 
       // User tạo comment
       const commentResponse = await request(app)

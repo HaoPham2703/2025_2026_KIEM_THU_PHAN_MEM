@@ -82,6 +82,60 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
   });
 
   describe("Bước 2: Xem danh sách sản phẩm", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại (vì afterEach trong setup.js xóa tất cả)
+      await Category.deleteMany({ name: "Laptop View Test" });
+      await Brand.deleteMany({ name: "Dell View Test" });
+      await Product.deleteMany({ title: /Dell Laptop View Test Product/ });
+      await User.deleteMany({ email: "viewtest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop View Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell View Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      // Tạo nhiều sản phẩm để test xem danh sách
+      testProducts = await Product.create([
+        {
+          title: "Dell Laptop View Test Product 1",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop1.jpg"],
+        },
+        {
+          title: "Dell Laptop View Test Product 2",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop2.jpg"],
+        },
+      ]);
+
+      testUser = await User.create({
+        name: "View Test User",
+        email: "viewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "viewtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+    });
+
     it("nên xem được danh sách sản phẩm", async () => {
       const response = await request(app)
         .get("/api/v1/products")
@@ -92,13 +146,6 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
       expect(response.body.data).toBeDefined();
       expect(response.body.data.data).toBeDefined();
       expect(Array.isArray(response.body.data.data)).toBe(true);
-      // Note: Products có thể rỗng nếu chưa có data, nhưng test expect có data
-      // Nếu test fail ở đây, cần kiểm tra xem products có được tạo đúng trong beforeAll không
-      if (response.body.data.data.length === 0) {
-        console.warn(
-          "Warning: Products array is empty. Check beforeAll setup."
-        );
-      }
       expect(response.body.data.data.length).toBeGreaterThan(0);
     });
 
@@ -118,6 +165,59 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
   });
 
   describe("Bước 3: Xem chi tiết sản phẩm", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop View Test" });
+      await Brand.deleteMany({ name: "Dell View Test" });
+      await Product.deleteMany({ title: /Dell Laptop View Test Product/ });
+      await User.deleteMany({ email: "viewtest@example.com" });
+
+      testCategory = await Category.create({
+        name: "Laptop View Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell View Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProducts = await Product.create([
+        {
+          title: "Dell Laptop View Test Product 1",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop1.jpg"],
+        },
+        {
+          title: "Dell Laptop View Test Product 2",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop2.jpg"],
+        },
+      ]);
+
+      testUser = await User.create({
+        name: "View Test User",
+        email: "viewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "viewtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+    });
+
     it("nên xem được chi tiết sản phẩm", async () => {
       const response = await request(app)
         .get(`/api/v1/products/${testProducts[0]._id}`)
@@ -138,6 +238,60 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
   });
 
   describe("Bước 4: Tạo đơn hàng (giả lập thêm vào giỏ)", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop View Test" });
+      await Brand.deleteMany({ name: "Dell View Test" });
+      await Product.deleteMany({ title: /Dell Laptop View Test Product/ });
+      await User.deleteMany({ email: "viewtest@example.com" });
+      await Order.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop View Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell View Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProducts = await Product.create([
+        {
+          title: "Dell Laptop View Test Product 1",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop1.jpg"],
+        },
+        {
+          title: "Dell Laptop View Test Product 2",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop2.jpg"],
+        },
+      ]);
+
+      testUser = await User.create({
+        name: "View Test User",
+        email: "viewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "viewtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+    });
+
     it("nên tạo đơn hàng với sản phẩm đã xem", async () => {
       const orderData = {
         cart: [
@@ -165,28 +319,77 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
       expect(response.body.data.id).toBeDefined();
     });
   });
 
   describe("Flow hoàn chỉnh: Xem --> Chọn --> Mua", () => {
     it("nên thực hiện toàn bộ flow từ xem sản phẩm đến thanh toán", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop View Test" });
+      await Brand.deleteMany({ name: "Dell View Test" });
+      await Product.deleteMany({ title: /Dell Laptop View Test Product/ });
+      await User.deleteMany({ email: "viewtest@example.com" });
+      await Order.deleteMany({});
+
+      const testCategory = await Category.create({
+        name: "Laptop View Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell View Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProducts = await Product.create([
+        {
+          title: "Dell Laptop View Test Product 1",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop1.jpg"],
+        },
+        {
+          title: "Dell Laptop View Test Product 2",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop2.jpg"],
+        },
+      ]);
+
+      const testUser = await User.create({
+        name: "View Test User",
+        email: "viewtest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+      });
+
+      const authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "viewtest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+
       // Bước 1: Xem danh sách
       const listResponse = await request(app)
         .get("/api/v1/products")
         .set("Authorization", `Bearer ${authToken}`);
 
       expect(listResponse.status).toBe(200);
+      expect(listResponse.body.status).toBe("success");
       expect(listResponse.body.data).toBeDefined();
       expect(listResponse.body.data.data).toBeDefined();
       const products = listResponse.body.data.data;
       expect(Array.isArray(products)).toBe(true);
-      // Note: Products có thể rỗng nếu chưa có data
-      if (products.length === 0) {
-        console.warn(
-          "Warning: Products array is empty. Check beforeAll setup."
-        );
-      }
       expect(products.length).toBeGreaterThan(0);
 
       // Bước 2: Xem chi tiết sản phẩm đầu tiên
@@ -196,6 +399,9 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
         .set("Authorization", `Bearer ${authToken}`);
 
       expect(detailResponse.status).toBe(200);
+      expect(detailResponse.body.status).toBe("success");
+      expect(detailResponse.body.data).toBeDefined();
+      expect(detailResponse.body.data.data).toBeDefined();
 
       // Bước 3: Tạo đơn hàng
       const orderData = {
@@ -224,6 +430,9 @@ describe("System Test - Flow Xem sản phẩm --> Thêm vào giỏ --> Thanh to�
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
     });
   });
 });

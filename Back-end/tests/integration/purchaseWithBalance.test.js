@@ -106,6 +106,8 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
         .send(orderData);
 
       expect(response.status).toBe(201);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
       expect(response.body.data.id).toBeDefined();
 
       // Kiểm tra order được tạo
@@ -115,6 +117,32 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     });
 
     it("nên giảm balance user đúng số tiền", async () => {
+      // Tạo order trước để test balance giảm
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Balance Test Street",
+        receiver: "Balance Test User",
+        phone: "0123456789",
+        payments: "số dư",
+        totalPrice: 15000000,
+      };
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
       expect(updatedUser.balance).toBe(initialBalance - 15000000); // 50 triệu - 15 triệu = 35 triệu
@@ -129,6 +157,32 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     });
 
     it("nên giảm inventory sản phẩm", async () => {
+      // Tạo order trước để test inventory giảm
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Balance Test Street",
+        receiver: "Balance Test User",
+        phone: "0123456789",
+        payments: "số dư",
+        totalPrice: 15000000,
+      };
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 1);
@@ -136,6 +190,53 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
   });
 
   describe("Bước 3: Tạo nhiều đơn hàng với số dư", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Balance Test" });
+      await Brand.deleteMany({ name: "Dell Balance Test" });
+      await Product.deleteMany({ title: "Dell Laptop Balance Test Product" });
+      await User.deleteMany({ email: "balancetest@example.com" });
+      await Order.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Balance Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Balance Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Balance Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      testUser = await User.create({
+        name: "Balance Test User",
+        email: "balancetest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
+      initialBalance = testUser.balance;
+
+      authToken = (
+        await request(app).post("/api/v1/users/login").send({
+          email: "balancetest@example.com",
+          password: "Haolatuii2703@",
+        })
+      ).body.token;
+    });
+
     it("nên tạo nhiều đơn hàng và balance giảm đúng", async () => {
       const orderData1 = {
         cart: [
@@ -186,14 +287,67 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
         .send(orderData2);
 
       // Kiểm tra balance đã giảm thêm 30 triệu (2 đơn x 15 triệu)
+      // Note: initialBalance là 50 triệu, nhưng có thể đã giảm từ test trước
+      // Nên tính lại balance từ user hiện tại
+      const userBeforeOrders = await User.findById(testUser._id);
+      expect(userBeforeOrders).toBeTruthy();
+      const balanceBeforeOrders = userBeforeOrders.balance;
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData1);
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData2);
+
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
-      expect(updatedUser.balance).toBe(initialBalance - 45000000); // 50 triệu - 45 triệu = 5 triệu
+      // Balance giảm 30 triệu (2 đơn x 15 triệu)
+      expect(updatedUser.balance).toBe(balanceBeforeOrders - 30000000);
     });
   });
 
   describe("Flow hoàn chỉnh: Đăng nhập --> Mua hàng bằng số dư", () => {
     it("nên thực hiện toàn bộ flow thanh toán bằng số dư", async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Balance Test" });
+      await Brand.deleteMany({ name: "Dell Balance Test" });
+      await Product.deleteMany({ title: "Dell Laptop Balance Test Product" });
+      await User.deleteMany({ email: "balancetest@example.com" });
+      await Order.deleteMany({});
+
+      const testCategory = await Category.create({
+        name: "Laptop Balance Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      const testBrand = await Brand.create({
+        name: "Dell Balance Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      const testProduct = await Product.create({
+        title: "Dell Laptop Balance Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      const testUser = await User.create({
+        name: "Balance Test User",
+        email: "balancetest@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+        role: "user",
+        active: "active",
+        balance: 50000000,
+      });
+
       // Đăng nhập
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
@@ -202,10 +356,12 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
           password: "Haolatuii2703@",
         });
 
+      expect(loginResponse.status).toBe(200);
       const token = loginResponse.body.token;
       const userBefore = await User.findOne({
         email: "balancetest@example.com",
       });
+      expect(userBefore).toBeTruthy();
       const balanceBefore = userBefore.balance;
 
       // Tạo đơn hàng
@@ -234,6 +390,9 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
 
       // Kiểm tra balance giảm
       const userAfter = await User.findOne({

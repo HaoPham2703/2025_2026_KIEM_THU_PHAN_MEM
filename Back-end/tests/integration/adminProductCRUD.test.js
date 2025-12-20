@@ -126,6 +126,8 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
         .send(partialUpdate);
 
       expect(response.status).toBe(200);
+      expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
 
       const updatedProduct = await Product.findById(createdProductId);
       expect(updatedProduct).toBeTruthy();
@@ -166,18 +168,23 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
         .set("Authorization", `Bearer ${adminToken}`)
         .send(productData);
 
+      expect(createResponse.status).toBe(201);
+      expect(createResponse.body.status).toBe("success");
       expect(createResponse.body.data).toBeDefined();
       expect(createResponse.body.data.data).toBeDefined();
       const productId = createResponse.body.data.data._id;
 
       // Cập nhật sản phẩm
-      await request(app)
+      const updateResponse = await request(app)
         .patch(`/api/v1/products/${productId}`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({
           price: 35000000,
           inventory: 120,
         });
+
+      expect(updateResponse.status).toBe(200);
+      expect(updateResponse.body.status).toBe("success");
 
       // Kiểm tra đã cập nhật
       const updatedProduct = await Product.findById(productId);
@@ -186,9 +193,11 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
       expect(updatedProduct.inventory).toBe(120);
 
       // Xóa sản phẩm
-      await request(app)
+      const deleteResponse = await request(app)
         .delete(`/api/v1/products/${productId}`)
         .set("Authorization", `Bearer ${adminToken}`);
+
+      expect(deleteResponse.status).toBe(204);
 
       // Kiểm tra đã xóa
       const deletedProduct = await Product.findById(productId);

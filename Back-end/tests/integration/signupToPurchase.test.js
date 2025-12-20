@@ -93,6 +93,56 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
   });
 
   describe("Bước 3: Tạo đơn hàng sau khi đăng ký và đăng nhập", () => {
+    beforeEach(async () => {
+      // Xóa data cũ và tạo lại
+      await Category.deleteMany({ name: "Laptop Signup Test" });
+      await Brand.deleteMany({ name: "Dell Signup Test" });
+      await Product.deleteMany({ title: "Dell Laptop Signup Test Product" });
+      await User.deleteMany({ email: "newuser@example.com" });
+      await Order.deleteMany({});
+
+      testCategory = await Category.create({
+        name: "Laptop Signup Test",
+        image: "https://example.com/category.jpg",
+      });
+
+      testBrand = await Brand.create({
+        name: "Dell Signup Test",
+        image: "https://example.com/brand.jpg",
+      });
+
+      testProduct = await Product.create({
+        title: "Dell Laptop Signup Test Product",
+        price: 15000000,
+        inventory: 100,
+        category: testCategory._id,
+        brand: testBrand._id,
+        images: ["https://example.com/laptop.jpg"],
+      });
+
+      initialInventory = testProduct.inventory;
+
+      // Đăng ký user mới
+      await request(app).post("/api/v1/users/signup").send({
+        name: "New User",
+        email: "newuser@example.com",
+        password: "Haolatuii2703@",
+        passwordConfirm: "Haolatuii2703@",
+      });
+
+      newUser = await User.findOne({ email: "newuser@example.com" });
+
+      // Đăng nhập
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "newuser@example.com",
+          password: "Haolatuii2703@",
+        });
+
+      authToken = loginResponse.body.token;
+    });
+
     it("nên tạo đơn hàng thành công với user mới đăng ký", async () => {
       const orderData = {
         cart: [
@@ -121,6 +171,7 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
 
       expect(response.status).toBe(201);
       expect(response.body.status).toBe("success");
+      expect(response.body.data).toBeDefined();
       expect(response.body.data.id).toBeDefined();
 
       // Kiểm tra order đã được tạo với user mới
@@ -131,6 +182,32 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
     });
 
     it("nên giảm inventory sau khi user mới tạo đơn hàng", async () => {
+      // Tạo order trước để test inventory giảm
+      const orderData = {
+        cart: [
+          {
+            id: testProduct._id.toString(),
+            product: {
+              _id: testProduct._id.toString(),
+              title: testProduct.title,
+              price: testProduct.price,
+              images: testProduct.images,
+            },
+            quantity: 1,
+          },
+        ],
+        address: "123 Đường Signup Test, Quận 1, TP.HCM",
+        receiver: "New User",
+        phone: "0123456789",
+        payments: "tiền mặt",
+        totalPrice: 15000000,
+      };
+
+      await request(app)
+        .post("/api/v1/orders")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(orderData);
+
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
       expect(updatedProduct.inventory).toBe(initialInventory - 1);
@@ -179,6 +256,9 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
         .send(orderData);
 
       expect(orderResponse.status).toBe(201);
+      expect(orderResponse.body.status).toBe("success");
+      expect(orderResponse.body.data).toBeDefined();
+      expect(orderResponse.body.data.id).toBeDefined();
 
       // Cleanup
       const flowUser = await User.findOne({ email: "flowtest@example.com" });

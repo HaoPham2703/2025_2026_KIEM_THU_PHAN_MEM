@@ -200,12 +200,46 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
     });
 
     it("nên không đăng nhập được với mật khẩu cũ", async () => {
+      // Đảm bảo user đã reset password trước đó
+      const testUser = await User.findOne({
+        email: "forgotpassword@example.com",
+      });
+      if (!testUser) {
+        // Tạo user và reset password nếu chưa có
+        await User.create({
+          name: "Forgot Password Test User",
+          email: "forgotpassword@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "user",
+          active: "active",
+        });
+
+        // Reset password
+        await request(app).post("/api/v1/users/forgotPassword").send({
+          email: "forgotpassword@example.com",
+        });
+
+        const userWithToken = await User.findOne({
+          email: "forgotpassword@example.com",
+        });
+        const resetToken = userWithToken.passwordResetToken;
+
+        await request(app)
+          .patch(`/api/v1/users/resetPassword/${resetToken}`)
+          .send({
+            password: "NewPassword123@",
+            passwordConfirm: "NewPassword123@",
+          });
+      }
+
       const response = await request(app).post("/api/v1/users/login").send({
         email: "forgotpassword@example.com",
         password: "Haolatuii2703@", // Mật khẩu cũ
       });
 
       expect(response.status).toBe(401);
+      expect(response.body.status).toBe("fail");
     });
   });
 
