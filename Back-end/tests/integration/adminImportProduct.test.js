@@ -87,6 +87,15 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
   describe("Bước 2: Admin tạo import (nhập hàng)", () => {
     it("nên tạo import thành công và tăng inventory", async () => {
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeAll)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminimport@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+
       const importData = {
         location: testLocation._id.toString(),
         invoice: [
@@ -118,6 +127,15 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
     });
 
     it("nên tăng inventory sản phẩm sau khi nhập hàng", async () => {
+      // Đảm bảo có token hợp lệ
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminimport@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+
       // Tạo import trước để test inventory tăng
       const importData = {
         location: testLocation._id.toString(),
@@ -145,6 +163,15 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
   describe("Bước 3: Admin tạo sản phẩm mới", () => {
     it("nên tạo sản phẩm mới thành công", async () => {
+      // Đảm bảo có token hợp lệ
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminimport@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+
       const productData = {
         title: "New Product From Import Test",
         price: 20000000,
@@ -176,6 +203,15 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
 
   describe("Bước 4: Admin nhập hàng cho sản phẩm mới", () => {
     it("nên nhập hàng cho sản phẩm mới và tăng inventory", async () => {
+      // Đảm bảo có token hợp lệ
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminimport@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = loginResponse.body.token;
+
       const newProduct = await Product.findOne({
         title: "New Product From Import Test",
       });

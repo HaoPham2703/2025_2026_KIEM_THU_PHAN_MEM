@@ -65,13 +65,21 @@ module.exports = (err, req, res, next) => {
   // Xử lý lỗi cho cả development và production
   let error = { ...err };
   error.message = err.message;
+  error.name = err.name || error.name;
+  error.code = err.code || error.code;
 
-  if (error.name === 'CastError') error = handleCastErrorDB(error);
-  if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-  if (error.name === 'ValidationError')
-    error = handleValidationErrorDB(error);
-  if (error.name === 'JsonWebTokenError') error = handleJWTError();
-  if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+  // Xử lý ValidationError trước (có thể từ mongoose)
+  if (err.name === 'ValidationError' || error.name === 'ValidationError') {
+    error = handleValidationErrorDB(err);
+  } else if (error.name === 'CastError') {
+    error = handleCastErrorDB(error);
+  } else if (error.code === 11000) {
+    error = handleDuplicateFieldsDB(error);
+  } else if (error.name === 'JsonWebTokenError') {
+    error = handleJWTError();
+  } else if (error.name === 'TokenExpiredError') {
+    error = handleJWTExpiredError();
+  }
 
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(error, res);

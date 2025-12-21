@@ -308,6 +308,15 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
     });
 
     it("nên trả về lỗi khi thiếu thông tin bắt buộc (address)", async () => {
+      // Đảm bảo có token hợp lệ
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "systemtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
+
       const orderData = {
         cart: [
           {

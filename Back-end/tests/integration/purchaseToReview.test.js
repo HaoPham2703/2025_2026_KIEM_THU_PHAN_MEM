@@ -145,16 +145,14 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên tạo đơn hàng thành công", async () => {
-      // Đảm bảo có token hợp lệ
-      if (!userToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "reviewtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "reviewtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      userToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -292,17 +290,26 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên cập nhật order status thành Success", async () => {
-      // Đảm bảo có token hợp lệ và order tồn tại
-      if (!adminToken) {
-        const loginResponse = await request(app)
+      // Đảm bảo có token hợp lệ
+      const adminLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminreview@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = adminLoginResponse.body.token;
+
+      // Đảm bảo có order tồn tại (từ test trước hoặc tạo mới)
+      if (!testOrder) {
+        // Đảm bảo có user token
+        const userLoginResponse = await request(app)
           .post("/api/v1/users/login")
           .send({
-            email: "adminreview@example.com",
+            email: "reviewtest@example.com",
             password: "Haolatuii2703@",
           });
-        adminToken = loginResponse.body.token;
-      }
-      if (!testOrder) {
+        userToken = userLoginResponse.body.token;
+
         // Tạo order nếu chưa có
         const orderData = {
           cart: [
@@ -323,15 +330,6 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
           payments: "tiền mặt",
           totalPrice: 15000000,
         };
-        if (!userToken) {
-          const loginResponse = await request(app)
-            .post("/api/v1/users/login")
-            .send({
-              email: "reviewtest@example.com",
-              password: "Haolatuii2703@",
-            });
-          userToken = loginResponse.body.token;
-        }
         const orderResponse = await request(app)
           .post("/api/v1/orders")
           .set("Authorization", `Bearer ${userToken}`)
@@ -483,16 +481,20 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên cập nhật ratingsAverage và ratingsQuantity của product", async () => {
-      // Đảm bảo có token và order tồn tại
-      if (!userToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "reviewtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ
+      const userLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "reviewtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      userToken = userLoginResponse.body.token;
+
+      // Lấy initialRatingsQuantity trước khi tạo review
+      const productBeforeReview = await Product.findById(testProduct._id);
+      const currentRatingsQuantity = productBeforeReview.ratingsQuantity || 0;
+
+      // Đảm bảo có order tồn tại
       if (!testOrder) {
         const orderData = {
           cart: [
@@ -544,16 +546,14 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       expect(reviewResponse.status).toBe(201);
       expect(reviewResponse.body.status).toBe("success");
 
-      // Đợi một chút để product được update (có thể có delay)
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Đợi một chút để post save hook hoàn thành (calcAverageRatings là async)
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
-      // Đợi một chút để post save hook hoàn thành (calcAverageRatings là async)
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const updatedProduct2 = await Product.findById(testProduct._id);
-      expect(updatedProduct2.ratingsQuantity).toBeGreaterThanOrEqual(
-        initialRatingsQuantity
+      // Kiểm tra ratingsQuantity đã tăng (ít nhất bằng currentRatingsQuantity + 1)
+      expect(updatedProduct.ratingsQuantity).toBeGreaterThanOrEqual(
+        currentRatingsQuantity + 1
       );
       // ratingsAverage sẽ được tính lại tự động
       expect(updatedProduct.ratingsAverage).toBeDefined();

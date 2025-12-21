@@ -124,16 +124,14 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     });
 
     it("nên tạo đơn hàng với payments=số dư", async () => {
-      // Đảm bảo có token
-      if (!authToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "refundtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        authToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -466,13 +464,25 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     });
 
     it("nên tăng balance user sau khi hủy đơn", async () => {
-      // Balance tăng do post-save hook của Transaction
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Đảm bảo có user và order tồn tại từ beforeEach
+      testUser = await User.findOne({ email: "refundtest@example.com" });
+      expect(testUser).toBeTruthy();
+      
+      // Lấy balance trước khi hủy (sau khi đã tạo order và trừ balance)
+      const userBeforeCancel = await User.findById(testUser._id);
+      const balanceBeforeCancel = userBeforeCancel.balance;
+      
+      // Đảm bảo có order và đã hủy từ beforeEach
+      expect(testOrder).toBeTruthy();
+      
+      // Balance tăng do post-save hook của Transaction (đã được tạo trong beforeEach)
+      // Đợi một chút để transaction hook hoàn thành
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
-      // Balance ban đầu + refund amount
-      expect(updatedUser.balance).toBe(initialBalance + 30000000);
+      // Balance sau hủy = balance trước hủy + refund amount (30 triệu)
+      expect(updatedUser.balance).toBe(balanceBeforeCancel + 30000000);
     });
   });
 

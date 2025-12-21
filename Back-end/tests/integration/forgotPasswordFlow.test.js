@@ -206,36 +206,44 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
       });
 
       // Nếu user chưa có hoặc chưa reset password, tạo và reset
-      if (!testUser || !testUser.passwordResetToken) {
-        if (!testUser) {
-          await User.create({
-            name: "Forgot Password Test User",
-            email: "forgotpassword@example.com",
-            password: "Haolatuii2703@",
-            passwordConfirm: "Haolatuii2703@",
-            role: "user",
-            active: "active",
-          });
-        }
-
-        // Reset password
-        await request(app).post("/api/v1/users/forgotPassword").send({
+      if (!testUser) {
+        await User.create({
+          name: "Forgot Password Test User",
           email: "forgotpassword@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "user",
+          active: "active",
         });
-
-        testUser = await User.findOne({
-          email: "forgotpassword@example.com",
-        });
-        const resetToken = testUser.passwordResetToken;
-
-        await request(app)
-          .patch(`/api/v1/users/resetPassword/${resetToken}`)
-          .send({
-            password: "NewPassword123@",
-            passwordConfirm: "NewPassword123@",
-          });
       }
 
+      // Reset password
+      await request(app).post("/api/v1/users/forgotPassword").send({
+        email: "forgotpassword@example.com",
+      });
+
+      testUser = await User.findOne({
+        email: "forgotpassword@example.com",
+      });
+      expect(testUser).toBeTruthy();
+      expect(testUser.passwordResetToken).toBeTruthy();
+
+      const resetToken = testUser.passwordResetToken;
+
+      // Reset password với mật khẩu mới
+      const resetResponse = await request(app)
+        .patch(`/api/v1/users/resetPassword/${resetToken}`)
+        .send({
+          password: "NewPassword123@",
+          passwordConfirm: "NewPassword123@",
+        });
+
+      expect(resetResponse.status).toBe(200);
+
+      // Đợi một chút để password được cập nhật
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Thử đăng nhập với mật khẩu cũ (sẽ fail)
       const response = await request(app).post("/api/v1/users/login").send({
         email: "forgotpassword@example.com",
         password: "Haolatuii2703@", // Mật khẩu cũ
