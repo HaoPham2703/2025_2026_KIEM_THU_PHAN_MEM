@@ -1,6 +1,5 @@
 # 🧪 HƯỚNG DẪN CHẠY THỬ TEST KHI VẤN ĐÁP ĐỒ ÁN
 
-## 📋 Tình huống: Thầy yêu cầu "Chạy cho thầy thử 1 luồng hay chạy thử CI"
 
 ---
 
@@ -108,71 +107,7 @@ npm test -- tests/unit/controllers/orderController.test.js
    - ✅ **Green checkmark** = Tất cả tests pass
    - ❌ **Red X** = Có test fail (click vào để xem chi tiết)
 
-#### Bước 4: Trình bày cho thầy
 
-- Chỉ cho thầy thấy:
-  - Tab **"Actions"** → Workflow đang chạy
-  - Các bước (steps) đang được thực thi
-  - Kết quả cuối cùng (passed/failed)
-  - Test summary với số lượng tests đã chạy
-
----
-
-## 🎬 DEMO SCRIPT - CÁCH TRÌNH BÀY CHO THẦY
-
-### Kịch bản 1: Chạy thử một luồng test
-
-**Lời nói:**
-
-> "Dạ thầy, em sẽ chạy thử luồng test từ đăng ký đến mua hàng cho thầy xem. Đây là integration test, nó sẽ test toàn bộ flow từ khi user đăng ký, xác thực email, đăng nhập, thêm vào giỏ hàng và thanh toán."
-
-**Thao tác:**
-
-```powershell
-cd Back-end
-npm test -- tests/integration/signupToPurchase.test.js
-```
-
-**Giải thích kết quả:**
-
-- "Dạ thầy, em vừa chạy xong. Có 8 test cases, tất cả đều pass. Luồng này test:
-  1. User đăng ký tài khoản mới
-  2. Hệ thống gửi email xác thực
-  3. User xác thực email thành công
-  4. User đăng nhập
-  5. User thêm sản phẩm vào giỏ hàng
-  6. User tạo đơn hàng
-  7. Hệ thống cập nhật tồn kho
-  8. Đơn hàng được tạo thành công"
-
----
-
-### Kịch bản 2: Chạy thử CI/CD
-
-**Lời nói:**
-
-> "Dạ thầy, em sẽ chạy thử CI/CD workflow trên GitHub Actions. Đây là hệ thống tự động test mỗi khi có code mới, giúp đảm bảo chất lượng code trước khi merge."
-
-**Thao tác:**
-
-1. Mở GitHub → Tab "Actions"
-2. Click "Integration Tests" → "Run workflow"
-3. Chọn branch → Click "Run workflow"
-
-**Giải thích:**
-
-- "Dạ thầy, workflow đang chạy. Nó sẽ:
-
-  1. Checkout code từ repository
-  2. Setup môi trường Node.js
-  3. Cài đặt dependencies
-  4. Chạy tất cả integration tests
-  5. Tạo báo cáo kết quả
-  6. Upload coverage report
-
-  Kết quả sẽ hiển thị trong vài phút. Em có thể thấy các bước đang được thực thi ở đây..."
-
----
 
 ## 📊 CÁC LUỒNG TEST CÓ SẴN
 
