@@ -94,7 +94,46 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
           email: "adminimport@example.com",
           password: "Haolatuii2703@",
         });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
+      
+      // Đảm bảo product và location tồn tại
+      if (!testProduct) {
+        testProduct = await Product.findOne({ title: "Dell Laptop Import Test Product" });
+        if (!testProduct) {
+          testCategory = await Category.findOne({ name: "Laptop Import Test" });
+          testBrand = await Brand.findOne({ name: "Dell Import Test" });
+          if (!testCategory || !testBrand) {
+            testCategory = await Category.create({
+              name: "Laptop Import Test",
+              image: "https://example.com/category.jpg",
+            });
+            testBrand = await Brand.create({
+              name: "Dell Import Test",
+              image: "https://example.com/brand.jpg",
+            });
+          }
+          testProduct = await Product.create({
+            title: "Dell Laptop Import Test Product",
+            price: 15000000,
+            inventory: 50,
+            category: testCategory._id,
+            brand: testBrand._id,
+            images: ["https://example.com/laptop.jpg"],
+          });
+        }
+      }
+      if (!testLocation) {
+        testLocation = await Location.findOne({ name: "Kho Import Test" });
+        if (!testLocation) {
+          testLocation = await Location.create({
+            name: "Kho Import Test",
+            address: "123 Import Test Street",
+            phone: "0123456789",
+          });
+        }
+      }
 
       const importData = {
         location: testLocation._id.toString(),
@@ -170,7 +209,29 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
           email: "adminimport@example.com",
           password: "Haolatuii2703@",
         });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
+      
+      // Đảm bảo category và brand tồn tại
+      if (!testCategory) {
+        testCategory = await Category.findOne({ name: "Laptop Import Test" });
+        if (!testCategory) {
+          testCategory = await Category.create({
+            name: "Laptop Import Test",
+            image: "https://example.com/category.jpg",
+          });
+        }
+      }
+      if (!testBrand) {
+        testBrand = await Brand.findOne({ name: "Dell Import Test" });
+        if (!testBrand) {
+          testBrand = await Brand.create({
+            name: "Dell Import Test",
+            image: "https://example.com/brand.jpg",
+          });
+        }
+      }
 
       const productData = {
         title: "New Product From Import Test",

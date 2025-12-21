@@ -62,12 +62,14 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
   describe("Bước 2: Admin tạo sản phẩm mới", () => {
     it("nên tạo sản phẩm mới thành công", async () => {
-      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeAll)
       const loginResponse = await request(app).post("/api/v1/users/login").send({
         email: "adminproductcrud@example.com",
         password: "Haolatuii2703@",
       });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
       const productData = {
         title: "New Product CRUD Test",
         price: 20000000,
@@ -99,6 +101,31 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
 
   describe("Bước 3: Admin cập nhật sản phẩm", () => {
     it("nên cập nhật sản phẩm thành công", async () => {
+      // Đảm bảo có token hợp lệ
+      const loginResponse = await request(app).post("/api/v1/users/login").send({
+        email: "adminproductcrud@example.com",
+        password: "Haolatuii2703@",
+      });
+      adminToken = loginResponse.body.token;
+      
+      // Đảm bảo có product ID (tạo nếu chưa có)
+      if (!createdProductId) {
+        const productData = {
+          title: "New Product CRUD Test",
+          price: 20000000,
+          inventory: 50,
+          category: testCategory._id.toString(),
+          brand: testBrand._id.toString(),
+          images: ["https://example.com/newproduct.jpg"],
+          description: "Sản phẩm mới từ CRUD test",
+        };
+        const createResponse = await request(app)
+          .post("/api/v1/products")
+          .set("Authorization", `Bearer ${adminToken}`)
+          .send(productData);
+        createdProductId = createResponse.body.data.data._id;
+      }
+      
       const updateData = {
         title: "Updated Product CRUD Test",
         price: 25000000,
