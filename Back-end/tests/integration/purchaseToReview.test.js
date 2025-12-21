@@ -44,12 +44,10 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       category: testCategory._id,
       brand: testBrand._id,
       images: ["https://example.com/laptop.jpg"],
-      ratingsAverage: 4.5,
-      ratingsQuantity: 10,
     });
 
-    initialRatingsAverage = testProduct.ratingsAverage;
-    initialRatingsQuantity = testProduct.ratingsQuantity;
+    initialRatingsAverage = testProduct.ratingsAverage || 4.5;
+    initialRatingsQuantity = testProduct.ratingsQuantity || 0;
 
     testUser = await User.create({
       name: "Review Test User",
@@ -382,11 +380,9 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         category: testCategory._id,
         brand: testBrand._id,
         images: ["https://example.com/laptop.jpg"],
-        ratingsAverage: 4.5,
-        ratingsQuantity: 10,
       });
 
-      initialRatingsQuantity = testProduct.ratingsQuantity;
+      initialRatingsQuantity = testProduct.ratingsQuantity || 0;
 
       testUser = await User.create({
         name: "Review Test User",
@@ -490,51 +486,15 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         });
       userToken = userLoginResponse.body.token;
 
-      // Lấy initialRatingsQuantity trước khi tạo review
+      // Lấy ratingsQuantity trước khi tạo review mới trong test này
+      // (có thể đã có review từ test "nên tạo review thành công cho sản phẩm đã mua")
       const productBeforeReview = await Product.findById(testProduct._id);
-      const currentRatingsQuantity = productBeforeReview.ratingsQuantity || 0;
+      const ratingsQuantityBefore = productBeforeReview.ratingsQuantity || 0;
 
-      // Đảm bảo có order tồn tại
-      if (!testOrder) {
-        const orderData = {
-          cart: [
-            {
-              id: testProduct._id.toString(),
-              product: {
-                _id: testProduct._id.toString(),
-                title: testProduct.title,
-                price: testProduct.price,
-                images: testProduct.images,
-              },
-              quantity: 1,
-            },
-          ],
-          address: "123 Review Test Street",
-          receiver: "Review Test User",
-          phone: "0123456789",
-          payments: "tiền mặt",
-          totalPrice: 15000000,
-        };
-        const orderResponse = await request(app)
-          .post("/api/v1/orders")
-          .set("Authorization", `Bearer ${userToken}`)
-          .send(orderData);
-        testOrder = await Order.findById(orderResponse.body.data.id);
-        if (!adminToken) {
-          const loginResponse = await request(app)
-            .post("/api/v1/users/login")
-            .send({
-              email: "adminreview@example.com",
-              password: "Haolatuii2703@",
-            });
-          adminToken = loginResponse.body.token;
-        }
-        await request(app)
-          .patch(`/api/v1/orders/${testOrder._id}`)
-          .set("Authorization", `Bearer ${adminToken}`)
-          .send({ status: "Success" });
-      }
-      // Tạo review trước
+      // Đảm bảo có order và status = Success (từ beforeEach)
+      expect(testOrder).toBeTruthy();
+
+      // Tạo review mới
       const reviewResponse = await request(app)
         .post(`/api/v1/products/${testProduct._id}/reviews`)
         .set("Authorization", `Bearer ${userToken}`)
@@ -547,13 +507,13 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       expect(reviewResponse.body.status).toBe("success");
 
       // Đợi một chút để post save hook hoàn thành (calcAverageRatings là async)
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
-      // Kiểm tra ratingsQuantity đã tăng (ít nhất bằng currentRatingsQuantity + 1)
+      // Kiểm tra ratingsQuantity đã tăng (ít nhất bằng ratingsQuantityBefore + 1)
       expect(updatedProduct.ratingsQuantity).toBeGreaterThanOrEqual(
-        currentRatingsQuantity + 1
+        ratingsQuantityBefore + 1
       );
       // ratingsAverage sẽ được tính lại tự động
       expect(updatedProduct.ratingsAverage).toBeDefined();
