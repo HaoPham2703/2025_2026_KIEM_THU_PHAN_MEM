@@ -1,0 +1,413 @@
+{
+  "scenario": "Cart & Order Management Test Data",
+  "created_date": "2025-12-21",
+  "description": "Dữ liệu test cho giỏ hàng và đơn hàng",
+  
+  "cart_operations": {
+    "add_to_cart": [
+      {
+        "test_id": "CART-ADD-001",
+        "productId": "674567890abcdef123456789",
+        "quantity": 2,
+        "product_name": "iPhone 15 Pro",
+        "product_price": 1299,
+        "usage": "Thêm sản phẩm bình thường"
+      },
+      {
+        "test_id": "CART-ADD-002",
+        "productId": "674567890abcdef123456790",
+        "quantity": 1,
+        "product_name": "AirPods Pro",
+        "product_price": 249,
+        "usage": "Thêm sản phẩm thứ 2"
+      },
+      {
+        "test_id": "CART-ADD-003",
+        "productId": "674567890abcdef123456789",
+        "quantity": 100,
+        "product_stock": 50,
+        "error_type": "insufficient_stock",
+        "expected_error": "Not enough stock",
+        "usage": "Thêm vượt quá tồn kho"
+      },
+      {
+        "test_id": "CART-ADD-004",
+        "productId": "674567890abcdef123456791",
+        "quantity": 1,
+        "product_stock": 0,
+        "error_type": "out_of_stock",
+        "expected_error": "Product out of stock",
+        "usage": "Thêm sản phẩm hết hàng"
+      }
+    ],
+    "update_cart": [
+      {
+        "test_id": "CART-UPDATE-001",
+        "itemId": "cart-item-001",
+        "new_quantity": 5,
+        "usage": "Cập nhật số lượng tăng"
+      },
+      {
+        "test_id": "CART-UPDATE-002",
+        "itemId": "cart-item-001",
+        "new_quantity": 1,
+        "usage": "Cập nhật số lượng giảm"
+      },
+      {
+        "test_id": "CART-UPDATE-003",
+        "itemId": "cart-item-001",
+        "new_quantity": 0,
+        "error_type": "invalid_quantity",
+        "expected_error": "Quantity must be at least 1",
+        "usage": "Cập nhật quantity = 0"
+      }
+    ],
+    "remove_from_cart": [
+      {
+        "test_id": "CART-REMOVE-001",
+        "itemId": "cart-item-001",
+        "usage": "Xóa item khỏi cart"
+      },
+      {
+        "test_id": "CART-REMOVE-002",
+        "itemId": "non-existent-item",
+        "error_type": "item_not_found",
+        "expected_error": "Cart item not found",
+        "usage": "Xóa item không tồn tại"
+      }
+    ]
+  },
+
+  "order_creation": {
+    "valid_orders": [
+      {
+        "test_id": "ORDER-CREATE-001",
+        "cart_items": [
+          {
+            "productId": "674567890abcdef123456789",
+            "quantity": 2,
+            "price": 1299
+          }
+        ],
+        "total_price": 2598,
+        "payments": "balance",
+        "user_balance": 3000,
+        "address": "123 Main St, City, Country",
+        "phone": "0901234567",
+        "usage": "Đơn hàng bình thường với balance"
+      },
+      {
+        "test_id": "ORDER-CREATE-002",
+        "cart_items": [
+          {
+            "productId": "674567890abcdef123456789",
+            "quantity": 1,
+            "price": 1299
+          },
+          {
+            "productId": "674567890abcdef123456790",
+            "quantity": 2,
+            "price": 249
+          }
+        ],
+        "total_price": 1797,
+        "payments": "vnpay",
+        "address": "456 Second St, City, Country",
+        "phone": "0907654321",
+        "usage": "Đơn hàng với VNPay"
+      }
+    ],
+    "invalid_orders": [
+      {
+        "test_id": "ORDER-CREATE-INVALID-001",
+        "cart_items": [],
+        "payments": "balance",
+        "error_type": "empty_cart",
+        "expected_error": "Cart is empty",
+        "usage": "Tạo đơn với cart rỗng"
+      },
+      {
+        "test_id": "ORDER-CREATE-INVALID-002",
+        "cart_items": [
+          {
+            "productId": "674567890abcdef123456789",
+            "quantity": 1,
+            "price": 1299
+          }
+        ],
+        "total_price": 1299,
+        "payments": "balance",
+        "user_balance": 500,
+        "error_type": "insufficient_balance",
+        "expected_error": "Insufficient balance",
+        "usage": "Balance không đủ"
+      },
+      {
+        "test_id": "ORDER-CREATE-INVALID-003",
+        "cart_items": [
+          {
+            "productId": "674567890abcdef123456789",
+            "quantity": 1,
+            "price": 1299
+          }
+        ],
+        "payments": "balance",
+        "address": "",
+        "error_type": "missing_address",
+        "expected_error": "Address is required",
+        "usage": "Thiếu địa chỉ"
+      },
+      {
+        "test_id": "ORDER-CREATE-INVALID-004",
+        "cart_items": [
+          {
+            "productId": "674567890abcdef123456791",
+            "quantity": 1,
+            "price": 999,
+            "stock": 0
+          }
+        ],
+        "payments": "balance",
+        "error_type": "product_out_of_stock",
+        "expected_error": "Product out of stock",
+        "usage": "Sản phẩm hết hàng"
+      }
+    ]
+  },
+
+  "order_status_transitions": {
+    "valid_transitions": [
+      {
+        "test_id": "STATUS-001",
+        "from": "pending",
+        "to": "confirmed",
+        "role": "admin",
+        "usage": "Admin xác nhận đơn hàng"
+      },
+      {
+        "test_id": "STATUS-002",
+        "from": "confirmed",
+        "to": "shipping",
+        "role": "admin",
+        "usage": "Admin chuyển sang shipping"
+      },
+      {
+        "test_id": "STATUS-003",
+        "from": "shipping",
+        "to": "delivered",
+        "role": "admin",
+        "usage": "Admin xác nhận đã giao"
+      }
+    ],
+    "invalid_transitions": [
+      {
+        "test_id": "STATUS-INVALID-001",
+        "from": "delivered",
+        "to": "pending",
+        "role": "admin",
+        "error_type": "invalid_transition",
+        "expected_error": "Cannot change status of completed order",
+        "usage": "Không thể đổi từ delivered về pending"
+      },
+      {
+        "test_id": "STATUS-INVALID-002",
+        "from": "cancelled",
+        "to": "shipping",
+        "role": "admin",
+        "error_type": "invalid_transition",
+        "expected_error": "Cannot change status of cancelled order",
+        "usage": "Không thể đổi từ cancelled"
+      },
+      {
+        "test_id": "STATUS-INVALID-003",
+        "from": "pending",
+        "to": "confirmed",
+        "role": "user",
+        "error_type": "permission_denied",
+        "expected_error": "You do not have permission",
+        "usage": "User không thể đổi status"
+      }
+    ]
+  },
+
+  "order_cancellation": {
+    "valid_cancellations": [
+      {
+        "test_id": "CANCEL-001",
+        "order_id": "order-001",
+        "order_status": "pending",
+        "order_total": 1000,
+        "user_balance_before": 2000,
+        "user_balance_after": 3000,
+        "usage": "Hủy đơn pending, hoàn tiền"
+      },
+      {
+        "test_id": "CANCEL-002",
+        "order_id": "order-002",
+        "order_status": "confirmed",
+        "usage": "Hủy đơn confirmed"
+      }
+    ],
+    "invalid_cancellations": [
+      {
+        "test_id": "CANCEL-INVALID-001",
+        "order_id": "order-003",
+        "order_status": "shipping",
+        "error_type": "cannot_cancel",
+        "expected_error": "Cannot cancel order in shipping",
+        "usage": "Không thể hủy đơn đang shipping"
+      },
+      {
+        "test_id": "CANCEL-INVALID-002",
+        "order_id": "order-004",
+        "order_status": "delivered",
+        "error_type": "cannot_cancel",
+        "expected_error": "Cannot cancel delivered order",
+        "usage": "Không thể hủy đơn đã giao"
+      },
+      {
+        "test_id": "CANCEL-INVALID-003",
+        "order_id": "order-005",
+        "order_owner": "user-A",
+        "requester": "user-B",
+        "error_type": "permission_denied",
+        "expected_error": "You can only cancel your own orders",
+        "usage": "User không thể hủy đơn của user khác"
+      }
+    ]
+  },
+
+  "vnpay_payment": {
+    "success_callbacks": [
+      {
+        "test_id": "VNPAY-SUCCESS-001",
+        "order_id": "order-vnp-001",
+        "vnp_ResponseCode": "00",
+        "vnp_TransactionStatus": "00",
+        "vnp_Amount": "129900000",
+        "vnp_SecureHash": "valid-hash",
+        "expected_order_status": "paid",
+        "usage": "Thanh toán VNPay thành công"
+      }
+    ],
+    "failed_callbacks": [
+      {
+        "test_id": "VNPAY-FAILED-001",
+        "order_id": "order-vnp-002",
+        "vnp_ResponseCode": "24",
+        "vnp_TransactionStatus": "02",
+        "expected_order_status": "cancelled",
+        "expected_balance_rollback": true,
+        "expected_quantity_rollback": true,
+        "usage": "Thanh toán VNPay thất bại"
+      },
+      {
+        "test_id": "VNPAY-FAILED-002",
+        "order_id": "order-vnp-003",
+        "vnp_ResponseCode": "00",
+        "vnp_SecureHash": "invalid-hash",
+        "error_type": "invalid_signature",
+        "expected_error": "Invalid signature",
+        "usage": "Chữ ký VNPay không hợp lệ"
+      }
+    ]
+  },
+
+  "order_queries": {
+    "user_orders": [
+      {
+        "test_id": "QUERY-001",
+        "user_id": "user-001",
+        "expected": "All orders of user-001",
+        "usage": "Xem đơn hàng của user"
+      },
+      {
+        "test_id": "QUERY-002",
+        "user_id": "user-001",
+        "status_filter": "pending",
+        "expected": "Pending orders of user-001",
+        "usage": "Filter theo status"
+      }
+    ],
+    "admin_orders": [
+      {
+        "test_id": "QUERY-003",
+        "role": "admin",
+        "expected": "All orders in system",
+        "usage": "Admin xem tất cả đơn"
+      },
+      {
+        "test_id": "QUERY-004",
+        "role": "admin",
+        "status_filter": "shipping",
+        "expected": "All shipping orders",
+        "usage": "Admin filter theo status"
+      }
+    ]
+  },
+
+  "inventory_management": {
+    "stock_scenarios": [
+      {
+        "test_id": "STOCK-001",
+        "product_id": "prod-001",
+        "initial_quantity": 100,
+        "order_quantity": 5,
+        "expected_quantity_after": 95,
+        "usage": "Kiểm tra giảm tồn kho sau order"
+      },
+      {
+        "test_id": "STOCK-002",
+        "product_id": "prod-001",
+        "initial_quantity": 95,
+        "cancelled_order_quantity": 5,
+        "expected_quantity_after": 100,
+        "usage": "Kiểm tra hoàn tồn kho sau cancel"
+      },
+      {
+        "test_id": "STOCK-003",
+        "product_id": "prod-002",
+        "initial_quantity": 2,
+        "order_quantity": 3,
+        "error_type": "insufficient_stock",
+        "expected_error": "Not enough stock",
+        "usage": "Đặt hàng vượt tồn kho"
+      }
+    ]
+  },
+
+  "boundary_values": {
+    "cart_quantity": {
+      "test_values": [
+        { "value": 0, "expected": "error", "note": "Zero quantity" },
+        { "value": 1, "expected": "success", "note": "Minimum" },
+        { "value": 999, "expected": "success", "note": "Large quantity" }
+      ]
+    },
+    "order_total": {
+      "test_values": [
+        { "value": 0.01, "expected": "success", "note": "Minimum order" },
+        { "value": 1000000, "expected": "success", "note": "Large order" }
+      ]
+    }
+  },
+
+  "concurrency_test_data": {
+    "scenarios": [
+      {
+        "test_id": "CONCURRENT-001",
+        "scenario": "Multiple users order same product simultaneously",
+        "product_stock": 10,
+        "concurrent_orders": 15,
+        "expected": "Only 10 orders succeed, 5 fail with out of stock",
+        "usage": "Test race condition"
+      },
+      {
+        "test_id": "CONCURRENT-002",
+        "scenario": "User updates cart while creating order",
+        "expected": "Order uses cart state at creation time",
+        "usage": "Test cart isolation"
+      }
+    ]
+  }
+}

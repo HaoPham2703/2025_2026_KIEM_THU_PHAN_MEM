@@ -1,0 +1,355 @@
+{
+  "scenario": "Authentication Module Test Data",
+  "created_date": "2025-12-21",
+  "description": "Dữ liệu test cho các tình huống xác thực và ủy quyền",
+  
+  "valid_users": [
+    {
+      "test_id": "USER-001",
+      "name": "Nguyen Van A",
+      "email": "nguyenvana@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "role": "user",
+      "active": "active",
+      "usage": "Test đăng ký và đăng nhập thành công"
+    },
+    {
+      "test_id": "USER-002",
+      "name": "Tran Thi B",
+      "email": "tranthib@test.com",
+      "password": "SecurePass@456",
+      "passwordConfirm": "SecurePass@456",
+      "role": "user",
+      "active": "active",
+      "usage": "Test đa dạng users"
+    },
+    {
+      "test_id": "ADMIN-001",
+      "name": "Admin User",
+      "email": "admin@test.com",
+      "password": "Admin@999",
+      "passwordConfirm": "Admin@999",
+      "role": "admin",
+      "active": "active",
+      "usage": "Test phân quyền admin"
+    },
+    {
+      "test_id": "USER-003",
+      "name": "Banned User",
+      "email": "banned@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "role": "user",
+      "active": "ban",
+      "usage": "Test đăng nhập với tài khoản bị khóa"
+    },
+    {
+      "test_id": "USER-004",
+      "name": "Unverified User",
+      "email": "unverified@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "role": "user",
+      "active": "verify",
+      "verifyToken": "abc123xyz789",
+      "usage": "Test xác thực tài khoản"
+    }
+  ],
+
+  "invalid_signup_data": [
+    {
+      "test_id": "INVALID-001",
+      "name": "Test User",
+      "email": "existing@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "error_type": "duplicate_email",
+      "expected_error": "Email already exists",
+      "usage": "Test email đã tồn tại"
+    },
+    {
+      "test_id": "INVALID-002",
+      "name": "Test User",
+      "email": "test@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@456",
+      "error_type": "password_mismatch",
+      "expected_error": "Passwords do not match",
+      "usage": "Test password không khớp"
+    },
+    {
+      "test_id": "INVALID-003",
+      "name": "Test User",
+      "email": "invalidemail",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "error_type": "invalid_email_format",
+      "expected_error": "Invalid email format",
+      "usage": "Test email không đúng định dạng"
+    },
+    {
+      "test_id": "INVALID-004",
+      "name": "Test User",
+      "email": "test@test.com",
+      "password": "short",
+      "passwordConfirm": "short",
+      "error_type": "password_too_short",
+      "expected_error": "Password must be at least 8 characters",
+      "usage": "Test password quá ngắn"
+    },
+    {
+      "test_id": "INVALID-005",
+      "name": "Test User",
+      "email": "test@test.com",
+      "error_type": "missing_required_fields",
+      "expected_error": "Password is required",
+      "usage": "Test thiếu trường bắt buộc"
+    },
+    {
+      "test_id": "INVALID-006",
+      "name": "",
+      "email": "test@test.com",
+      "password": "Test@123",
+      "passwordConfirm": "Test@123",
+      "error_type": "empty_name",
+      "expected_error": "Name is required",
+      "usage": "Test name trống"
+    }
+  ],
+
+  "invalid_login_data": [
+    {
+      "test_id": "LOGIN-INVALID-001",
+      "email": "user@test.com",
+      "password": "WrongPassword123",
+      "error_type": "wrong_password",
+      "expected_error": "Incorrect email or password",
+      "usage": "Test password sai"
+    },
+    {
+      "test_id": "LOGIN-INVALID-002",
+      "email": "notexist@test.com",
+      "password": "Test@123",
+      "error_type": "user_not_found",
+      "expected_error": "Incorrect email or password",
+      "usage": "Test email không tồn tại"
+    },
+    {
+      "test_id": "LOGIN-INVALID-003",
+      "email": "banned@test.com",
+      "password": "Test@123",
+      "error_type": "banned_user",
+      "expected_error": "Your account has been banned",
+      "usage": "Test tài khoản bị khóa"
+    },
+    {
+      "test_id": "LOGIN-INVALID-004",
+      "email": "",
+      "password": "Test@123",
+      "error_type": "missing_email",
+      "expected_error": "Email and password are required",
+      "usage": "Test thiếu email"
+    }
+  ],
+
+  "forgot_password_data": [
+    {
+      "test_id": "FORGOT-001",
+      "email": "nguyenvana@test.com",
+      "reset_code": "123456",
+      "reset_token": "reset-token-abc123",
+      "usage": "Test quên mật khẩu thành công"
+    },
+    {
+      "test_id": "FORGOT-002",
+      "email": "notexist@test.com",
+      "error_type": "user_not_found",
+      "expected_error": "User not found",
+      "usage": "Test quên mật khẩu với email không tồn tại"
+    },
+    {
+      "test_id": "FORGOT-003",
+      "email": "nguyenvana@test.com",
+      "reset_code": "000000",
+      "error_type": "invalid_code",
+      "expected_error": "Invalid reset code",
+      "usage": "Test xác thực mã reset sai"
+    },
+    {
+      "test_id": "FORGOT-004",
+      "email": "nguyenvana@test.com",
+      "reset_token": "expired-token-xyz",
+      "error_type": "expired_token",
+      "expected_error": "Token has expired",
+      "usage": "Test reset password với token hết hạn"
+    }
+  ],
+
+  "password_update_data": [
+    {
+      "test_id": "UPDATE-PASS-001",
+      "email": "nguyenvana@test.com",
+      "passwordCurrent": "Test@123",
+      "password": "NewPass@456",
+      "passwordConfirm": "NewPass@456",
+      "usage": "Test cập nhật password thành công"
+    },
+    {
+      "test_id": "UPDATE-PASS-002",
+      "email": "nguyenvana@test.com",
+      "passwordCurrent": "WrongPassword",
+      "password": "NewPass@456",
+      "passwordConfirm": "NewPass@456",
+      "error_type": "wrong_current_password",
+      "expected_error": "Current password is incorrect",
+      "usage": "Test cập nhật với password hiện tại sai"
+    },
+    {
+      "test_id": "UPDATE-PASS-003",
+      "email": "nguyenvana@test.com",
+      "passwordCurrent": "Test@123",
+      "password": "NewPass@456",
+      "passwordConfirm": "NewPass@789",
+      "error_type": "password_mismatch",
+      "expected_error": "Passwords do not match",
+      "usage": "Test password mới không khớp"
+    }
+  ],
+
+  "authorization_data": [
+    {
+      "test_id": "AUTH-ROLE-001",
+      "role": "user",
+      "allowed_routes": [
+        "/api/v1/users/me",
+        "/api/v1/users/updateMe",
+        "/api/v1/products",
+        "/api/v1/orders"
+      ],
+      "forbidden_routes": [
+        "/api/v1/users",
+        "/api/v1/users/:id",
+        "/api/v1/products (POST)",
+        "/api/v1/brands (POST)"
+      ],
+      "usage": "Test quyền truy cập của user role"
+    },
+    {
+      "test_id": "AUTH-ROLE-002",
+      "role": "admin",
+      "allowed_routes": [
+        "/api/v1/users",
+        "/api/v1/users/:id",
+        "/api/v1/products (all methods)",
+        "/api/v1/brands (all methods)",
+        "/api/v1/categories (all methods)"
+      ],
+      "usage": "Test quyền truy cập của admin role"
+    },
+    {
+      "test_id": "AUTH-ROLE-003",
+      "role": "employee",
+      "allowed_routes": [
+        "/api/v1/products",
+        "/api/v1/orders",
+        "/api/v1/brands (read)",
+        "/api/v1/categories (read)"
+      ],
+      "forbidden_routes": [
+        "/api/v1/users (admin only)",
+        "/api/v1/users/:id (admin only)"
+      ],
+      "usage": "Test quyền truy cập của employee role"
+    }
+  ],
+
+  "tokens": {
+    "valid_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDU2Nzg5YWJjZGVmMTIzNDU2Nzg5MCIsImlhdCI6MTYzMjQ4MzIwMCwiZXhwIjoxNjQwMjU5MjAwfQ.example",
+    "expired_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDU2Nzg5YWJjZGVmMTIzNDU2Nzg5MCIsImlhdCI6MTYwMDAwMDAwMCwiZXhwIjoxNjAwMDAwMTAwfQ.expired",
+    "invalid_token": "invalid.token.string",
+    "malformed_token": "not-a-jwt-token"
+  },
+
+  "boundary_values": {
+    "password": {
+      "min_length": 8,
+      "max_length": 50,
+      "test_values": {
+        "too_short": "Test@1",
+        "min_valid": "Test@123",
+        "normal": "SecurePassword@123",
+        "max_valid": "VeryLongSecurePassword@12345678901234567890123456",
+        "too_long": "ExtremelyLongPasswordThatExceedsMaximumAllowedLength@123456789012345678901234567890"
+      }
+    },
+    "email": {
+      "valid_formats": [
+        "user@example.com",
+        "user.name@example.com",
+        "user+tag@example.co.uk",
+        "123@example.com"
+      ],
+      "invalid_formats": [
+        "invalidemail",
+        "@example.com",
+        "user@",
+        "user@.com",
+        "user..name@example.com"
+      ]
+    },
+    "name": {
+      "min_length": 1,
+      "max_length": 100,
+      "test_values": {
+        "empty": "",
+        "min_valid": "A",
+        "normal": "Nguyen Van A",
+      "max_valid": "VeryLongNameWithManyCharactersXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "too_long": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      }
+    }
+  },
+
+  "special_characters_test": {
+    "password_special_chars": [
+      "Test@123",
+      "Test#123",
+      "Test$123",
+      "Test%123",
+      "Test&123",
+      "Test*123"
+    ],
+    "sql_injection_attempts": [
+      "admin' OR '1'='1",
+      "admin'--",
+      "' OR 1=1--",
+      "admin'; DROP TABLE users--"
+    ],
+    "xss_attempts": [
+      "<script>alert('XSS')</script>",
+      "javascript:alert('XSS')",
+      "<img src=x onerror=alert('XSS')>"
+    ]
+  },
+
+  "performance_test_data": {
+    "concurrent_signups": {
+      "count": 100,
+      "base_email": "loadtest{index}@test.com",
+      "password": "Test@123",
+      "usage": "Test đăng ký đồng thời"
+    },
+    "concurrent_logins": {
+      "count": 200,
+      "email": "nguyenvana@test.com",
+      "password": "Test@123",
+      "usage": "Test đăng nhập đồng thời"
+    },
+    "rate_limiting": {
+      "max_requests_per_minute": 100,
+      "expected_status_after_limit": 429,
+      "usage": "Test rate limiting"
+    }
+  }
+}

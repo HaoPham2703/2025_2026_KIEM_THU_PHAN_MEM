@@ -1,0 +1,369 @@
+{
+  "scenario": "Product Management Test Data",
+  "created_date": "2025-12-21",
+  "description": "Dữ liệu test cho quản lý sản phẩm",
+  
+  "valid_products": [
+    {
+      "test_id": "PROD-001",
+      "name": "iPhone 15 Pro Max",
+      "description": "Latest iPhone with A17 Pro chip",
+      "price": 1299,
+      "quantity": 50,
+      "category": "Electronics",
+      "brand": "Apple",
+      "images": ["iphone15-1.jpg", "iphone15-2.jpg"],
+      "specifications": {
+        "screen": "6.7 inch",
+        "ram": "8GB",
+        "storage": "256GB"
+      },
+      "usage": "Test tạo và xem sản phẩm"
+    },
+    {
+      "test_id": "PROD-002",
+      "name": "Samsung Galaxy S24 Ultra",
+      "description": "Premium Android flagship",
+      "price": 1199,
+      "quantity": 30,
+      "category": "Electronics",
+      "brand": "Samsung",
+      "images": ["s24-1.jpg"],
+      "usage": "Test sản phẩm thứ 2"
+    },
+    {
+      "test_id": "PROD-003",
+      "name": "MacBook Pro M3",
+      "description": "Professional laptop with M3 chip",
+      "price": 2499,
+      "quantity": 15,
+      "category": "Computers",
+      "brand": "Apple",
+      "images": ["macbook-1.jpg", "macbook-2.jpg", "macbook-3.jpg"],
+      "usage": "Test sản phẩm giá cao"
+    },
+    {
+      "test_id": "PROD-004",
+      "name": "AirPods Pro 2",
+      "description": "Premium wireless earbuds",
+      "price": 249,
+      "quantity": 100,
+      "category": "Audio",
+      "brand": "Apple",
+      "images": ["airpods-1.jpg"],
+      "usage": "Test sản phẩm phụ kiện"
+    },
+    {
+      "test_id": "PROD-005",
+      "name": "Sony WH-1000XM5",
+      "description": "Industry-leading noise canceling headphones",
+      "price": 399,
+      "quantity": 0,
+      "category": "Audio",
+      "brand": "Sony",
+      "images": ["sony-headphones.jpg"],
+      "usage": "Test sản phẩm hết hàng (quantity = 0)"
+    }
+  ],
+
+  "invalid_products": [
+    {
+      "test_id": "INVALID-PROD-001",
+      "description": "Missing required name field",
+      "price": 999,
+      "quantity": 10,
+      "error_type": "missing_name",
+      "expected_error": "Name is required"
+    },
+    {
+      "test_id": "INVALID-PROD-002",
+      "name": "Test Product",
+      "description": "Negative price",
+      "price": -100,
+      "quantity": 10,
+      "error_type": "negative_price",
+      "expected_error": "Price must be positive"
+    },
+    {
+      "test_id": "INVALID-PROD-003",
+      "name": "Test Product",
+      "description": "Negative quantity",
+      "price": 100,
+      "quantity": -5,
+      "error_type": "negative_quantity",
+      "expected_error": "Quantity must be non-negative"
+    },
+    {
+      "test_id": "INVALID-PROD-004",
+      "name": "",
+      "description": "Empty name",
+      "price": 100,
+      "quantity": 10,
+      "error_type": "empty_name",
+      "expected_error": "Name cannot be empty"
+    },
+    {
+      "test_id": "INVALID-PROD-005",
+      "name": "Test Product",
+      "description": "Price is string",
+      "price": "not-a-number",
+      "quantity": 10,
+      "error_type": "invalid_price_type",
+      "expected_error": "Price must be a number"
+    }
+  ],
+
+  "filter_test_data": {
+    "price_ranges": [
+      {
+        "test_id": "FILTER-001",
+        "min": 0,
+        "max": 500,
+        "expected_count": "Products with price 0-500",
+        "usage": "Test filter giá thấp"
+      },
+      {
+        "test_id": "FILTER-002",
+        "min": 500,
+        "max": 1500,
+        "expected_count": "Products with price 500-1500",
+        "usage": "Test filter giá trung bình"
+      },
+      {
+        "test_id": "FILTER-003",
+        "min": 1500,
+        "max": 5000,
+        "expected_count": "Products with price 1500+",
+        "usage": "Test filter giá cao"
+      }
+    ],
+    "categories": [
+      {
+        "test_id": "FILTER-004",
+        "category": "Electronics",
+        "expected": "All electronics products",
+        "usage": "Filter theo Electronics"
+      },
+      {
+        "test_id": "FILTER-005",
+        "category": "Computers",
+        "expected": "All computer products",
+        "usage": "Filter theo Computers"
+      },
+      {
+        "test_id": "FILTER-006",
+        "category": "Audio",
+        "expected": "All audio products",
+        "usage": "Filter theo Audio"
+      }
+    ],
+    "brands": [
+      {
+        "test_id": "FILTER-007",
+        "brand": "Apple",
+        "expected": "All Apple products",
+        "usage": "Filter theo Apple"
+      },
+      {
+        "test_id": "FILTER-008",
+        "brand": "Samsung",
+        "expected": "All Samsung products",
+        "usage": "Filter theo Samsung"
+      }
+    ]
+  },
+
+  "sort_test_data": {
+    "sort_options": [
+      {
+        "test_id": "SORT-001",
+        "field": "price",
+        "order": "asc",
+        "description": "Sort by price ascending",
+        "usage": "Giá tăng dần"
+      },
+      {
+        "test_id": "SORT-002",
+        "field": "price",
+        "order": "desc",
+        "description": "Sort by price descending",
+        "usage": "Giá giảm dần"
+      },
+      {
+        "test_id": "SORT-003",
+        "field": "name",
+        "order": "asc",
+        "description": "Sort by name A-Z",
+        "usage": "Tên A-Z"
+      },
+      {
+        "test_id": "SORT-004",
+        "field": "createdAt",
+        "order": "desc",
+        "description": "Sort by newest first",
+        "usage": "Mới nhất trước"
+      }
+    ]
+  },
+
+  "pagination_test_data": {
+    "test_cases": [
+      {
+        "test_id": "PAGE-001",
+        "page": 1,
+        "limit": 10,
+        "expected": "First 10 products",
+        "usage": "Trang đầu tiên"
+      },
+      {
+        "test_id": "PAGE-002",
+        "page": 2,
+        "limit": 10,
+        "expected": "Products 11-20",
+        "usage": "Trang thứ 2"
+      },
+      {
+        "test_id": "PAGE-003",
+        "page": 1,
+        "limit": 50,
+        "expected": "First 50 products",
+        "usage": "Limit lớn"
+      },
+      {
+        "test_id": "PAGE-004",
+        "page": 999,
+        "limit": 10,
+        "expected": "Empty array (page out of range)",
+        "usage": "Trang không tồn tại"
+      }
+    ]
+  },
+
+  "search_test_data": {
+    "queries": [
+      {
+        "test_id": "SEARCH-001",
+        "query": "iPhone",
+        "expected": "Products with 'iPhone' in name",
+        "usage": "Search keyword iPhone"
+      },
+      {
+        "test_id": "SEARCH-002",
+        "query": "Pro",
+        "expected": "Products with 'Pro' in name",
+        "usage": "Search keyword Pro"
+      },
+      {
+        "test_id": "SEARCH-003",
+        "query": "NonExistentProduct",
+        "expected": "Empty array",
+        "usage": "Search không tìm thấy"
+      },
+      {
+        "test_id": "SEARCH-004",
+        "query": "",
+        "expected": "All products (empty search)",
+        "usage": "Search rỗng"
+      }
+    ]
+  },
+
+  "image_upload_test_data": {
+    "valid_files": [
+      {
+        "test_id": "IMG-001",
+        "filename": "product.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2048000,
+        "usage": "Valid JPG image"
+      },
+      {
+        "test_id": "IMG-002",
+        "filename": "product.png",
+        "mimetype": "image/png",
+        "size": 1024000,
+        "usage": "Valid PNG image"
+      }
+    ],
+    "invalid_files": [
+      {
+        "test_id": "IMG-INVALID-001",
+        "filename": "document.pdf",
+        "mimetype": "application/pdf",
+        "size": 1024000,
+        "error_type": "invalid_file_type",
+        "expected_error": "Only image files allowed"
+      },
+      {
+        "test_id": "IMG-INVALID-002",
+        "filename": "large-image.jpg",
+        "mimetype": "image/jpeg",
+        "size": 6291456,
+        "error_type": "file_too_large",
+        "expected_error": "File size exceeds 5MB limit"
+      },
+      {
+        "test_id": "IMG-INVALID-003",
+        "filename": "script.js",
+        "mimetype": "application/javascript",
+        "size": 10240,
+        "error_type": "invalid_file_type",
+        "expected_error": "Only image files allowed"
+      }
+    ]
+  },
+
+  "boundary_values": {
+    "price": {
+      "min": 0.01,
+      "max": 999999.99,
+      "test_values": [
+        { "value": 0, "expected": "error", "note": "Price must be positive" },
+        { "value": 0.01, "expected": "success", "note": "Minimum valid price" },
+        { "value": 999999.99, "expected": "success", "note": "Maximum valid price" },
+        { "value": 1000000, "expected": "success", "note": "Above maximum" }
+      ]
+    },
+    "quantity": {
+      "min": 0,
+      "max": 999999,
+      "test_values": [
+        { "value": -1, "expected": "error", "note": "Negative quantity" },
+        { "value": 0, "expected": "success", "note": "Out of stock" },
+        { "value": 1, "expected": "success", "note": "Minimum stock" },
+        { "value": 999999, "expected": "success", "note": "Maximum stock" }
+      ]
+    },
+    "name_length": {
+      "min": 1,
+      "max": 200,
+      "test_values": [
+        { "value": "", "expected": "error", "note": "Empty name" },
+        { "value": "A", "expected": "success", "note": "1 character" },
+        { "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "expected": "success", "note": "Max length 200 chars" },
+        { "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "expected": "error", "note": "Exceeds max 201 chars" }
+      ]
+    }
+  },
+
+  "performance_test_data": {
+    "large_dataset": {
+      "product_count": 1000,
+      "description": "Test with 1000 products",
+      "test_scenarios": [
+        {
+          "scenario": "List all products",
+          "expected_response_time": "< 500ms"
+        },
+        {
+          "scenario": "Filter + Sort + Pagination",
+          "expected_response_time": "< 1000ms"
+        },
+        {
+          "scenario": "Search across all products",
+          "expected_response_time": "< 800ms"
+        }
+      ]
+    }
+  }
+}
