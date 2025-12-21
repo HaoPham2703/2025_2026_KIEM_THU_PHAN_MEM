@@ -38,8 +38,8 @@ const transactionSchema = new mongoose.Schema(
 transactionSchema.statics.updateUserBalance = async function (userId, balance) {
   await User.findByIdAndUpdate(userId, { $inc: { balance: balance } });
 };
-transactionSchema.post("save", function () {
-  this.constructor.updateUserBalance(this.user, this.amount);
+transactionSchema.post("save", async function () {
+  await this.constructor.updateUserBalance(this.user, this.amount);
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

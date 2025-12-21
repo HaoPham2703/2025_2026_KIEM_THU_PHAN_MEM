@@ -22,6 +22,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
   let initialBalance;
   let initialInventory;
   let testOrder;
+  let testBalanceAfterOrder;
 
   beforeAll(async () => {
     // Tạo dữ liệu test
@@ -124,16 +125,14 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     });
 
     it("nên tạo đơn hàng với payments=số dư", async () => {
-      // Đảm bảo có token
-      if (!authToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "refundtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        authToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "refundtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -455,6 +454,10 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .send(orderData);
 
       testOrder = await Order.findById(orderResponse.body.data.id);
+      
+      // Lấy balance sau khi tạo order (đã trừ 30 triệu) - trước khi refund
+      const userAfterOrderCreation = await User.findById(testUser._id);
+      testBalanceAfterOrder = userAfterOrderCreation.balance; // 50 - 30 = 20 triệu
 
       // Set status = Processed và hủy
       await Order.findByIdAndUpdate(testOrder._id, { status: "Processed" });
@@ -466,13 +469,31 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     });
 
     it("nên tăng balance user sau khi hủy đơn", async () => {
-      // Balance tăng do post-save hook của Transaction
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Đảm bảo có user và order tồn tại từ beforeEach
+      testUser = await User.findOne({ email: "refundtest@example.com" });
+      expect(testUser).toBeTruthy();
+      
+      // Đảm bảo có order và đã hủy từ beforeEach
+      expect(testOrder).toBeTruthy();
+      
+      // Kiểm tra transaction refund đã được tạo (từ post hook của findOneAndUpdate)
+      // Đợi một chút để hook chạy
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      
+      const refundTransaction = await Transaction.findOne({
+        order: testOrder._id.toString(),
+        payments: "refund",
+      });
+      expect(refundTransaction).toBeTruthy();
+      
+      // Đợi transaction post save hook chạy để tăng balance
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const updatedUser = await User.findById(testUser._id);
       expect(updatedUser).toBeTruthy();
-      // Balance ban đầu + refund amount
-      expect(updatedUser.balance).toBe(initialBalance + 30000000);
+      // Balance sau refund = balance sau order + refund amount (30 triệu)
+      // Balance sau order: 20 triệu (50 - 30), sau refund: 20 + 30 = 50 triệu
+      expect(updatedUser.balance).toBe(testBalanceAfterOrder + 30000000);
     });
   });
 

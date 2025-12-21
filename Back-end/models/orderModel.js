@@ -82,13 +82,16 @@ orderSchema.statics.updateUserBalance = async function (userId, balance) {
 // });
 
 orderSchema.post("findOneAndUpdate", async function (doc) {
-  if (doc.payments !== "tiền mặt" && doc.status === "Cancelled")
+  if (doc && doc.payments !== "tiền mặt" && doc.status === "Cancelled") {
+    // doc.user có thể là ObjectId hoặc populated object
+    const userId = doc.user._id ? doc.user._id.toString() : doc.user.toString();
     await Transaction.create({
-      user: doc.user._id.toString(),
+      user: userId,
       amount: doc.totalPrice,
       payments: "refund",
-      order: doc.id,
+      order: doc.id || doc._id.toString(),
     });
+  }
 });
 
 const Order = mongoose.model("Order", orderSchema);

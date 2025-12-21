@@ -44,12 +44,10 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       category: testCategory._id,
       brand: testBrand._id,
       images: ["https://example.com/laptop.jpg"],
-      ratingsAverage: 4.5,
-      ratingsQuantity: 10,
     });
 
-    initialRatingsAverage = testProduct.ratingsAverage;
-    initialRatingsQuantity = testProduct.ratingsQuantity;
+    initialRatingsAverage = testProduct.ratingsAverage || 4.5;
+    initialRatingsQuantity = testProduct.ratingsQuantity || 0;
 
     testUser = await User.create({
       name: "Review Test User",
@@ -145,16 +143,14 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên tạo đơn hàng thành công", async () => {
-      // Đảm bảo có token hợp lệ
-      if (!userToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "reviewtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "reviewtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      userToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -292,17 +288,26 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên cập nhật order status thành Success", async () => {
-      // Đảm bảo có token hợp lệ và order tồn tại
-      if (!adminToken) {
-        const loginResponse = await request(app)
+      // Đảm bảo có token hợp lệ
+      const adminLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminreview@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = adminLoginResponse.body.token;
+
+      // Đảm bảo có order tồn tại (từ test trước hoặc tạo mới)
+      if (!testOrder) {
+        // Đảm bảo có user token
+        const userLoginResponse = await request(app)
           .post("/api/v1/users/login")
           .send({
-            email: "adminreview@example.com",
+            email: "reviewtest@example.com",
             password: "Haolatuii2703@",
           });
-        adminToken = loginResponse.body.token;
-      }
-      if (!testOrder) {
+        userToken = userLoginResponse.body.token;
+
         // Tạo order nếu chưa có
         const orderData = {
           cart: [
@@ -323,15 +328,6 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
           payments: "tiền mặt",
           totalPrice: 15000000,
         };
-        if (!userToken) {
-          const loginResponse = await request(app)
-            .post("/api/v1/users/login")
-            .send({
-              email: "reviewtest@example.com",
-              password: "Haolatuii2703@",
-            });
-          userToken = loginResponse.body.token;
-        }
         const orderResponse = await request(app)
           .post("/api/v1/orders")
           .set("Authorization", `Bearer ${userToken}`)
@@ -384,11 +380,9 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
         category: testCategory._id,
         brand: testBrand._id,
         images: ["https://example.com/laptop.jpg"],
-        ratingsAverage: 4.5,
-        ratingsQuantity: 10,
       });
 
-      initialRatingsQuantity = testProduct.ratingsQuantity;
+      initialRatingsQuantity = testProduct.ratingsQuantity || 0;
 
       testUser = await User.create({
         name: "Review Test User",
@@ -472,6 +466,9 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       expect(response.body.status).toBe("success");
       expect(response.body.data).toBeDefined();
 
+      // Đợi post save hook hoàn thành để ratings được tính
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       // Kiểm tra review được tạo
       const review = await Review.findOne({
         user: testUser._id,
@@ -483,56 +480,24 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
     });
 
     it("nên cập nhật ratingsAverage và ratingsQuantity của product", async () => {
-      // Đảm bảo có token và order tồn tại
-      if (!userToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "reviewtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = loginResponse.body.token;
-      }
-      if (!testOrder) {
-        const orderData = {
-          cart: [
-            {
-              id: testProduct._id.toString(),
-              product: {
-                _id: testProduct._id.toString(),
-                title: testProduct.title,
-                price: testProduct.price,
-                images: testProduct.images,
-              },
-              quantity: 1,
-            },
-          ],
-          address: "123 Review Test Street",
-          receiver: "Review Test User",
-          phone: "0123456789",
-          payments: "tiền mặt",
-          totalPrice: 15000000,
-        };
-        const orderResponse = await request(app)
-          .post("/api/v1/orders")
-          .set("Authorization", `Bearer ${userToken}`)
-          .send(orderData);
-        testOrder = await Order.findById(orderResponse.body.data.id);
-        if (!adminToken) {
-          const loginResponse = await request(app)
-            .post("/api/v1/users/login")
-            .send({
-              email: "adminreview@example.com",
-              password: "Haolatuii2703@",
-            });
-          adminToken = loginResponse.body.token;
-        }
-        await request(app)
-          .patch(`/api/v1/orders/${testOrder._id}`)
-          .set("Authorization", `Bearer ${adminToken}`)
-          .send({ status: "Success" });
-      }
-      // Tạo review trước
+      // Đảm bảo có token hợp lệ
+      const userLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "reviewtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      userToken = userLoginResponse.body.token;
+
+      // Lấy ratingsQuantity trước khi tạo review mới trong test này
+      // (có thể đã có review từ test "nên tạo review thành công cho sản phẩm đã mua")
+      const productBeforeReview = await Product.findById(testProduct._id);
+      const ratingsQuantityBefore = productBeforeReview.ratingsQuantity || 0;
+
+      // Đảm bảo có order và status = Success (từ beforeEach)
+      expect(testOrder).toBeTruthy();
+
+      // Tạo review mới
       const reviewResponse = await request(app)
         .post(`/api/v1/products/${testProduct._id}/reviews`)
         .set("Authorization", `Bearer ${userToken}`)
@@ -544,16 +509,14 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       expect(reviewResponse.status).toBe(201);
       expect(reviewResponse.body.status).toBe("success");
 
-      // Đợi một chút để product được update (có thể có delay)
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Đợi một chút để post save hook hoàn thành (calcAverageRatings là async)
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
-      // Đợi một chút để post save hook hoàn thành (calcAverageRatings là async)
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const updatedProduct2 = await Product.findById(testProduct._id);
-      expect(updatedProduct2.ratingsQuantity).toBeGreaterThanOrEqual(
-        initialRatingsQuantity
+      // Kiểm tra ratingsQuantity đã tăng (ít nhất bằng ratingsQuantityBefore + 1)
+      expect(updatedProduct.ratingsQuantity).toBeGreaterThanOrEqual(
+        ratingsQuantityBefore + 1
       );
       // ratingsAverage sẽ được tính lại tự động
       expect(updatedProduct.ratingsAverage).toBeDefined();

@@ -348,9 +348,10 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+  // passwordChangedAt sẽ được set tự động bởi pre-save hook
   await user.save();
 
-  // 3) Update changedPasswordAt property for the user
+  // 3) Update changedPasswordAt property for the user (đã được set bởi pre-save hook)
   // 4) Log the user in, send JWT
   await createSendToken(user, 200, res);
 });

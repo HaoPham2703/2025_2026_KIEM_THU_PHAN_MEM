@@ -133,16 +133,14 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     });
 
     it("nên tạo đơn hàng thành công", async () => {
-      // Đảm bảo có token hợp lệ
-      if (!userToken) {
-        const loginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "emailtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = loginResponse.body.token;
-      }
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "emailtest@example.com",
+          password: "Haolatuii2703@",
+        });
+      userToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -278,6 +276,18 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
 
   describe("Bước 3: Admin cập nhật order status và gửi email", () => {
     it("nên cập nhật order status = Delivery và gửi email", async () => {
+      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      const adminLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminemail@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = adminLoginResponse.body.token;
+
+      // Đảm bảo có order tồn tại (từ beforeEach của "Bước 1")
+      expect(testOrder).toBeTruthy();
+
       // Clear mock calls trước
       sendEmail.mockClear();
 
@@ -303,26 +313,25 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     });
 
     it("nên cập nhật order status = Success và gửi email", async () => {
-      // Đảm bảo có token và order tồn tại
-      if (!adminToken) {
-        const loginResponse = await request(app)
+      // Đảm bảo có token hợp lệ
+      const adminLoginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "adminemail@example.com",
+          password: "Haolatuii2703@",
+        });
+      adminToken = adminLoginResponse.body.token;
+
+      // Đảm bảo có order tồn tại
+      if (!testOrder) {
+        // Đảm bảo có user token
+        const userLoginResponse = await request(app)
           .post("/api/v1/users/login")
           .send({
-            email: "adminemail@example.com",
+            email: "emailtest@example.com",
             password: "Haolatuii2703@",
           });
-        adminToken = loginResponse.body.token;
-      }
-      if (!testOrder) {
-        if (!userToken) {
-          const loginResponse = await request(app)
-            .post("/api/v1/users/login")
-            .send({
-              email: "emailtest@example.com",
-              password: "Haolatuii2703@",
-            });
-          userToken = loginResponse.body.token;
-        }
+        userToken = userLoginResponse.body.token;
         const orderData = {
           cart: [
             {

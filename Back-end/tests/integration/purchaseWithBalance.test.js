@@ -81,13 +81,13 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
   describe("Bước 2: Tạo đơn hàng với payments=số dư", () => {
     it("nên tạo đơn hàng với thanh toán bằng số dư", async () => {
       // Đảm bảo có token hợp lệ
-      if (!authToken) {
-        const loginResponse = await request(app).post("/api/v1/users/login").send({
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
           email: "balancetest@example.com",
           password: "Haolatuii2703@",
         });
-        authToken = loginResponse.body.token;
-      }
+      authToken = loginResponse.body.token;
       const orderData = {
         cart: [
           {
@@ -125,6 +125,30 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     });
 
     it("nên giảm balance user đúng số tiền", async () => {
+      // Đảm bảo có token và user tồn tại
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "balancetest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
+
+      // Đảm bảo user tồn tại
+      testUser = await User.findOne({ email: "balancetest@example.com" });
+      if (!testUser) {
+        testUser = await User.create({
+          name: "Balance Test User",
+          email: "balancetest@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "user",
+          active: "active",
+          balance: 50000000,
+        });
+      }
+      initialBalance = testUser.balance;
+
       // Tạo order trước để test balance giảm
       const orderData = {
         cart: [
@@ -165,6 +189,45 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
     });
 
     it("nên giảm inventory sản phẩm", async () => {
+      // Đảm bảo có token và product tồn tại
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send({
+          email: "balancetest@example.com",
+          password: "Haolatuii2703@",
+        });
+      authToken = loginResponse.body.token;
+
+      // Đảm bảo product tồn tại
+      testProduct = await Product.findOne({
+        title: "Dell Laptop Balance Test Product",
+      });
+      if (!testProduct) {
+        testCategory = await Category.findOne({ name: "Laptop Balance Test" });
+        testBrand = await Brand.findOne({ name: "Dell Balance Test" });
+        if (!testCategory) {
+          testCategory = await Category.create({
+            name: "Laptop Balance Test",
+            image: "https://example.com/category.jpg",
+          });
+        }
+        if (!testBrand) {
+          testBrand = await Brand.create({
+            name: "Dell Balance Test",
+            image: "https://example.com/brand.jpg",
+          });
+        }
+        testProduct = await Product.create({
+          title: "Dell Laptop Balance Test Product",
+          price: 15000000,
+          inventory: 100,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop.jpg"],
+        });
+      }
+      initialInventory = testProduct.inventory;
+
       // Tạo order trước để test inventory giảm
       const orderData = {
         cart: [
