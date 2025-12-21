@@ -117,9 +117,10 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
   }
 };
 
-reviewSchema.post("save", function () {
+reviewSchema.post("save", async function () {
   // this points to current review
-  this.constructor.calcAverageRatings(this.product);
+  // Await để đảm bảo ratings được tính trước khi test kiểm tra
+  await this.constructor.calcAverageRatings(this.product);
 });
 
 // findByIdAndUpdate

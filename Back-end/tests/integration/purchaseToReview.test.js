@@ -466,6 +466,9 @@ describe("System Test - Flow Mua hàng --> Nhận hàng --> Đánh giá sản ph
       expect(response.body.status).toBe("success");
       expect(response.body.data).toBeDefined();
 
+      // Đợi post save hook hoàn thành để ratings được tính
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       // Kiểm tra review được tạo
       const review = await Review.findOne({
         user: testUser._id,

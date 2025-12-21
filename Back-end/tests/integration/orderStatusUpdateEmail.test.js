@@ -285,40 +285,8 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         });
       adminToken = adminLoginResponse.body.token;
 
-      // Đảm bảo có order tồn tại
-      if (!testOrder) {
-        const userLoginResponse = await request(app)
-          .post("/api/v1/users/login")
-          .send({
-            email: "emailtest@example.com",
-            password: "Haolatuii2703@",
-          });
-        userToken = userLoginResponse.body.token;
-        const orderData = {
-          cart: [
-            {
-              id: testProduct._id.toString(),
-              product: {
-                _id: testProduct._id.toString(),
-                title: testProduct.title,
-                price: testProduct.price,
-                images: testProduct.images,
-              },
-              quantity: 1,
-            },
-          ],
-          address: "123 Email Test Street",
-          receiver: "Email Test User",
-          phone: "0123456789",
-          payments: "tiền mặt",
-          totalPrice: 15000000,
-        };
-        const orderResponse = await request(app)
-          .post("/api/v1/orders")
-          .set("Authorization", `Bearer ${userToken}`)
-          .send(orderData);
-        testOrder = await Order.findById(orderResponse.body.data.id);
-      }
+      // Đảm bảo có order tồn tại (từ beforeEach của "Bước 1")
+      expect(testOrder).toBeTruthy();
 
       // Clear mock calls trước
       sendEmail.mockClear();

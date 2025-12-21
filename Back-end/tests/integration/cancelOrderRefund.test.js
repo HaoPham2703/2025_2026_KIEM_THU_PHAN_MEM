@@ -454,6 +454,10 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         .send(orderData);
 
       testOrder = await Order.findById(orderResponse.body.data.id);
+      
+      // Lấy balance sau khi tạo order (đã trừ 30 triệu) - trước khi refund
+      const userAfterOrderCreation = await User.findById(testUser._id);
+      testBalanceAfterOrder = userAfterOrderCreation.balance; // 50 - 30 = 20 triệu
 
       // Set status = Processed và hủy
       await Order.findByIdAndUpdate(testOrder._id, { status: "Processed" });
