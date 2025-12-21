@@ -61,8 +61,39 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
   });
 
   describe("Bước 2: Admin tạo sản phẩm mới", () => {
+    beforeEach(async () => {
+      // Đảm bảo admin user tồn tại
+      adminUser = await User.findOne({ email: "adminproductcrud@example.com" });
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: "Admin Product CRUD Test",
+          email: "adminproductcrud@example.com",
+          password: "Haolatuii2703@",
+          passwordConfirm: "Haolatuii2703@",
+          role: "admin",
+          active: "active",
+        });
+      }
+      
+      // Đảm bảo category và brand tồn tại
+      testCategory = await Category.findOne({ name: "Laptop Product CRUD Test" });
+      testBrand = await Brand.findOne({ name: "Dell Product CRUD Test" });
+      if (!testCategory) {
+        testCategory = await Category.create({
+          name: "Laptop Product CRUD Test",
+          image: "https://example.com/category.jpg",
+        });
+      }
+      if (!testBrand) {
+        testBrand = await Brand.create({
+          name: "Dell Product CRUD Test",
+          image: "https://example.com/brand.jpg",
+        });
+      }
+    });
+
     it("nên tạo sản phẩm mới thành công", async () => {
-      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeAll)
+      // Đảm bảo có token hợp lệ
       const loginResponse = await request(app).post("/api/v1/users/login").send({
         email: "adminproductcrud@example.com",
         password: "Haolatuii2703@",
@@ -106,7 +137,9 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
         email: "adminproductcrud@example.com",
         password: "Haolatuii2703@",
       });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
       
       // Đảm bảo có product ID (tạo nếu chưa có)
       if (!createdProductId) {
@@ -123,6 +156,9 @@ describe("System Test - Flow Admin quản lý sản phẩm: Tạo --> Cập nh�
           .post("/api/v1/products")
           .set("Authorization", `Bearer ${adminToken}`)
           .send(productData);
+        expect(createResponse.status).toBe(201);
+        expect(createResponse.body.data).toBeTruthy();
+        expect(createResponse.body.data.data).toBeTruthy();
         createdProductId = createResponse.body.data.data._id;
       }
       

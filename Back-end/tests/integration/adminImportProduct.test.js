@@ -173,7 +173,44 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
           email: "adminimport@example.com",
           password: "Haolatuii2703@",
         });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
+
+      // Đảm bảo product và location tồn tại
+      testProduct = await Product.findOne({ title: "Dell Laptop Import Test Product" });
+      if (!testProduct) {
+        testCategory = await Category.findOne({ name: "Laptop Import Test" });
+        testBrand = await Brand.findOne({ name: "Dell Import Test" });
+        if (!testCategory || !testBrand) {
+          testCategory = await Category.create({
+            name: "Laptop Import Test",
+            image: "https://example.com/category.jpg",
+          });
+          testBrand = await Brand.create({
+            name: "Dell Import Test",
+            image: "https://example.com/brand.jpg",
+          });
+        }
+        testProduct = await Product.create({
+          title: "Dell Laptop Import Test Product",
+          price: 15000000,
+          inventory: 50,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/laptop.jpg"],
+        });
+      }
+      initialInventory = testProduct.inventory;
+      
+      testLocation = await Location.findOne({ name: "Kho Import Test" });
+      if (!testLocation) {
+        testLocation = await Location.create({
+          name: "Kho Import Test",
+          address: "123 Import Test Street",
+          phone: "0123456789",
+        });
+      }
 
       // Tạo import trước để test inventory tăng
       const importData = {
@@ -192,6 +229,9 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
         .post("/api/v1/imports")
         .set("Authorization", `Bearer ${adminToken}`)
         .send(importData);
+
+      // Đợi một chút để hook chạy
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       const updatedProduct = await Product.findById(testProduct._id);
       expect(updatedProduct).toBeTruthy();
@@ -271,11 +311,50 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
           email: "adminimport@example.com",
           password: "Haolatuii2703@",
         });
+      expect(loginResponse.status).toBe(200);
       adminToken = loginResponse.body.token;
+      expect(adminToken).toBeTruthy();
 
-      const newProduct = await Product.findOne({
+      // Đảm bảo category, brand và location tồn tại
+      testCategory = await Category.findOne({ name: "Laptop Import Test" });
+      testBrand = await Brand.findOne({ name: "Dell Import Test" });
+      testLocation = await Location.findOne({ name: "Kho Import Test" });
+      if (!testCategory || !testBrand || !testLocation) {
+        if (!testCategory) {
+          testCategory = await Category.create({
+            name: "Laptop Import Test",
+            image: "https://example.com/category.jpg",
+          });
+        }
+        if (!testBrand) {
+          testBrand = await Brand.create({
+            name: "Dell Import Test",
+            image: "https://example.com/brand.jpg",
+          });
+        }
+        if (!testLocation) {
+          testLocation = await Location.create({
+            name: "Kho Import Test",
+            address: "123 Import Test Street",
+            phone: "0123456789",
+          });
+        }
+      }
+
+      let newProduct = await Product.findOne({
         title: "New Product From Import Test",
       });
+      if (!newProduct) {
+        // Tạo product mới nếu chưa có
+        newProduct = await Product.create({
+          title: "New Product From Import Test",
+          price: 20000000,
+          inventory: 0,
+          category: testCategory._id,
+          brand: testBrand._id,
+          images: ["https://example.com/newproduct.jpg"],
+        });
+      }
       expect(newProduct).toBeTruthy();
 
       const importData = {
@@ -361,3 +440,4 @@ describe("System Test - Flow Admin: Nhập hàng --> Tạo sản phẩm --> Qu�
     });
   });
 });
+

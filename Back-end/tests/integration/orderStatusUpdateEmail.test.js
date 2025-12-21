@@ -349,13 +349,15 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
     });
 
     it("nên cập nhật order status = Delivery và gửi email", async () => {
-      // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
+      // Đảm bảo có token hợp lệ
       const adminLoginResponse = await request(app)
         .post("/api/v1/users/login")
         .send({
           email: "adminemail@example.com",
           password: "Haolatuii2703@",
         });
+      expect(adminLoginResponse.status).toBe(200);
+      expect(adminLoginResponse.body.token).toBeTruthy();
       adminToken = adminLoginResponse.body.token;
 
       // Đảm bảo có order tồn tại (từ beforeEach)
@@ -393,7 +395,12 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
           email: "adminemail@example.com",
           password: "Haolatuii2703@",
         });
+      expect(adminLoginResponse.status).toBe(200);
+      expect(adminLoginResponse.body.token).toBeTruthy();
       adminToken = adminLoginResponse.body.token;
+      
+      // Đảm bảo có order tồn tại (từ beforeEach)
+      expect(testOrder).toBeTruthy();
 
       // Đảm bảo có order tồn tại
       if (!testOrder) {

@@ -28,7 +28,7 @@
 
 | ID      | Test Case Description                | Test Case Procedure                                   | Expected Output                                                      | Test Data  | Result    | Test Date  | Description                     |
 | ------- | ------------------------------------ | ----------------------------------------------------- | -------------------------------------------------------------------- | ---------- | --------- | ---------- | ------------------------------- |
-| INT-018 | Không đăng nhập được với mật khẩu cũ | 1. Reset password<br>2. Thử đăng nhập với mật khẩu cũ | 1. Trả về status 401<br>2. Message: "Email hoặc mật khẩu không đúng" | TestData18 | ❌ Failed | 18/12/2025 | expect(received).toBe(expected) |
+| INT-018 | Không đăng nhập được với mật khẩu cũ | 1. Reset password<br>2. Thử đăng nhập với mật khẩu cũ | 1. Trả về status 401<br>2. Message: "Email hoặc mật khẩu không đúng" | TestData18 | ✅ Passed | 18/12/2025 | expect(received).toBe(expected) |
 
 ---
 

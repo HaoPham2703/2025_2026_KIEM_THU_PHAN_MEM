@@ -69,7 +69,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
     await Brand.deleteMany({ name: "Dell Refund Test" });
   });
 
-  describe("Bước 1: Đăng nhập và tạo đơn hàng với số dư (đã thanh toán)", () => {
+  describe("Bước 1: Đăng nhập và tạo đơn hàng với paypal (đã thanh toán)", () => {
     beforeEach(async () => {
       // Xóa data cũ trước khi tạo mới (tránh duplicate key error)
       await Category.deleteMany({ name: "Laptop Refund Test" });
@@ -124,7 +124,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
       authToken = response.body.token;
     });
 
-    it("nên tạo đơn hàng với payments=số dư", async () => {
+    it("nên tạo đơn hàng với payments=paypal", async () => {
       // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
       const loginResponse = await request(app)
         .post("/api/v1/users/login")
@@ -149,7 +149,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "123 Refund Test Street",
         receiver: "Refund Test User",
         phone: "0123456789",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 30000000,
       };
 
@@ -164,7 +164,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
       expect(response.body.data.id).toBeDefined();
       testOrder = await Order.findById(response.body.data.id);
       expect(testOrder).toBeTruthy();
-      expect(testOrder.payments).toBe("số dư");
+      expect(testOrder.payments).toBe("paypal");
 
       // Kiểm tra inventory đã giảm
       const updatedProduct = await Product.findById(testProduct._id);
@@ -241,7 +241,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "123 Refund Test Street",
         receiver: "Refund Test User",
         phone: "0123456789",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 30000000,
       };
 
@@ -343,7 +343,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "123 Refund Test Street",
         receiver: "Refund Test User",
         phone: "0123456789",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 30000000,
       };
 
@@ -444,7 +444,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "123 Refund Test Street",
         receiver: "Refund Test User",
         phone: "0123456789",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 30000000,
       };
 
@@ -562,7 +562,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "123 Refund Test Street",
         receiver: "Refund Test User",
         phone: "0123456789",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 30000000,
       };
 
@@ -653,7 +653,7 @@ describe("System Test - Flow User hủy đơn --> Hoàn tiền --> Inventory tă
         address: "999 Complete Refund Flow",
         receiver: "Complete Refund User",
         phone: "0111222333",
-        payments: "số dư",
+        payments: "paypal",
         totalPrice: 15000000,
       };
 

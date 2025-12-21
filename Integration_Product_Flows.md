@@ -2,12 +2,12 @@
 
 ## Thông tin Module
 
-|                      |                                                                                                       |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Module Code**      | Integration Tests - Product Management Flows                                                          |
-| **Test Requirement** | Test các flow quản lý sản phẩm: Admin CRUD sản phẩm, Nhập hàng, Quản lý kho, Inventory              |
-| **Tester**           | HaoPham                                                                                               |
-| **Test Date**        | 18/12/2025 (GitHub Actions - Branch: weblau)                                                          |
+|                      |                                                                                        |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| **Module Code**      | Integration Tests - Product Management Flows                                           |
+| **Test Requirement** | Test các flow quản lý sản phẩm: Admin CRUD sản phẩm, Nhập hàng, Quản lý kho, Inventory |
+| **Tester**           | HaoPham                                                                                |
+| **Test Date**        | 18/12/2025 (GitHub Actions - Branch: weblau)                                           |
 
 ---
 
@@ -53,11 +53,13 @@
 **Vấn đề:** Hầu hết các test failed do response structure không khớp với expected
 
 **Error Pattern:**
+
 ```
 Error: expect(received).toBe(expected) // Object.is equality
 ```
 
 **Nguyên nhân có thể:**
+
 - Response body structure khác với expected (thiếu `status`, `data`, `data.id`)
 - Status code không đúng (expected 201/200/204 nhưng nhận giá trị khác)
 - Response format khác với API specification
@@ -67,16 +69,19 @@ Error: expect(received).toBe(expected) // Object.is equality
 **Vấn đề:** Một số test failed do object null hoặc undefined
 
 **Error Pattern:**
+
 ```
 Error: expect(received).toBeTruthy()
 ```
 
 **Nguyên nhân có thể:**
+
 - Data không được tạo đúng trong `beforeEach`
 - Database cleanup (`afterEach` trong `setup.js`) xóa data trước khi test chạy
 - Test isolation issue - test trước đó ảnh hưởng đến test hiện tại
 
 **Giải pháp đề xuất:**
+
 - Đảm bảo `beforeEach` tạo lại tất cả data cần thiết
 - Thêm explicit `deleteMany` trong `beforeEach` để clear data cũ
 - Kiểm tra test isolation - mỗi test phải độc lập
@@ -95,4 +100,3 @@ Error: expect(received).toBeTruthy()
 
 - `adminImportProduct.test.js` - Flow admin nhập hàng
 - `adminProductCRUD.test.js` - Flow admin quản lý sản phẩm (CRUD)
-

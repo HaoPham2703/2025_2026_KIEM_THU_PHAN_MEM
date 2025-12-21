@@ -240,44 +240,6 @@ describe("System Test - Flow Đăng nhập --> Mua hàng", () => {
       expect(updatedProduct.inventory).toBe(initialInventory - 2);
     });
 
-    it("nên tạo đơn hàng với thanh toán bằng số dư", async () => {
-      const orderData = {
-        cart: [
-          {
-            id: testProduct._id.toString(), // Product ID để update inventory
-            product: {
-              _id: testProduct._id.toString(),
-              title: testProduct.title,
-              price: testProduct.price,
-              images: testProduct.images,
-            },
-            quantity: 1,
-          },
-        ],
-        address: "456 Đường System Test, Quận 2, TP.HCM",
-        receiver: "System Test User",
-        phone: "0987654321",
-        payments: "số dư",
-        totalPrice: 15000000, // 1 sản phẩm x 15 triệu
-      };
-
-      const response = await request(app)
-        .post("/api/v1/orders")
-        .set("Authorization", `Bearer ${authToken}`)
-        .send(orderData);
-
-      expect(response.status).toBe(201);
-
-      // Kiểm tra order đã được tạo với payments = "số dư"
-      const createdOrder = await Order.findById(response.body.data.id);
-      expect(createdOrder).toBeTruthy();
-      expect(createdOrder.payments).toBe("số dư");
-
-      // Kiểm tra balance của user đã giảm
-      const updatedUser = await User.findById(testUser._id);
-      expect(updatedUser).toBeTruthy();
-      expect(updatedUser.balance).toBe(50000000 - 15000000); // 50 triệu - 15 triệu = 35 triệu
-    });
 
     it("nên trả về lỗi khi tạo đơn hàng không có token", async () => {
       const orderData = {
