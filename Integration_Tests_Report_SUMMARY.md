@@ -78,6 +78,77 @@
 
 ---
 
+## 📊 Biểu đồ trực quan
+
+**Tỉ lệ PASS/FAIL tổng**
+
+```mermaid
+pie showData
+	"Pass" : 65
+	"Fail" : 34
+```
+
+**PASS/FAIL theo nhóm chức năng**
+
+```mermaid
+bar
+	title PASS/FAIL theo nhóm chức năng
+	orientation horizontal
+	xAxis Title "Số test"
+	yAxis Title "Nhóm"
+	series Pass [0,0,0,0,0]
+	series Fail [4,10,7,3,10]
+	labels ["Auth","Order","Payment","Review","Product"]
+```
+
+**Số lượng test theo nhóm chức năng**
+
+```mermaid
+bar
+	title Số lượng test theo module
+	xAxis Title "Module"
+	yAxis Title "Số test"
+	series Tests [4,10,7,3,10]
+	labels ["Auth","Order","Payment","Review","Product"]
+```
+
+**Coverage theo module (Statements)**
+
+```mermaid
+bar
+	title Coverage theo module (Statements)
+	stacked
+	xAxis Title "Phần trăm (%)"
+	yAxis Title "Module"
+	series Covered [95.23,92.34,43.21,88.45]
+	series Gap [4.77,7.66,56.79,11.55]
+	labels ["authController","orderController","productController","userController"]
+```
+
+**Pass rate theo lần chạy (cập nhật được 1 lần ghi nhận)**
+
+```mermaid
+line
+	title Pass rate theo ngày chạy
+	xAxis Title "Ngày"
+	yAxis Title "Pass rate (%)"
+	series PassRate [65.66]
+	labels ["2025-12-18"]
+```
+
+**Thời gian chạy trung bình theo suite (placeholder, cần cập nhật từ log Jest)**
+
+```mermaid
+bar
+	title Thời gian chạy trung bình theo suite (giây)
+	xAxis Title "Suite"
+	yAxis Title "Giây"
+	series Duration [0]
+	labels ["integration-suite"]
+```
+
+---
+
 ## 🔗 Liên Kết Đến Các Module Chi Tiết
 
 1. **[Integration_Auth_Flows.md](./Integration_Auth_Flows.md)** - Flow 7, 8 (4 test cases)
