@@ -275,6 +275,79 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
   });
 
   describe("Bước 3: Admin cập nhật order status và gửi email", () => {
+    beforeEach(async () => {
+      // Đảm bảo có order tồn tại (tạo lại nếu cần)
+      if (!testOrder) {
+        // Tạo lại user và product nếu cần
+        if (!testUser) {
+          testUser = await User.findOne({ email: "emailtest@example.com" });
+          if (!testUser) {
+            testUser = await User.create({
+              name: "Email Test User",
+              email: "emailtest@example.com",
+              password: "Haolatuii2703@",
+              passwordConfirm: "Haolatuii2703@",
+              role: "user",
+              active: "active",
+            });
+          }
+        }
+        if (!testProduct) {
+          testCategory = await Category.findOne({ name: "Laptop Email Test" });
+          testBrand = await Brand.findOne({ name: "Dell Email Test" });
+          if (!testCategory || !testBrand) {
+            testCategory = await Category.create({
+              name: "Laptop Email Test",
+              image: "https://example.com/category.jpg",
+            });
+            testBrand = await Brand.create({
+              name: "Dell Email Test",
+              image: "https://example.com/brand.jpg",
+            });
+          }
+          testProduct = await Product.create({
+            title: "Dell Laptop Email Test Product",
+            price: 15000000,
+            inventory: 100,
+            category: testCategory._id,
+            brand: testBrand._id,
+            images: ["https://example.com/laptop.jpg"],
+          });
+        }
+        // Tạo order
+        userToken = (
+          await request(app).post("/api/v1/users/login").send({
+            email: "emailtest@example.com",
+            password: "Haolatuii2703@",
+          })
+        ).body.token;
+        const orderData = {
+          cart: [
+            {
+              id: testProduct._id.toString(),
+              product: {
+                _id: testProduct._id.toString(),
+                title: testProduct.title,
+                price: testProduct.price,
+                images: testProduct.images,
+              },
+              quantity: 1,
+            },
+          ],
+          address: "123 Email Test Street",
+          receiver: "Email Test User",
+          phone: "0123456789",
+          payments: "tiền mặt",
+          totalPrice: 15000000,
+        };
+        const orderResponse = await request(app)
+          .post("/api/v1/orders")
+          .set("Authorization", `Bearer ${userToken}`)
+          .send(orderData);
+        testOrder = await Order.findById(orderResponse.body.data.id);
+      }
+    });
+
     it("nên cập nhật order status = Delivery và gửi email", async () => {
       // Đảm bảo có token hợp lệ (refresh sau khi user được tạo lại trong beforeEach)
       const adminLoginResponse = await request(app)
@@ -285,7 +358,7 @@ describe("System Test - Flow Admin cập nhật trạng thái đơn --> User nh�
         });
       adminToken = adminLoginResponse.body.token;
 
-      // Đảm bảo có order tồn tại (từ beforeEach của "Bước 1")
+      // Đảm bảo có order tồn tại (từ beforeEach)
       expect(testOrder).toBeTruthy();
 
       // Clear mock calls trước

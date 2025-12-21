@@ -88,6 +88,36 @@ describe("System Test - Flow Mua hàng --> Thanh toán số dư --> Kiểm tra b
           password: "Haolatuii2703@",
         });
       authToken = loginResponse.body.token;
+      
+      // Đảm bảo product tồn tại
+      if (!testProduct) {
+        testProduct = await Product.findOne({ title: "Dell Laptop Balance Test Product" });
+        if (!testProduct) {
+          testCategory = await Category.findOne({ name: "Laptop Balance Test" });
+          testBrand = await Brand.findOne({ name: "Dell Balance Test" });
+          if (!testCategory) {
+            testCategory = await Category.create({
+              name: "Laptop Balance Test",
+              image: "https://example.com/category.jpg",
+            });
+          }
+          if (!testBrand) {
+            testBrand = await Brand.create({
+              name: "Dell Balance Test",
+              image: "https://example.com/brand.jpg",
+            });
+          }
+          testProduct = await Product.create({
+            title: "Dell Laptop Balance Test Product",
+            price: 15000000,
+            inventory: 100,
+            category: testCategory._id,
+            brand: testBrand._id,
+            images: ["https://example.com/laptop.jpg"],
+          });
+        }
+      }
+      
       const orderData = {
         cart: [
           {

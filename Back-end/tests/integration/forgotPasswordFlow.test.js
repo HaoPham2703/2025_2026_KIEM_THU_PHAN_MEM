@@ -217,18 +217,29 @@ describe("System Test - Flow Quên mật khẩu --> Reset --> Đăng nhập", ()
         });
       }
 
-      // Reset password
-      await request(app).post("/api/v1/users/forgotPassword").send({
-        email: "forgotpassword@example.com",
-      });
+      // Reset password và lấy plain token
+      // Gọi forgotPassword để tạo token
+      const forgotPasswordResponse = await request(app)
+        .post("/api/v1/users/forgotPassword")
+        .send({
+          email: "forgotpassword@example.com",
+        });
+      expect(forgotPasswordResponse.status).toBe(200);
 
+      // Lấy user sau khi forgotPassword (token đã được set)
       testUser = await User.findOne({
         email: "forgotpassword@example.com",
-      });
+      }).select("+passwordResetToken");
       expect(testUser).toBeTruthy();
       expect(testUser.passwordResetToken).toBeTruthy();
 
-      const resetToken = testUser.passwordResetToken;
+      // Tạo lại plain token với cùng giá trị (vì forgotPassword đã tạo token mới)
+      // Chúng ta cần tạo token mới và hash nó để match với passwordResetToken
+      // Nhưng vì token là random, chúng ta không thể tạo lại token cũ
+      // Giải pháp: Tạo token mới và set vào user, sau đó dùng token đó
+      const plainResetToken = testUser.createPasswordResetToken();
+      await testUser.save({ validateBeforeSave: false });
+      const resetToken = plainResetToken;
 
       // Reset password với mật khẩu mới
       const resetResponse = await request(app)

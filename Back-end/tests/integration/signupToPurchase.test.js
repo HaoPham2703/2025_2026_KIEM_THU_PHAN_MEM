@@ -241,7 +241,7 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
       expect(signupResponse.status).toBe(201);
       const signupToken = signupResponse.body.token;
 
-      // Đảm bảo product tồn tại
+      // Đảm bảo product tồn tại (từ beforeAll hoặc tạo lại)
       if (!testProduct) {
         testCategory = await Category.findOne({ name: "Laptop Signup Test" });
         testBrand = await Brand.findOne({ name: "Dell Signup Test" });
@@ -257,14 +257,17 @@ describe("System Test - Flow Đăng ký --> Xác thực --> Mua hàng", () => {
             image: "https://example.com/brand.jpg",
           });
         }
-        testProduct = await Product.create({
-          title: "Dell Laptop Signup Test Product",
-          price: 15000000,
-          inventory: 100,
-          category: testCategory._id,
-          brand: testBrand._id,
-          images: ["https://example.com/laptop.jpg"],
-        });
+        testProduct = await Product.findOne({ title: "Dell Laptop Signup Test Product" });
+        if (!testProduct) {
+          testProduct = await Product.create({
+            title: "Dell Laptop Signup Test Product",
+            price: 15000000,
+            inventory: 100,
+            category: testCategory._id,
+            brand: testBrand._id,
+            images: ["https://example.com/laptop.jpg"],
+          });
+        }
       }
 
       // Bước 2: Tạo đơn hàng ngay với token từ signup
